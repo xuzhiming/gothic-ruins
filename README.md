@@ -8,6 +8,19 @@
 
 漫游模式：WASD 行走、鼠标视角、胶囊体碰撞（three-mesh-bvh）、靠近时自动开合的门。环绕模式可拖拽旋转、滚轮缩放。
 
+## 高清效果图
+
+Cycles 暖光预设渲染（`./render_final.sh` 重渲；仓库里是 JPG，PNG 原图不入库）。
+
+![总览](docs/renders/contact_sheet.jpg)
+
+| | |
+|---|---|
+| ![](docs/renders/01_hero_iso.jpg) 等轴测主图 | ![](docs/renders/08_hero_iso_dusk.jpg) 黄昏版 |
+| ![](docs/renders/02_aerial_south.jpg) 南侧台阶鸟瞰 | ![](docs/renders/03_plaza_facade.jpg) 广场人视（玫瑰窗） |
+| ![](docs/renders/04_portal.jpg) 主入口 | ![](docs/renders/05_nave_interior.jpg) 中厅内景 |
+| ![](docs/renders/06_street_west.jpg) 西侧街巷 | ![](docs/renders/07_apse_NE.jpg) 东北看后殿与飞扶壁 |
+
 ## 当前比对分数与检查
 
 轮廓重合度（IoU，与设计图正交立面/平面对齐到米后比较）：
