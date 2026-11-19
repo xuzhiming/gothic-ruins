@@ -1,0 +1,381 @@
+{
+ "_doc": "Reference colour samples per material: rectangles [x0,y0,x1,y1] in ref panel pixels. stat: median (robust colour of the surface), dark = 15th-percentile luminance pixels (thin dark members: timber, iron), light = 85th percentile (pale lime-plaster patches). Pixels of the paper background are excluded.",
+ "stone_cathedral": {
+  "stat": "median",
+  "where": "cathedral walls: facade beside portal, tower faces, nave side wall",
+  "rects": {
+   "isometric": [
+    [
+     362,
+     330,
+     378,
+     362
+    ],
+    [
+     300,
+     318,
+     318,
+     348
+    ],
+    [
+     455,
+     330,
+     470,
+     370
+    ]
+   ],
+   "front_south": [
+    [
+     332,
+     285,
+     346,
+     320
+    ],
+    [
+     480,
+     300,
+     495,
+     330
+    ]
+   ]
+  }
+ },
+ "stone_buttress": {
+  "stat": "median",
+  "where": "buttress / pier faces (darker weathering)",
+  "rects": {
+   "isometric": [
+    [
+     512,
+     250,
+     522,
+     300
+    ],
+    [
+     473,
+     300,
+     480,
+     340
+    ]
+   ]
+  }
+ },
+ "slate": {
+  "stat": "median",
+  "where": "house + cathedral roof slopes (no holes)",
+  "rects": {
+   "isometric": [
+    [
+     150,
+     360,
+     185,
+     395
+    ],
+    [
+     555,
+     535,
+     585,
+     570
+    ],
+    [
+     505,
+     190,
+     535,
+     215
+    ]
+   ],
+   "front_south": [
+    [
+     525,
+     252,
+     595,
+     275
+    ]
+   ]
+  }
+ },
+ "plaster": {
+  "stat": "light",
+  "where": "pale lime plaster patches on house walls",
+  "rects": {
+   "isometric": [
+    [
+     20,
+     540,
+     70,
+     600
+    ]
+   ],
+   "front_south": [
+    [
+     44,
+     280,
+     117,
+     370
+    ]
+   ]
+  }
+ },
+ "brick": {
+  "stat": "median",
+  "where": "pure brick panels between the windows of the SE corner house (render fallen off)",
+  "rects": {
+   "isometric": [
+    [
+     519,
+     675,
+     529,
+     722
+    ],
+    [
+     541,
+     680,
+     551,
+     720
+    ]
+   ],
+   "front_south": [
+    [
+     620,
+     290,
+     640,
+     330
+    ],
+    [
+     660,
+     300,
+     700,
+     340
+    ]
+   ]
+  }
+ },
+ "timber": {
+  "stat": "dark",
+  "where": "half-timbered house fronts (dark 15 % = the timbers)",
+  "rects": {
+   "isometric": [
+    [
+     300,
+     140,
+     350,
+     180
+    ],
+    [
+     520,
+     640,
+     600,
+     680
+    ]
+   ]
+  }
+ },
+ "stone_plinth": {
+  "stat": "median",
+  "where": "terrace walls, balustrade piers and the rock/rubble plinth below",
+  "rects": {
+   "isometric": [
+    [
+     88,
+     752,
+     175,
+     785
+    ],
+    [
+     188,
+     745,
+     214,
+     780
+    ],
+    [
+     410,
+     805,
+     465,
+     845
+    ]
+   ],
+   "front_south": [
+    [
+     156,
+     385,
+     174,
+     425
+    ],
+    [
+     40,
+     434,
+     140,
+     445
+    ]
+   ]
+  }
+ },
+ "plinth_rock": {
+  "stat": "median",
+  "where": "rock / earth cliff under the platform",
+  "rects": {
+   "isometric": [
+    [
+     24,
+     784,
+     50,
+     800
+    ],
+    [
+     230,
+     880,
+     290,
+     905
+    ],
+    [
+     440,
+     880,
+     520,
+     900
+    ]
+   ]
+  }
+ },
+ "cobble": {
+  "stat": "median",
+  "where": "plaza paving away from bollards / chains",
+  "rects": {
+   "isometric": [
+    [
+     260,
+     650,
+     320,
+     690
+    ],
+    [
+     400,
+     530,
+     440,
+     560
+    ],
+    [
+     300,
+     560,
+     380,
+     600
+    ]
+   ]
+  }
+ },
+ "stair": {
+  "stat": "median",
+  "where": "monumental stair treads",
+  "rects": {
+   "isometric": [
+    [
+     170,
+     800,
+     260,
+     850
+    ],
+    [
+     335,
+     440,
+     385,
+     480
+    ]
+   ],
+   "front_south": [
+    [
+     320,
+     415,
+     430,
+     440
+    ]
+   ]
+  }
+ },
+ "chimney": {
+  "stat": "median",
+  "where": "chimney stacks",
+  "rects": {
+   "isometric": [
+    [
+     143,
+     295,
+     158,
+     335
+    ],
+    [
+     640,
+     515,
+     655,
+     550
+    ],
+    [
+     175,
+     252,
+     186,
+     272
+    ]
+   ],
+   "front_south": [
+    [
+     68,
+     205,
+     86,
+     225
+    ]
+   ]
+  }
+ },
+ "iron": {
+  "stat": "dark",
+  "where": "iron gate in front of the cathedral steps",
+  "rects": {
+   "isometric": [
+    [
+     460,
+     460,
+     500,
+     525
+    ]
+   ]
+  }
+ },
+ "house_walls": {
+  "stat": "median",
+  "where": "whole house facades / end walls (plaster + brick patches + timbers together): overall wall tone",
+  "rects": {
+   "isometric": [
+    [
+     15,
+     520,
+     75,
+     610
+    ],
+    [
+     515,
+     660,
+     615,
+     760
+    ],
+    [
+     300,
+     140,
+     350,
+     180
+    ]
+   ],
+   "front_south": [
+    [
+     44,
+     264,
+     117,
+     380
+    ],
+    [
+     615,
+     278,
+     703,
+     395
+    ]
+   ]
+  }
+ }
+}

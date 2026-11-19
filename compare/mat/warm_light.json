@@ -1,0 +1,31 @@
+{
+ "sky": [
+  0.598,
+  0.598,
+  0.585,
+  1
+ ],
+ "sky_strength": 1.1,
+ "sun": 3.6,
+ "sun_rgb": [
+  1,
+  0.965,
+  0.915
+ ],
+ "angle": 18,
+ "look": "AgX - Base Contrast",
+ "exposure": 0.25,
+ "fog": 0.0004,
+ "fog_rgb": [
+  0.9,
+  0.86,
+  0.8,
+  1
+ ],
+ "_doc": "gap #8 warm soft overcast beauty light, tuned with compare/mat/beauty_try.sh + beauty_compare.py against ref/isometric.png (whole-building mean Lab + per-material medians). Also read by web/ preview (light colours).",
+ "camera_bg": [
+  3.0,
+  2.62,
+  2.3
+ ]
+}

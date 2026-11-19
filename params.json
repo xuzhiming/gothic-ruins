@@ -1,0 +1,1059 @@
+{
+ "_doc": "All geometry in build.py is generated from this file. Units: metres. Blender axes: +X east, +Y north, +Z up. Origin = centre of the plan-panel site bbox, z=0 = ground line under the plinth. See params.md for where each value comes from.",
+ "ref_scale": {
+  "_doc": "Alignment of the reference panels to metres (drawings have no dimension lines). plan: isotropic mpp from house-front width/storey; elevations: horizontal anchor = site extent from plan, vertical anchor = ground line + spire-cross tip height. Fixed (never tuned) so the compare loop cannot move the target.",
+  "plan_mpp": 0.11,
+  "plan_center_px": [
+   345,
+   480.5
+  ],
+  "site_W": 62.7,
+  "site_D": 101.97,
+  "H_anchor": 41.5,
+  "storey_h": 3.2,
+  "storey_px_front": 31.7,
+  "storey_px_west": 30.0,
+  "storey_px_north": 35.0
+ },
+ "site": {
+  "plaza_z": 4.2,
+  "main": [
+   -31.35,
+   31.35,
+   -32.9,
+   30.3
+  ],
+  "north_band": [
+   -29.0,
+   29.0,
+   30.3,
+   50.98
+  ],
+  "tongue": [
+   -13.2,
+   13.2,
+   -36.8,
+   -32.9
+  ],
+  "terrace": [
+   -29.35,
+   29.35,
+   -41.2,
+   -32.9
+  ],
+  "terrace_z": 2.1,
+  "strip": [
+   -20.2,
+   20.2,
+   -46.1,
+   -41.2
+  ],
+  "approach": [
+   -12.0,
+   12.0,
+   -57.0,
+   -50.98
+  ],
+  "parapet_h": 1.0,
+  "balustrade_h": 1.1,
+  "post_w": 1.1,
+  "post_h": 2.1,
+  "plinth_course": 0.35
+ },
+ "stairs_south": {
+  "upper": {
+   "x": [
+    -6.8,
+    6.8
+   ],
+   "y_top": -36.8,
+   "y_bot": -41.2,
+   "n": 13
+  },
+  "lower": {
+   "x": [
+    -8.25,
+    8.25
+   ],
+   "y_top": -46.1,
+   "y_bot": -50.98,
+   "n": 13
+  }
+ },
+ "bollards": {
+  "cx": 0.0,
+  "cy": -15.9,
+  "r": 13.75,
+  "y_end": -6.0,
+  "pitch": 3.4,
+  "h": 0.95,
+  "d": 0.28,
+  "chain_z": 0.6,
+  "sag": 0.18
+ },
+ "cathedral": {
+  "podium_h": 2.4,
+  "podium_margin": 0.8,
+  "steps": {
+   "x": [
+    -5.2,
+    5.2
+   ],
+   "y0": -2.2,
+   "n": 15,
+   "tread": 0.3
+  },
+  "nave_hw": 5.5,
+  "aisle_hw": 13.0,
+  "y_front": 3.9,
+  "y_back": 35.3,
+  "bays": 5,
+  "wall_t": 1.0,
+  "aisle_wall_top": 15.5,
+  "nave_wall_top": 24.0,
+  "nave_ridge": 29.5,
+  "aisle_roof_top": 18.6,
+  "facade_apex": 31.6,
+  "facade_finial": 2.0,
+  "rose_z": 21.1,
+  "rose_r": 2.7,
+  "portal_w": 2.8,
+  "portal_h": 5.0,
+  "portal_gable_top": 17.3,
+  "arcade_open_h": 9.0,
+  "pier_w": 1.4,
+  "buttress_out": 1.6,
+  "buttress_w": 1.2,
+  "buttress_top": 17.5,
+  "pinnacle_h": 6.5,
+  "flyer_z_out": 15.2,
+  "flyer_z_in": 20.5,
+  "tower_sw": {
+   "x": [
+    -12.5,
+    -6.0
+   ],
+   "y": [
+    3.9,
+    10.18
+   ],
+   "top": 31.0,
+   "spire_tip": 40.4,
+   "cross": 1.1,
+   "spire_r": 1.45,
+   "belfry_z0": 20.7,
+   "belfry_w": 3.9,
+   "belfry_tiers": 2,
+   "corner_pinnacle_top": 33.2,
+   "stage_pinnacle_top": 24.9,
+   "stage_tiers": 1
+  },
+  "tower_se": {
+   "x": [
+    6.0,
+    12.5
+   ],
+   "y": [
+    3.9,
+    10.18
+   ],
+   "top": 23.5,
+   "spire_tip": 28.5,
+   "spire_r": 1.2,
+   "belfry_z0": 18.2,
+   "belfry_w": 3.6,
+   "belfry_tiers": 1,
+   "corner_pinnacle_top": 26.0,
+   "stage_pinnacle_top": 21.0,
+   "stage_tiers": 1
+  },
+  "choir_y": 39.0,
+  "apse": {
+   "cy": 38.0,
+   "r_in": 5.5,
+   "r_amb": 8.0,
+   "r_pier": 8.9,
+   "sides": 12,
+   "wall_top": 24.0,
+   "roof_apex": 30.0,
+   "finial": 2.0,
+   "amb_top": 15.5
+  },
+  "roof_holes": {
+   "nave_east_exposed": [
+    9.0,
+    30.0
+   ],
+   "seed": 7,
+   "hole_frac": 0.1
+  },
+  "gate": {
+   "y": -2.2,
+   "x_posts": [
+    5.2,
+    14.0
+   ],
+   "h": 2.6,
+   "post_w": 1.0,
+   "post_h": 3.2,
+   "gate_w": 3.2
+  },
+  "facade_pinnacle_top": 31.8,
+  "pinnacle_spikes": true,
+  "clerestory_pinnacles": {
+   "top": 31.0,
+   "shaft": 2.4,
+   "w": 0.8,
+   "strip_d": 0.8,
+   "strip_w": 0.9
+  },
+  "aisle_front_lancet": {
+   "w": 2.2,
+   "sill": 3.0,
+   "apex": 8.6
+  }
+ },
+ "houses": {
+  "storey_h": 3.2,
+  "slab_t": 0.25,
+  "wall_t": 0.35,
+  "part_t": 0.15,
+  "row_x": [
+   20.35,
+   31.35
+  ],
+  "row_y": [
+   -32.9,
+   30.3
+  ],
+  "floors_row": 3,
+  "overhang": 0.45,
+  "corner": {
+   "x": [
+    16.0,
+    28.0
+   ],
+   "y": [
+    36.9,
+    47.9
+   ],
+   "floors": 2,
+   "eave_extra": 0.0
+  },
+  "door_w": 1.2,
+  "door_h": 2.4,
+  "door_v": 5.2,
+  "stair": {
+   "riser_n": 20,
+   "tread": 0.27,
+   "lane_w": 1.15,
+   "v0": 2.0,
+   "u1": [
+    4.2,
+    5.35
+   ],
+   "u2": [
+    2.95,
+    4.1
+   ]
+  },
+  "partition_u": 5.5,
+  "partition_door_v": 9.0,
+  "chimney": {
+   "w": 0.9,
+   "d": 1.6,
+   "above_ridge": 2.2
+  },
+  "roof_hole_seed": 3,
+  "roof_hole_frac": 0.07,
+  "eave_extra": 0.0,
+  "list": [
+   {
+    "id": "W0",
+    "tone": "A",
+    "w_px": 115,
+    "eave_dz": 0.0,
+    "pitch": 33,
+    "gf": "plaster",
+    "upper": "plaster",
+    "timber": "grid",
+    "jetty": 0.3,
+    "setback": 0.0,
+    "cross": [
+     [
+      0.56,
+      3.2
+     ]
+    ],
+    "dormers": [],
+    "rear_dormers": [
+     0.45
+    ],
+    "chimneys": [
+     [
+      0.05,
+      0.8
+     ],
+     [
+      0.3,
+      0.86
+     ]
+    ],
+    "win": [
+     3,
+     4,
+     4
+    ],
+    "win_w": 0.95,
+    "rear_win": 4,
+    "door": 0.35,
+    "door_kind": "flat",
+    "gf_arch": false,
+    "shop": true,
+    "holes": 0.12,
+    "patches": 0,
+    "pentice": true,
+    "src": "plan 115 px; west elev. house 1: 4 windows/storey, half-timber on all storeys, damaged rear dormer, shop window; 2 chimneys at the N end (plan)",
+    "w": 12.773,
+    "row": "W",
+    "floors": 3
+   },
+   {
+    "id": "W1",
+    "tone": "C",
+    "w_px": 104,
+    "eave_dz": -0.8,
+    "pitch": 42,
+    "gf": "brick",
+    "upper": "plaster",
+    "timber": "braced",
+    "jetty": 0.0,
+    "setback": 0.35,
+    "cross": [
+     [
+      0.5,
+      4.5
+     ]
+    ],
+    "dormers": [],
+    "rear_dormers": [
+     0.5
+    ],
+    "chimneys": [
+     [
+      0.93,
+      0.85
+     ]
+    ],
+    "win": [
+     2,
+     3,
+     3
+    ],
+    "win_w": 0.9,
+    "rear_win": 3,
+    "door": 0.45,
+    "door_kind": "round",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.15,
+    "patches": 0,
+    "pentice": false,
+    "src": "plan 104 px; west elev. house 2: eave ~0.8 m lower, highest ridge rise (5.1 m), 3 windows, round-arched door, chimney at S end; iso: big street gable",
+    "w": 11.551,
+    "row": "W",
+    "floors": 3
+   },
+   {
+    "id": "W2",
+    "tone": "B",
+    "w_px": 92,
+    "eave_dz": 0.2,
+    "pitch": 37,
+    "gf": "stone",
+    "upper": "plaster",
+    "timber": "x",
+    "jetty": 0.45,
+    "setback": 0.0,
+    "cross": [
+     [
+      0.5,
+      3.8
+     ]
+    ],
+    "dormers": [],
+    "rear_dormers": [
+     0.3,
+     0.7
+    ],
+    "chimneys": [
+     [
+      0.08,
+      0.82
+     ]
+    ],
+    "win": [
+     2,
+     3,
+     3
+    ],
+    "win_w": 0.9,
+    "rear_win": 3,
+    "door": 0.5,
+    "door_kind": "round",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.1,
+    "patches": 0,
+    "pentice": true,
+    "src": "plan 92 px, big chimney at the N party wall; west elev. house 3: X-braced half-timber, 2 rear dormers; iso: deep jetty",
+    "w": 10.219,
+    "row": "W",
+    "floors": 3
+   },
+   {
+    "id": "W3",
+    "tone": "A",
+    "w_px": 108,
+    "eave_dz": -0.3,
+    "pitch": 36,
+    "gf": "brick",
+    "upper": "plaster",
+    "timber": "grid",
+    "jetty": 0.3,
+    "setback": 0.2,
+    "cross": [],
+    "dormers": [
+     0.3,
+     0.72
+    ],
+    "rear_dormers": [],
+    "chimneys": [
+     [
+      0.12,
+      0.75
+     ]
+    ],
+    "win": [
+     3,
+     4,
+     4
+    ],
+    "win_w": 0.95,
+    "rear_win": 4,
+    "door": 0.43,
+    "door_kind": "flat",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.22,
+    "patches": 4,
+    "pentice": false,
+    "src": "plan 108 px, large roof hole; west elev. house 4 (hole with rafters): brick-patched ground floor, 4 windows; no street gable -> 2 dormers",
+    "w": 11.996,
+    "row": "W",
+    "floors": 3
+   },
+   {
+    "id": "W4",
+    "tone": "A",
+    "w_px": 150,
+    "eave_dz": 0.3,
+    "pitch": 40,
+    "gf": "plaster",
+    "upper": "plaster",
+    "timber": null,
+    "jetty": 0.0,
+    "setback": 0.0,
+    "cross": [
+     [
+      0.3,
+      3.0
+     ]
+    ],
+    "dormers": [
+     0.7
+    ],
+    "rear_dormers": [
+     0.4
+    ],
+    "chimneys": [
+     [
+      0.08,
+      0.85
+     ],
+     [
+      0.78,
+      0.22
+     ]
+    ],
+    "win": [
+     3,
+     4,
+     4
+    ],
+    "win_w": 1.0,
+    "rear_win": 4,
+    "door": 0.55,
+    "door_kind": "round",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.18,
+    "patches": 14,
+    "pentice": false,
+    "src": "plan 150 px incl. the south gable; front elev.: south gable plaster with large brick patches, 3 storeys + attic (gable reads ~50 deg at the front elevation's narrower depth = 40 deg on the 11 m plan depth)",
+    "w": 16.661,
+    "row": "W",
+    "floors": 3
+   },
+   {
+    "id": "E0",
+    "tone": "C",
+    "w_px": 119,
+    "eave_dz": 0.0,
+    "pitch": 31,
+    "gf": "brick",
+    "upper": "plaster",
+    "timber": "grid",
+    "jetty": 0.3,
+    "setback": 0.0,
+    "cross": [
+     [
+      0.5,
+      3.4
+     ]
+    ],
+    "dormers": [],
+    "rear_dormers": [
+     0.5
+    ],
+    "chimneys": [
+     [
+      0.05,
+      0.85
+     ]
+    ],
+    "win": [
+     3,
+     3,
+     3
+    ],
+    "win_w": 0.95,
+    "rear_win": 3,
+    "door": 0.4,
+    "door_kind": "flat",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.12,
+    "patches": 0,
+    "pentice": true,
+    "src": "plan 119 px, chimney at the N end (rear); east elev. house 5 (north): half-timber, 3 windows, dormer",
+    "w": 13.218,
+    "row": "E",
+    "floors": 3
+   },
+   {
+    "id": "E1",
+    "tone": "B",
+    "w_px": 96,
+    "eave_dz": -0.5,
+    "pitch": 30,
+    "gf": "stone",
+    "upper": "plaster",
+    "timber": "braced",
+    "jetty": 0.45,
+    "setback": 0.3,
+    "cross": [],
+    "dormers": [
+     0.5
+    ],
+    "rear_dormers": [
+     0.5
+    ],
+    "chimneys": [
+     [
+      0.1,
+      0.9
+     ]
+    ],
+    "win": [
+     2,
+     3,
+     3
+    ],
+    "win_w": 0.85,
+    "rear_win": 3,
+    "door": 0.5,
+    "door_kind": "round",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.2,
+    "patches": 0,
+    "pentice": false,
+    "src": "plan 96 px; east elev. house 4: big roof hole, brick infill, lower eave",
+    "w": 10.663,
+    "row": "E",
+    "floors": 3
+   },
+   {
+    "id": "E2",
+    "tone": "A",
+    "w_px": 92,
+    "eave_dz": 0.3,
+    "pitch": 34,
+    "gf": "brick",
+    "upper": "plaster",
+    "timber": "x",
+    "jetty": 0.3,
+    "setback": 0.0,
+    "cross": [
+     [
+      0.45,
+      4.2
+     ]
+    ],
+    "dormers": [],
+    "rear_dormers": [
+     0.5
+    ],
+    "chimneys": [
+     [
+      0.55,
+      0.85
+     ]
+    ],
+    "win": [
+     2,
+     2,
+     3
+    ],
+    "win_w": 0.9,
+    "rear_win": 2,
+    "door": 0.6,
+    "door_kind": "round",
+    "gf_arch": true,
+    "shop": false,
+    "holes": 0.1,
+    "patches": 0,
+    "pentice": true,
+    "src": "plan 92 px; east elev. house 3: X-braced half-timber, arched ground-floor windows, tallest ridge",
+    "w": 10.219,
+    "row": "E",
+    "floors": 3
+   },
+   {
+    "id": "E3",
+    "tone": "A",
+    "w_px": 97,
+    "eave_dz": 0.0,
+    "pitch": 29,
+    "gf": "brick",
+    "upper": "brick",
+    "timber": "grid",
+    "jetty": 0.0,
+    "setback": 0.15,
+    "cross": [],
+    "dormers": [
+     0.5
+    ],
+    "rear_dormers": [],
+    "chimneys": [
+     [
+      0.1,
+      0.2
+     ],
+     [
+      0.15,
+      0.85
+     ]
+    ],
+    "win": [
+     3,
+     3,
+     3
+    ],
+    "win_w": 0.95,
+    "rear_win": 3,
+    "door": 0.45,
+    "door_kind": "flat",
+    "gf_arch": false,
+    "shop": true,
+    "holes": 0.22,
+    "patches": 0,
+    "pentice": false,
+    "src": "plan 97 px, 2 chimneys at the N party wall (street + rear side); east elev. house 2: brick infill, rear roof hole",
+    "w": 10.774,
+    "row": "E",
+    "floors": 3
+   },
+   {
+    "id": "E4",
+    "tone": "A",
+    "w_px": 165,
+    "eave_dz": 0.2,
+    "pitch": 35,
+    "gf": "brick",
+    "upper": "brick",
+    "timber": null,
+    "jetty": 0.0,
+    "setback": 0.0,
+    "cross": [
+     [
+      0.3,
+      3.0
+     ]
+    ],
+    "dormers": [
+     0.65
+    ],
+    "rear_dormers": [
+     0.5
+    ],
+    "chimneys": [
+     [
+      0.08,
+      0.85
+     ],
+     [
+      0.5,
+      0.85
+     ]
+    ],
+    "win": [
+     3,
+     4,
+     4
+    ],
+    "win_w": 1.0,
+    "rear_win": 4,
+    "door": 0.55,
+    "door_kind": "round",
+    "gf_arch": true,
+    "shop": false,
+    "holes": 0.15,
+    "patches": 0,
+    "pentice": false,
+    "gable_timber": true,
+    "src": "plan 165 px incl. south gable, 2 rear chimneys; front elev.: brick lower storeys, half-timbered gable, round-arched ground floor",
+    "w": 18.327,
+    "row": "E",
+    "floors": 3
+   },
+   {
+    "id": "NW",
+    "tone": "A",
+    "eave_dz": 0.0,
+    "pitch": 40,
+    "gf": "plaster",
+    "upper": "plaster",
+    "timber": "braced",
+    "jetty": 0.3,
+    "setback": 0.0,
+    "cross": [],
+    "dormers": [
+     0.62
+    ],
+    "rear_dormers": [
+     0.55
+    ],
+    "chimneys": [
+     [
+      0.08,
+      0.8
+     ],
+     [
+      0.88,
+      0.8
+     ],
+     [
+      0.28,
+      0.4
+     ]
+    ],
+    "win": [
+     3,
+     4
+    ],
+    "win_w": 0.95,
+    "rear_win": 4,
+    "door": 0.45,
+    "door_kind": "flat",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.18,
+    "patches": 8,
+    "pentice": false,
+    "rubble_end": "v0",
+    "src": "plan: 3 chimneys, street dormer; north elev.: 2 storeys half-timber, dormer + hole, rubble W end; west elev.: plaster gable with brick patches",
+    "row": "N",
+    "floors": 2
+   },
+   {
+    "id": "NE",
+    "tone": "B",
+    "eave_dz": 0.0,
+    "pitch": 40,
+    "gf": "plaster",
+    "upper": "plaster",
+    "timber": "grid",
+    "jetty": 0.3,
+    "setback": 0.0,
+    "cross": [],
+    "dormers": [
+     0.4
+    ],
+    "rear_dormers": [
+     0.45
+    ],
+    "chimneys": [
+     [
+      0.12,
+      0.8
+     ],
+     [
+      0.82,
+      0.75
+     ]
+    ],
+    "win": [
+     3,
+     4
+    ],
+    "win_w": 0.95,
+    "rear_win": 4,
+    "door": 0.45,
+    "door_kind": "flat",
+    "gf_arch": false,
+    "shop": false,
+    "holes": 0.2,
+    "patches": 8,
+    "pentice": false,
+    "rubble_end": "v1",
+    "src": "plan: chimneys at both ends; north elev.: 2 storeys half-timber, dormer + hole, rubble E end; east elev.: plaster gable with brick patches",
+    "row": "N",
+    "floors": 2
+   }
+  ],
+  "_list_doc": "per-house look + shell parameters, generated by src/house_table.py from the hand-read table (do not edit here)"
+ },
+ "walk": {
+  "eye": 1.6,
+  "radius": 0.3
+ },
+ "compare_lock": [
+  "cathedral.pinnacle_h",
+  "cathedral.apse.wall_top",
+  "cathedral.nave_wall_top",
+  "cathedral.tower_sw",
+  "cathedral.tower_se",
+  "cathedral.clerestory_pinnacles",
+  "cathedral.facade_pinnacle_top",
+  "cathedral.aisle_front_lancet",
+  "houses.list",
+  "ruin",
+  "cathedral.apse.cy"
+ ],
+ "ruin": {
+  "enabled": true,
+  "seed": 404,
+  "moss_tops": true,
+  "_doc": "gap #4 ruin/decay. Every value is either read off the reference images (ref: ...) or a seeded choice where the drawings give no information (seeded). See params.md 'ruin'.",
+  "pinnacles": {
+   "broken_frac": 0.22,
+   "broken_keep": [
+    0.25,
+    0.6
+   ],
+   "chipped_frac": 0.25
+  },
+  "glass": {
+   "missing_cathedral": 0.55,
+   "missing_house": 0.3,
+   "mullion_lost_if_pane_lost": 0.35
+  },
+  "rose": {
+   "spokes_lost": 3,
+   "inner_ring_lost": 4,
+   "glass_wedges_lost": 5
+  },
+  "roof": {
+   "nave_west_exposed": [
+    30.6,
+    35.0
+   ],
+   "aisle_hole_frac": 0.2,
+   "ragged_cells": 1,
+   "rafter_missing": 0.18,
+   "rafter_broken": 0.3,
+   "purlin_missing": 0.25,
+   "loose_slate_p": 0.35
+  },
+  "houses": {
+   "W1": {
+    "collapse": [
+     0.25,
+     0.62
+    ],
+    "sag": 0.25
+   },
+   "E3": {
+    "collapse": [
+     0.38,
+     0.8
+    ],
+    "sag": 0.2
+   },
+   "NE": {
+    "collapse": [
+     0.12,
+     0.45
+    ]
+   },
+   "W0": {
+    "sag": 0.3
+   },
+   "E1": {
+    "sag": 0.35
+   },
+   "E4": {
+    "sag": 0.25
+   },
+   "W4": {
+    "sag": 0.2
+   }
+  },
+  "chimney_collapse_frac": 0.3,
+  "brace_missing": 0.2,
+  "balustrade": {
+   "rail_gap_p": 0.18,
+   "baluster_missing": 0.12,
+   "post_cap_lost": 0.3
+  },
+  "cornice_gap_p": 0.15,
+  "weather": {
+   "sill_streak_p": 0.85,
+   "sill_streak_len": [
+    1.0,
+    2.8
+   ],
+   "top_streaks_per_m": 0.22,
+   "top_streak_len": [
+    1.5,
+    4.5
+   ],
+   "ground_band_h": [
+    0.9,
+    1.6
+   ],
+   "crack_size": [
+    0.6,
+    1.8
+   ],
+   "lath_size": [
+    0.5,
+    1.1
+   ],
+   "cracks_cathedral": 0.012,
+   "cracks_house": 0.02,
+   "lath_house": 0.012
+  },
+  "rubble": {
+   "nave_piles": 4,
+   "aisle_piles": 4,
+   "exterior_piles": 8,
+   "apse_piles": 3,
+   "fallen_rafters": 5,
+   "keepout_r": 0.9,
+   "pews_missing": 0.12,
+   "pews_askew": 0.15
+  },
+  "debris": {
+   "nave": 160,
+   "per_pile": 14,
+   "wall_base": 140,
+   "plaza": 60,
+   "stairs": 30
+  },
+  "keepout_paths": {
+   "_doc": "walk-test / circulation corridors (m, plan) that colliding rubble must keep clear of (radius r); the nave-axis line end and the ambulatory ring follow cathedral.apse.cy (build.py re-centres them on the apse)",
+   "r": 1.3,
+   "lines": [
+    [
+     [
+      0,
+      3.0
+     ],
+     [
+      0,
+      34.0
+     ],
+     [
+      3.2,
+      37.0
+     ]
+    ],
+    [
+     [
+      9.25,
+      12.2
+     ],
+     [
+      9.25,
+      31.0
+     ]
+    ],
+    [
+     [
+      -9.25,
+      12.2
+     ],
+     [
+      -9.25,
+      31.0
+     ]
+    ],
+    [
+     [
+      -17.7,
+      -4.5
+     ],
+     [
+      -17.7,
+      31.0
+     ]
+    ],
+    [
+     [
+      17.7,
+      -4.5
+     ],
+     [
+      17.7,
+      31.0
+     ]
+    ],
+    [
+     [
+      -16.5,
+      -30.0
+     ],
+     [
+      -16.5,
+      -4.5
+     ],
+     [
+      16.5,
+      -4.5
+     ]
+    ]
+   ],
+   "ring": {
+    "c": [
+     0,
+     38.0
+    ],
+    "r": 6.9,
+    "w": 1.3
+   }
+  }
+ }
+}

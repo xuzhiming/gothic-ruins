@@ -1,0 +1,176 @@
+{
+ "route_completed": true,
+ "waypoints": 87,
+ "final_state": {
+  "x": -28.551583978088438,
+  "y": -10.490986454733296,
+  "z": 10.60024691986084,
+  "yaw": 0.5357715004572585,
+  "onGround": true,
+  "near": "W3_F2_back"
+ },
+ "final_space_guess": "W3_F2_back",
+ "load_s": 3.1,
+ "samples": 1118,
+ "duration_s": 108.2,
+ "path_length_m": 287.2,
+ "climb_m": 15.76,
+ "penetrations": [],
+ "stuck": [],
+ "level_warnings": [],
+ "doors_passed_min_open": {
+  "portal": 1.0,
+  "gate_yard_E": 1.0,
+  "W3_door": 1.0,
+  "W3_F2_part": 1.0
+ },
+ "events": [
+  {
+   "shot": "01_approach_stairs",
+   "at": [
+    0,
+    -54.49,
+    -0.0
+   ],
+   "near": "approach"
+  },
+  {
+   "shot": "02_plaza",
+   "at": [
+    -0.0,
+    -33.35,
+    4.2
+   ],
+   "near": "plaza"
+  },
+  {
+   "shot": "03_cathedral_steps",
+   "at": [
+    -0.3,
+    -4.5,
+    4.2
+   ],
+   "near": "plaza"
+  },
+  {
+   "shot": "04_portal",
+   "at": [
+    0.0,
+    2.26,
+    6.6
+   ],
+   "near": "parvis"
+  },
+  {
+   "shot": "05_nave",
+   "at": [
+    0.0,
+    5.33,
+    6.6
+   ],
+   "near": "parvis"
+  },
+  {
+   "shot": "06_apse",
+   "at": [
+    0.0,
+    33.26,
+    6.6
+   ],
+   "near": "ambulatory"
+  },
+  {
+   "shot": "07_ambulatory_to_aisle",
+   "at": [
+    6.75,
+    34.34,
+    6.6
+   ],
+   "near": "ambulatory"
+  },
+  {
+   "shot": "08_tower_SE",
+   "at": [
+    9.25,
+    8.97,
+    6.6
+   ],
+   "near": "tower_SE"
+  },
+  {
+   "shot": "09_leaving",
+   "at": [
+    0.0,
+    2.62,
+    6.6
+   ],
+   "near": "parvis"
+  },
+  {
+   "shot": "10_gate_yard_E",
+   "at": [
+    9.7,
+    -0.89,
+    4.2
+   ],
+   "near": "yard_E"
+  },
+  {
+   "shot": "11_street_W",
+   "at": [
+    -17.69,
+    -9.16,
+    4.2
+   ],
+   "near": "W3_F0_front"
+  },
+  {
+   "shot": "12_house_W3_GF",
+   "at": [
+    -21.81,
+    -9.4,
+    4.2
+   ],
+   "near": "W3_F0_front"
+  },
+  {
+   "shot": "13_W3_F1",
+   "at": [
+    -25.33,
+    -11.83,
+    7.4
+   ],
+   "near": "W3_F1_front"
+  },
+  {
+   "shot": "14_W3_F2",
+   "at": [
+    -22.36,
+    -5.78,
+    10.6
+   ],
+   "near": "W3_F2_front"
+  },
+  {
+   "shot": "15_W3_F2_back",
+   "at": [
+    -28.55,
+    -10.49,
+    10.6
+   ],
+   "near": "W3_F2_back"
+  },
+  {
+   "shot": "99_end",
+   "at": [
+    -28.55,
+    -10.49,
+    10.6
+   ],
+   "near": "W3_F2_back"
+  }
+ ],
+ "page_errors": [],
+ "sanity_ray_hits_wall": true,
+ "PASS": true
+}

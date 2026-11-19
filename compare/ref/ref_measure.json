@@ -1,0 +1,57 @@
+{
+ "south": {
+  "panel": "front_south.png",
+  "bbox_px": [
+   22,
+   9,
+   722,
+   448
+  ],
+  "w_px": 700,
+  "h_px": 439
+ },
+ "north": {
+  "panel": "back_north.png",
+  "bbox_px": [
+   18,
+   11,
+   729,
+   428
+  ],
+  "w_px": 711,
+  "h_px": 417
+ },
+ "west": {
+  "panel": "left_west.png",
+  "bbox_px": [
+   14,
+   9,
+   739,
+   404
+  ],
+  "w_px": 725,
+  "h_px": 395
+ },
+ "east": {
+  "panel": "right_east.png",
+  "bbox_px": [
+   13,
+   10,
+   736,
+   404
+  ],
+  "w_px": 723,
+  "h_px": 394
+ },
+ "top": {
+  "panel": "top_plan.png",
+  "bbox_px": [
+   60,
+   17,
+   630,
+   944
+  ],
+  "w_px": 570,
+  "h_px": 927
+ }
+}

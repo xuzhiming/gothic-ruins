@@ -1,0 +1,20 @@
+# dependencies / build
+node_modules/
+dist/
+
+# Blender + raw export (the optimized GLB lives in web/)
+*.blend
+*.blend1
+building.glb
+building_before*.blend
+
+# regenerable intermediates
+tmp/
+logs/
+compare/work/
+compare/diag/
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/
