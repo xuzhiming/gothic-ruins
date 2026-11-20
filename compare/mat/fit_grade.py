@@ -2,7 +2,7 @@
 using the medians of mat_TAG.json. Run after iterate.sh TAG; repeat until dE stops improving."""
 import json, os, sys, numpy as np
 H = os.path.dirname(os.path.abspath(__file__)); R = json.load(open(os.path.join(H, f"mat_{sys.argv[1]}.json")))["materials"]
-MAP = {"stone_cathedral": ["stone", "stone_moss"], "slate": ["slate"], "plaster": ["plaster", "plaster_b", "plaster_c"], "brick": ["brick"],
+MAP = {"stone_cathedral": ["stone", "stone_moss"], "slate": ["slate"], "plaster": ["plaster", "plaster_b", "plaster_c", "plaster_d"], "brick": ["brick"],
        "chimney": ["brick_red"], "timber": ["timber"], "stone_plinth": ["rubble", "rubble_moss"], "plinth_rock": ["soil"], "cobble": ["cobble"],
        "stair": ["stair", "stair_riser", "stair_side"], "iron": ["iron"]}
 gp = os.path.join(H, "grade.json"); G = json.load(open(gp)) if os.path.exists(gp) else {}

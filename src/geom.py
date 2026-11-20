@@ -4,7 +4,7 @@ import math, zlib, random
 from mathutils import Vector
 from mathutils.geometry import tessellate_polygon
 
-TEX_M = {"stone": 3.0, "rubble": 4.0, "slate": 2.0, "brick": 2.0, "brick_red": 2.0, "stair": 2.0, "stair_riser": 2.0, "stair_side": 2.0, "plaster": 4.0, "plaster_b": 4.0, "plaster_c": 4.0, "timber": 1.5, "cobble": 4.0,
+TEX_M = {"stone": 3.0, "rubble": 4.0, "slate": 2.0, "brick": 2.0, "brick_bare": 2.0, "plaster_edge": 1.0, "brick_red": 2.0, "stair": 2.0, "stair_riser": 2.0, "stair_side": 2.0, "plaster": 4.0, "plaster_b": 4.0, "plaster_c": 4.0, "plaster_d": 8.0, "timber": 1.5, "wframe": 1.0, "cobble": 4.0,
          "iron": 1.0, "glass": 2.0, "soil": 6.0, "plinth": 4.0, "stone_moss": 3.0, "rubble_moss": 4.0}
 # ---- ruin state (set by build.py from params.json "ruin"): None = intact model
 RUIN = None            # the params dict
@@ -45,6 +45,20 @@ class Bucket:
             if ax == 2: self.uv.append((p.x/s + ox, p.y/s + oy))
             elif ax == 0: self.uv.append((p.y/s + ox, p.z/s + oy))
             else: self.uv.append((p.x/s + ox, p.z/s + oy))
+    def puv(self, p, ax):
+        """world planar UV of point p projected along axis ax (same mapping as face())"""
+        ox, oy = self.o; s = self.s
+        if ax == 2: return (p.x/s + ox, p.y/s + oy)
+        if ax == 0: return (p.y/s + ox, p.z/s + oy)
+        return (p.x/s + ox, p.z/s + oy)
+    def face_edge(self, Q, src, nface):
+        """gap #12: break-edge quad Q textured with the wall FACE's projection: vertex k samples the face UV at front point src[k][0]
+        (+ a 2 cm shift for back vertices), i.e. the plaster just at the edge stretched over the break, not a sideways projection
+        (which shows the texture's brick spalls on the lime section)"""
+        ax = max(range(3), key=lambda i: abs(nface[i])); sh = 0.02/self.s
+        b = len(self.v); self.v.extend(Q); self.f.append(tuple(range(b, b + len(Q))))
+        for p, back in src:
+            u = self.puv(p, ax); self.uv.append((u[0] + sh, u[1] + sh) if back else u)
     def face_uv(self, pts, uvs):
         b = len(self.v); self.v.extend(Vector(p) for p in pts); self.f.append(tuple(range(b, b + len(pts)))); self.uv.extend(uvs)
     def nfaces(self): return len(self.f)
@@ -96,7 +110,7 @@ def dedupe(poly, eps=1e-5):
         if not out or (abs(p[0] - out[-1][0]) > eps or abs(p[1] - out[-1][1]) > eps): out.append(p)
     if len(out) > 1 and abs(out[0][0] - out[-1][0]) < eps and abs(out[0][1] - out[-1][1]) < eps: out.pop()
     return out
-def extrude(bk, poly, o, S, T, d, off=0.0, caps=True, sides=True, back=None):
+def extrude(bk, poly, o, S, T, d, off=0.0, caps=True, sides=True, back=None, front=None):
     """extrude 2-D polygon (s,t) in plane (o; S,T) along N=S x T from off-d/2 .. off+d/2"""
     poly = ccw(dedupe(poly))
     if len(poly) < 3: return
@@ -107,7 +121,7 @@ def extrude(bk, poly, o, S, T, d, off=0.0, caps=True, sides=True, back=None):
         for tri in tris:
             a, b, c = F[tri[0]], F[tri[1]], F[tri[2]]
             if (b - a).cross(c - a).dot(N) < 0: tri = (tri[0], tri[2], tri[1])
-            bk.face([F[i] for i in tri])
+            (front or bk).face([F[i] for i in tri])
             bb = back or bk
             bb.face([Bk[tri[0]], Bk[tri[2]], Bk[tri[1]]])
     if sides:
@@ -185,9 +199,17 @@ def arch_rise(w, kind="pointed", k=1.0):
     if kind == "round": return w/2
     r = max(k*w, w/2 + 1e-4); return math.sqrt(r*r - (r - w/2)**2)
 # ---------------- walls with openings ----------------
+DAVOID = []   # gap #12: (s0, s1, z0, z1) wall-local rects (patch holes, lime islands) no decal may float over; set by wall()
 def decal(bk, o, S, T, N, s0, s1, za, zb, dn, flip, u0=0.0, us=None, uv01=False):
     """one alpha decal quad on a wall face: s0..s1 along S, za..zb (relative to o.z) at normal offset dn.
     u tiles along the wall (us m per texture repeat) unless uv01 (whole texture once). v = 0 bottom .. 1 top."""
+    for (a, b, c, d) in DAVOID:   # gap #12: never float a decal over a recessed patch / raised island; tiling decals are split around it
+        if s0 < b and s1 > a and za < d and zb > c:
+            if uv01: return
+            us = us or (s1 - s0)
+            if a > s0 + 0.05: decal(bk, o, S, T, N, s0, a, za, zb, dn, flip, u0, us)
+            if b < s1 - 0.05: decal(bk, o, S, T, N, b, s1, za, zb, dn, flip, u0 + (b - s0)/us, us)
+            return
     P = [o + S*s0 + T*za + N*dn, o + S*s1 + T*za + N*dn, o + S*s1 + T*zb + N*dn, o + S*s0 + T*zb + N*dn]
     if uv01: uv = [(0, 0), (1, 0), (1, 1), (0, 1)]
     else:
@@ -233,40 +255,172 @@ def wall_decals(o, S, T, N, L, H, t, off, ops, wx):
                 sz = RR.uniform(*W[kind + "_size"]); s_ = RR.uniform(sz/2, max(sz/2, L - sz/2)); z_ = RR.uniform(0.3, max(0.3, H - sz - 0.2))
                 if s_ - sz/2 < 0 or s_ + sz/2 > L or z_ + sz > H or hits(s_ - sz/2, s_ + sz/2, z_, z_ + sz): continue
                 decal(DECAL[kind], o, S, T, N, s_ - sz/2, s_ + sz/2, z_, z_ + sz, off + sd*(t/2 + (0.02 if kind == "crack" else 0.01) + jit()), sd < 0, uv01=True); n -= 1
-def wall(bk, p0, p1, z0, z1, t, openings=(), glass=None, frame=None, off=0.0, wx=None):
+WIN = None        # gap #11: cross-window params (params.json houses.windows), set by build.py
+WFRAME = None     # Bucket for window casings / sashes / mullions / transoms (pale weathered painted oak)
+def _wbox(bk, o, S, T, N, s0, s1, z0, z1, n0, n1, skip=()):
+    """box in a wall's local frame: s (along), z (up), n (along the normal N)"""
+    if s1 - s0 < 1e-4 or z1 - z0 < 1e-4 or n1 - n0 < 1e-4: return
+    c = o + S*((s0 + s1)/2) + T*((z0 + z1)/2) + N*((n0 + n1)/2)
+    obox(bk, c, S, T, N, (s1 - s0)/2, (z1 - z0)/2, (n1 - n0)/2, skip=skip)
+def cross_frame(fb, o, S, T, N, a, b, sill, spring, top, kind, nf, sg, lose_m=False, lose_t=False, cas=True, gi=None, flush=False):
+    """gap #11 cross window (Kreuzstock) on an opening a..b x sill..top: casing on the outer face (nf, outward sign sg) + projecting
+    sill, sash frame round the inset pane, one mullion + one transom at transom_ratio below the head (round heads: transom at the
+    spring). lose_m / lose_t: ruin -> that bar is missing (frames mostly intact)."""
+    P = WIN; fw, pr, mw, fd, sw = P["frame_w"], P["frame_proud"], P["mullion_w"], P["frame_depth"], P["sash_w"]; gi = P["glass_inset"] if gi is None else gi
+    lo, hi = (nf, nf + pr) if sg > 0 else (nf - pr, nf)            # proud casing slab (outside the face)
+    head = spring if kind == "flat" else top
+    if cas:
+        _wbox(fb, o, S, T, N, a - fw, a, sill, head + fw, lo, hi); _wbox(fb, o, S, T, N, b, b + fw, sill, head + fw, lo, hi)   # jambs
+        if kind == "flat": _wbox(fb, o, S, T, N, a, b, spring, spring + fw, lo, hi)                                           # head
+        sp = P["sill_proud"]; se = P["sill_ext"]; sh = P["sill_h"]                                                            # sill
+        _wbox(fb, o, S, T, N, a - fw - se, b + fw + se, sill - sh, sill, *((nf - 0.02, nf + sp) if sg > 0 else (nf - sp, nf + 0.02)))
+    ng = nf - sg*gi                                                  # glass plane (inset from the outer face)
+    if flush:   # outer-silhouette faces (rear / exposed ends): no projection -> casing as a light lining in the reveal + sill board
+        n0, n1 = sorted((ng, nf - sg*0.006)); _wbox(fb, o, S, T, N, a, a + fw, sill, head, n0, n1); _wbox(fb, o, S, T, N, b - fw, b, sill, head, n0, n1)
+        if kind == "flat": _wbox(fb, o, S, T, N, a + fw, b - fw, spring - fw, spring, n0, n1)
+        _wbox(fb, o, S, T, N, a + fw, b - fw, sill, sill + 0.05, n0, n1); a, b, sill = a + fw, b - fw, sill + 0.05
+        if kind == "flat": spring -= fw
+    g0, g1 = (ng, ng + fd) if sg > 0 else (ng - fd, ng)              # sash / bars sit just outside the pane
+    _wbox(fb, o, S, T, N, a, a + sw, sill, spring, g0, g1); _wbox(fb, o, S, T, N, b - sw, b, sill, spring, g0, g1)
+    _wbox(fb, o, S, T, N, a + sw, b - sw, sill, sill + sw, g0, g1)
+    if kind == "flat": _wbox(fb, o, S, T, N, a + sw, b - sw, spring - sw, spring, g0, g1)
+    zt = spring - P["transom_ratio"]*(spring - sill) if kind == "flat" else spring
+    if not lose_m:
+        m_top = spring if kind == "flat" else spring + (top - spring)*0.85
+        _wbox(fb, o, S, T, N, (a + b)/2 - mw/2, (a + b)/2 + mw/2, sill + sw, m_top, g0, g1)
+    if not lose_t: _wbox(fb, o, S, T, N, a + sw, b - sw, zt - mw/2, zt + mw/2, g0, g1)
+    return ng
+def cross_panel(fb, gb, c0, Sd, outd, z0, z1, w):
+    """cross window for a free-standing pane (dormer / gable attic): c0 = plan point of the pane's left edge on the face, Sd along the
+    face, outd = outward normal; pane gb (0.04 thick, inset) + casing/sill/sash/cross in fb"""
+    o = Vector((c0.x, c0.y, 0)); S = Vector((Sd.x, Sd.y, 0)).normalized(); T = Vector((0, 0, 1)); N = S.cross(T)
+    sg = 1 if N.dot(Vector((outd.x, outd.y, 0))) > 0 else -1
+    ng = cross_frame(fb, o, S, T, N, 0.0, w, z0, z1, z1, "flat", 0.0, sg, gi=-0.025)   # no wall opening here: pane sits on the face
+    extrude(gb, [(0, z0), (w, z0), (w, z1), (0, z1)], o, S, T, 0.04, ng - sg*0.02)
+def rag_poly(cx, cz, rx, rz, key, n=20, amp=0.16, bumps=(), grow=0.0):
+    """gap #12: ragged, star-shaped break outline (wall-local s,z) around (cx, cz), semi-axes rx/rz. `bumps` = (ds, dz, size)
+    lobes (the old patch pieces) pull the outline out in their direction; jagged edge from an independent hashed rng (`key`).
+    grow > 0 = same outline offset outward (chamfer: the front of the break is wider than its back)."""
+    r_ = random.Random(zlib.crc32(key.encode()))
+    harm = [(k, r_.uniform(-1, 1)/k**0.75, r_.uniform(0, 6.283)) for k in range(2, 19)]   # 1/f-ish radial noise: bays + teeth
+    tooth = [r_.uniform(-1, 1) for _ in range(n)]; ph = r_.uniform(0, 6.283)
+    out = []
+    for i in range(n):
+        th = ph + 2*math.pi*i/n; c, sn = math.cos(th), math.sin(th)
+        f = 1.0 + amp*(1.4*sum(a_*math.cos(k*th + p_) for k, a_, p_ in harm) + 0.35*tooth[i])
+        for ds, dz, sz in bumps:
+            al = math.atan2(dz/max(rz, 1e-3), ds/max(rx, 1e-3)); dd = math.cos(th - al)
+            if dd > 0: f += sz*dd**4
+        f = min(max(f, 0.55), 1.3)
+        out.append((cx + (rx*f + grow)*c, cz + (rz*f + grow)*sn))
+    return out
+def _skin(bk, o, S, T, Nw, L, H, ops, n1, sg, sk):
+    """gap #12: lime-plaster skin (thickness r+gap behind the original outer face n1, outward normal sg*Nw) with the openings cut
+    through (bottom-touching doors as notches) and ragged chamfered patch holes; the brick seen through a hole is the recessed
+    body's outer face (M12b; M12 used a separate brick plate)."""
+    r, gap = sk["r"], sk["gap"]; nb = n1 - sg*(r + gap); nbr = n1 - sg*r; No = Nw*sg
+    P3 = lambda q, n: o + S*q[0] + T*q[1] + Nw*n
+    outer = [(0.0, 0.0)]; holes = []   # holes: (front loop, back loop)
+    for q in ops:
+        a, b = q["s"] - q["w"]/2, q["s"] + q["w"]/2; kind = q.get("kind", "pointed"); k = q.get("k", 1.0)
+        sill = q.get("sill", 0.0); top = min(q["h"], H); spring = top - arch_rise(b - a, kind, k)
+        arc = [(a, spring), (b, spring)] if kind == "flat" else arch_curve(a, b, spring, kind, k)
+        if sill < 1e-4: outer += [(a, 0.0)] + arc + [(b, 0.0)]
+        else:
+            lp = [(a, sill), (b, sill)] + list(reversed(arc)); holes.append((lp, lp))
+    outer += [(L, 0.0), (L, H), (0.0, H)]; outer = ccw(dedupe(outer))
+    for f_, b_, pl in sk.get("holes", ()):
+        holes.append((f_, b_))
+    loops = [outer] + [h[0] for h in holes]
+    F3 = [[P3(q, n1) for q in lp] for lp in loops]
+    for tri in tessellate_polygon(F3):
+        flat = [p for lp in F3 for p in lp]; A, B, C = flat[tri[0]], flat[tri[1]], flat[tri[2]]
+        bk.face([A, B, C] if (B - A).cross(C - A).dot(No) > 0 else [A, C, B])
+    def sides(fl, bl, is_hole):
+        m = len(fl); ar = sum(fl[i][0]*fl[(i + 1) % m][1] - fl[(i + 1) % m][0]*fl[i][1] for i in range(m))
+        for i in range(m):
+            j = (i + 1) % m; Q = [P3(bl[i], nb), P3(bl[j], nb), P3(fl[j], n1), P3(fl[i], n1)]
+            e = Vector((fl[j][0] - fl[i][0], fl[j][1] - fl[i][1])); want = Vector((e.y, -e.x)) if (ar > 0) != is_hole else Vector((-e.y, e.x))   # away from the solid
+            nq = newell(Q); w3 = S*want.x + T*want.y; src = [(Q[3], True), (Q[2], True), (Q[2], False), (Q[3], False)]
+            if not is_hole: bk.face(Q if nq.dot(w3) >= 0 else Q[::-1])
+            elif nq.dot(w3) >= 0: sk["edge"].face_edge(Q, src, No)
+            else: sk["edge"].face_edge(Q[::-1], src[::-1], No)
+    sides(outer, outer, False)   # outer boundary: faces point away from the solid
+    for f_, b_ in holes: sides(f_, b_, True)   # hole walls / chamfered breaks: faces point into the hole
+def raised_island(bk, o, S, T, N, back, front, thick, edge=None):
+    """gap #12: lime-plaster residue sheet stuck ON a brick face: wall-local loops (s,z) around plane (o; S,T), outward N;
+    back loop on the face, front loop (shrunk = chamfered edge) `thick` m out. Back face omitted (against the wall)."""
+    back, front = list(back), list(front); m = len(back)
+    P3 = lambda q, n: o + S*q[0] + T*q[1] + N*n
+    F = [P3(q, thick) for q in front]
+    for tri in tessellate_polygon([F]):
+        A, B, C = F[tri[0]], F[tri[1]], F[tri[2]]
+        bk.face([A, B, C] if (B - A).cross(C - A).dot(N) > 0 else [A, C, B])
+    ar = sum(back[i][0]*back[(i + 1) % m][1] - back[(i + 1) % m][0]*back[i][1] for i in range(m))
+    for i in range(m):
+        j = (i + 1) % m; Q = [P3(back[i], 0.0), P3(back[j], 0.0), P3(front[j], thick), P3(front[i], thick)]
+        e = Vector((back[j][0] - back[i][0], back[j][1] - back[i][1])); want = Vector((e.y, -e.x)) if ar > 0 else Vector((-e.y, e.x))
+        src = [(Q[3], True), (Q[2], True), (Q[2], False), (Q[3], False)]
+        eb = edge or bk
+        if newell(Q).dot(S*want.x + T*want.y) >= 0: eb.face_edge(Q, src, N)
+        else: eb.face_edge(Q[::-1], src[::-1], N)
+def wall(bk, p0, p1, z0, z1, t, openings=(), glass=None, frame=None, off=0.0, wx=None, outdir=None, flush=False, skin=None):
     """straight wall p0->p1 (plan points), z0..z1, thickness t centred on the line (+off along normal).
-    openings: dicts {s: centre along wall (m from p0), w, sill (above z0), h (apex above z0), kind, k, glass(bool), mull(int)}
-    returns list of opening frames (for door records)."""
+    openings: dicts {s: centre along wall (m from p0), w, sill (above z0), h (apex above z0), kind, k, glass(bool), mull(int), cross(bool)}
+    outdir: outward plan direction (needed for cross windows: casing on the outer face, inset pane). Returns the wall frame."""
     p0, p1 = Vector((p0[0], p0[1], 0)), Vector((p1[0], p1[1], 0)); d = p1 - p0; L = d.length; S = d/L; T = Vector((0, 0, 1))
-    o = p0 + Vector((0, 0, z0)); H = z1 - z0
+    o = p0 + Vector((0, 0, z0)); H = z1 - z0; Nw = S.cross(T)
+    sg = (1 if Nw.dot(Vector((outdir[0], outdir[1], 0))) > 0 else -1) if outdir is not None else 1
     ops = sorted(openings, key=lambda q: q["s"]); cur = 0.0
+    # gap #12: plaster skin -> body recessed by r+gap on the outer side; the skin keeps the outer face (contour / IoU unchanged).
+    # Not for walls whose openings reach the top or the ends (no closed skin outline).
+    if skin is not None and (outdir is None or any(min(q["h"], H) > H - 1e-3 or q["s"] - q["w"]/2 < 0.05 or q["s"] + q["w"]/2 > L - 0.05 for q in ops)): skin = None
+    tb, ob = (t - skin["r"] - skin["gap"], off - sg*(skin["r"] + skin["gap"])/2) if skin is not None else (t, off)
+    # M12b: the recessed body's OUTER face is the brick itself (skin sits directly on it, its back face omitted): the brick seen
+    # through a hole is the body face, no separate plate a few mm in front of a hidden face -> nothing to z-fight at any distance
+    BX = ({"front": skin["brick"]} if sg > 0 else {"back": skin["brick"]}) if skin is not None else {}
     for q in ops:
         a, b = q["s"] - q["w"]/2, q["s"] + q["w"]/2
-        if a > cur + 1e-4: extrude(bk, [(cur, 0), (a, 0), (a, H), (cur, H)], o, S, T, t, off)
+        if a > cur + 1e-4: extrude(bk, [(cur, 0), (a, 0), (a, H), (cur, H)], o, S, T, tb, ob, **BX)
         kind = q.get("kind", "pointed"); k = q.get("k", 1.0)
         sill = q.get("sill", 0.0); top = min(q["h"], H)
-        if sill > 1e-4: extrude(bk, [(a, 0), (b, 0), (b, sill), (a, sill)], o, S, T, t, off)
+        if sill > 1e-4: extrude(bk, [(a, 0), (b, 0), (b, sill), (a, sill)], o, S, T, tb, ob, **BX)
         rise = arch_rise(b - a, kind, k); spring = top - rise
         if top < H - 1e-4:
             curve = arch_curve(a, b, spring, kind, k)
             # polygon: right spring -> over the arch back to left spring -> top-left -> top-right
             poly = ([(a, spring), (b, spring), (b, H), (a, H)] if kind == "flat" else [curve[-1], (b, H), (a, H)] + curve[:-1])
-            extrude(bk, poly, o, S, T, t, off)
+            extrude(bk, poly, o, S, T, tb, ob, **BX)
         lost = RUIN is not None and RR.random() < RUIN["glass"]["missing_cathedral" if frame is not None and frame.group == "Tracery" else "missing_house"]
         if q.get("glass") and glass is not None:
             outline = [(a, sill)] + [(b, sill)] + ([(b, spring), (a, spring)] if kind == "flat" else list(reversed(arch_curve(a, b, spring, kind, k))))
-            if not lost: extrude(glass, outline, o, S, T, 0.05, off)   # ruin: pane lost -> dark empty opening
-            if frame is not None:
-                m = q.get("mull", 1)
+            cross = q.get("cross") and WIN is not None and WIN.get("cross") and WFRAME is not None and outdir is not None
+            if cross:
+                # same ruin-stream draws as the generic branch below (stream unchanged); outcomes -> bars rarely lost (frames mostly intact)
+                m = q.get("mull", 1); lm = False
                 for i in range(1, m + 1):
-                    sx = a + (b - a)*i/(m + 1)
-                    if lost and RR.random() < RUIN["glass"]["mullion_lost_if_pane_lost"]: continue   # broken tracery
-                    extrude(frame, [(sx - 0.06, sill), (sx + 0.06, sill), (sx + 0.06, spring + rise*0.6), (sx - 0.06, spring + rise*0.6)], o, S, T, 0.14, off)
-                if q.get("transom", True) and spring - sill > 1.2 and not (lost and RR.random() < 0.5):
-                    zt = sill + (spring - sill)*0.55
-                    extrude(frame, [(a, zt - 0.05), (b, zt - 0.05), (b, zt + 0.05), (a, zt + 0.05)], o, S, T, 0.14, off)
+                    if lost and RR.random() < RUIN["glass"]["mullion_lost_if_pane_lost"]*WIN["lost_bar_frac"]: lm = True
+                lt = bool(q.get("transom", True) and spring - sill > 1.2 and (lost and RR.random() < 0.5*WIN["lost_bar_frac"]))
+                ng = cross_frame(WFRAME, o, S, T, Nw, a, b, sill, spring, top, kind, off + sg*t/2, sg, lose_m=lm, lose_t=lt, cas=not flush, flush=flush)
+                if m > 1:   # shop window: extra mullions (3 lights)
+                    for i in (1, 2):
+                        sx = a + (b - a)*i/3; g0, g1 = (ng, ng + WIN["frame_depth"]) if sg > 0 else (ng - WIN["frame_depth"], ng)
+                        _wbox(WFRAME, o, S, T, Nw, sx - WIN["mullion_w"]/2, sx + WIN["mullion_w"]/2, sill, spring, g0, g1)
+                if not lost: extrude(glass, outline, o, S, T, 0.04, ng - sg*0.02)   # pane inset glass_inset from the outer face
+            else:
+                if not lost: extrude(glass, outline, o, S, T, 0.05, off)   # ruin: pane lost -> dark empty opening
+                if frame is not None:
+                    m = q.get("mull", 1)
+                    for i in range(1, m + 1):
+                        sx = a + (b - a)*i/(m + 1)
+                        if lost and RR.random() < RUIN["glass"]["mullion_lost_if_pane_lost"]: continue   # broken tracery
+                        extrude(frame, [(sx - 0.06, sill), (sx + 0.06, sill), (sx + 0.06, spring + rise*0.6), (sx - 0.06, spring + rise*0.6)], o, S, T, 0.14, off)
+                    if q.get("transom", True) and spring - sill > 1.2 and not (lost and RR.random() < 0.5):
+                        zt = sill + (spring - sill)*0.55
+                        extrude(frame, [(a, zt - 0.05), (b, zt - 0.05), (b, zt + 0.05), (a, zt + 0.05)], o, S, T, 0.14, off)
         cur = b
-    if cur < L - 1e-4: extrude(bk, [(cur, 0), (L, 0), (L, H), (cur, H)], o, S, T, t, off)
+    if cur < L - 1e-4: extrude(bk, [(cur, 0), (L, 0), (L, H), (cur, H)], o, S, T, tb, ob, **BX)
+    if skin is not None: _skin(bk, o, S, T, Nw, L, H, ops, off + sg*t/2, sg, skin)
     N = S.cross(T)
     if wx and RUIN is not None and DECAL is not None: wall_decals(o, S, T, N, L, H, t, off, ops, wx)
     return {"S": S, "N": N, "o": o, "L": L}

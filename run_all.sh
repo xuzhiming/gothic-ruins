@@ -6,7 +6,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"; R=$(pwd)
 BL=${BLENDER:-/home/box/.local/bin/blender}
-GT=${GLTF_TRANSFORM:-/workspace/tools/gltf/node_modules/.bin/gltf-transform}
+GT=${GLTF_TRANSFORM:-$( [ -x tools/gltf/node_modules/.bin/gltf-transform ] && echo tools/gltf/node_modules/.bin/gltf-transform || echo /workspace/tools/gltf/node_modules/.bin/gltf-transform)}   # project-local copy first (shared /workspace/tools may be reset by other jobs)
 PORT=${PORT:-8766}
 mkdir -p logs renders compare/out
 step(){ echo; echo "=== [$(date +%H:%M:%S)] $*"; }

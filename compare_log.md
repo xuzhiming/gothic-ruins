@@ -546,3 +546,69 @@ Applied to the south monumental stairs (both flights) and the cathedral steps. P
 Stair dE00: neutral 0.8 -> 0.5, beauty light 1.06 -> 1.14. L* IQR / p10-90 vs ref 22.5 / 40.6: neutral 13.4/26.2 -> 8.9/14.1,
 beauty 12.0/24.3 -> 9.5/14.8 (the old spread was the patchy slabs; the remaining gap is tread/riser geometry shading, which in the
 0.12 m/px iso is only 1-3 px per step). Scores unchanged; circulation, negatives, walk PASS. GLB 23.40 MB / 3.72 MB.
+
+## M10 (gap #10, 2026-11-19 22:40 UTC+8): exterior wall textures replaced to match the original renderings
+Refs: ref/isometric.png + front_south / left_west elevations (no other images). Material map: compare/mat/wall_map.md, crops compare/mat/wall_ref/.
+New recipes (src/make_textures.py, M10_RAW, bypass grade.json gain/_contrast; scalar gains compare/wall/wall_gain.json):
+plaster A/B/C/D with ragged spalls exposing true-scale salmon brick (12/18/22/44 %), D = 8 m tile @2048 px; brick soft salmon + ~35 % lime residue
+(no M8 camouflage); timber grey-brown; stone warm-grey ashlar with darker joints; rubble rough squared blocks, wavy courses, dark joints.
+Plaster normal maps added (plaster*_n). Tones: W0 B, W2 A, W3 C, W4 D, NW D.
+Tools: src/render_elev.py (Cycles ortho elevations), compare/wall/{patch_de.py, zone_sheet.py, elev_sheet.py, round.sh, zones.json}.
+
+| metric | before (gap #9) | after M10 |
+|---|---|---|
+| elevation zones dE00 raw mean (8 zones) | 8.36 | 5.67 |
+| elevation zones dE00 exposure-normalised mean | 6.65 | 4.00 |
+| iso neutral mean dE00 (11 mats) | 0.40 | 2.24 (plaster 12.5: ref p85 lime vs our median incl. spalls) |
+| beauty-light mean dE00 (1600 px) | 1.90 | 3.16; with plaster p85-vs-p85 (like for like): 1.52 -> 1.83 |
+| beauty whole-building dE00 | 0.80 | 0.92 |
+| house_walls union (neutral) | — | 1.9 |
+Per zone after (raw / normalised): W4 gable 12.8/10.4, E4 brick 7.8/5.4, cathedral facade 5.8/2.8, S terrace 2.5/5.5, NW gable 2.8/1.5,
+W half-timber row 7.4/4.4, nave west 2.7/1.3, W plinth 3.5/0.8.
+Full run_all: IoU S .808 N .812 W .741 E .748 top .942 outline 1.19 footprint .851 (unchanged); circulation PASS 86, both negatives caught;
+walk PASS; GLB 29.7 MB raw / 4.07 MB optimised.
+Sheets: compare/wall/m10_zones_ref_before_after_cycles.jpg, compare/wall/m10_preview_ref_before_after.jpg, compare/wall/elev_ref_vs_final.png (ref|ours elevations),
+renders/beauty_iso_before_after_m10.jpg, final/m10_closeups_before_after.jpg.
+
+## M11 (gap #11 "十字形窗户", 2026-11-19 23:55 UTC+8): cross windows (Kreuzstock) on all house windows
+Spec + ref crops: compare/mat/window_map.md, compare/mat/window_ref/. Params: params.json houses.windows (cross, frame_w 0.10, frame_proud 0.03,
+mullion_w 0.07, frame_depth 0.05, transom_ratio 0.40, glass_inset 0.10, sash_w 0.045, sill_h 0.07, sill_proud 0.08, sill_ext 0.05, lost_bar_frac 0.35).
+geom.cross_frame / cross_panel: casing + projecting sill on the outer face, sash round an inset pane, 1 mullion + 1 transom (round heads: transom at
+the spring); half-timbered storeys, rear faces and exposed end walls use flush frames (lining in the reveal + sill board) so nothing clashes with posts
+or projects beyond the silhouette. Dormer / attic / street-gable panes get the same cross. New material `wframe` (pale painted oak). Cathedral lancets unchanged.
+Ruin stream unchanged (same RR draws; ruin_log identical); house rng unchanged (timber posts kept at the old positions).
+Full run_all: IoU S .808 N .812 W .741 E .748 top .942 outline 1.19 footprint .851 (unchanged; silhouettes pixel-identical to no-cross build);
+circulation PASS 86, both negatives caught; walk PASS, door rays portal/gate_yard_E/W3_door/W3_F2_part 1.0, penetrations 0, stuck 0.
+Triangles 125,768 -> 153,956 (+28,188, +22.4 %; window frames 33,276). GLB 29.74 -> 31.93 MB raw, building_opt 4.07 -> 4.55 MB.
+Sheets: compare/wall/m11_windows_ref_before_after_cycles.jpg, compare/wall/m11_window_zoom_ref_vs_ours.jpg, compare/wall/m11_preview_before_after.jpg,
+renders/beauty_iso_before_after_m11.jpg, final/m11_closeups_before_after.jpg.
+Process note: box reboot ~22:51 wiped /workspace/tools/gltf and web/node_modules -> project-local gltf-transform 4.5.1 in tools/gltf (run_all.sh
+prefers it), web deps reinstalled with npm ci.
+
+## M12 (gap #12 "墙壁上的那个石灰应该在砖的外部", 2026-11-20 09:50 UTC+8): lime plaster is the outer shell over the brick
+Root causes: (geometry) build.patch_face put brick boxes 1-5 cm IN FRONT of the plaster face (brick on top of the lime = inverted); lath decals flat.
+(texture) spall break darkened on the PLASTER side (rim x0.7 = read as a shadow cast by the brick), no contact shadow on the brick; normals 512 px for
+4-8 m tiles + NSTR 0.8 -> break relief invisible; brick lime residue soft (smoothstep) with height ~ joint relief -> embedded stains.
+Normal polarity itself was correct (synthetic raised square reads raised in Cycles and three.js).
+Fix: params.json houses.plaster_layer. Plaster storeys with patches: body recessed r+gap (0.035+0.012), geom._skin = lime skin keeping the original
+outer face (contour unchanged) with openings + ragged chamfered (1.2 cm) holes, brick_bare plate at -3.5 cm, break sides in plaster_edge (fresh lime).
+Patch layout = same house-rng draws (stream unchanged). Brick street faces: raised lime islands 2.5-3.5 cm, chamfer 1 cm (independent rng).
+Decals never float over holes/islands (skipped/split after the RR draws: ruin stream unchanged). Textures: lime .85 / brick .35 / joints .12, 2.5 px
+break slope, contact shadow on brick, lit 1.6 px lip; plaster normals 1024 px; NSTR plaster 1.25 brick 1.1; brick_red -> brick_clean_n.
+Full run_all (09:33): IoU S .808 N .812 W .740 (.7404 vs .741: a 1-px column per view lost = the M11 brick boxes that stuck out 5 cm past
+the W4 / NW end faces) E .748 top .942 outline 1.19 footprint .851; skyline S 4.58 N 4.21 W 6.32 E 6.17 m (unchanged); circulation PASS 86, both
+negatives caught; walk PASS (87 wp, 0 penetrations, 0 stuck). Triangles 153,956 -> 162,763 (+8,807); GLB 31.93 -> 37.91 MB raw (1024 px normals),
+building_opt 4.55 -> 4.88 MB. 30 skin holes (compare/wall/m12_holes.json).
+Sheets: compare/wall/m12_plaster_relief_closeup.jpg, compare/wall/m12_webgl_before_after.jpg, renders/beauty_iso_before_after_m12.jpg,
+final/m12_closeups_before_after.jpg.
+
+## M12b ("外层石灰需要更加薄一些", 2026-11-20 11:20 UTC+8): thin traditional lime coat
+houses.plaster_layer: skin_r 0.035 -> 0.015, gap 0.012 -> 0 (total recess 4.7 -> 1.5 cm; the recessed body's OUTER face is now the brick_bare
+material, the skin sits directly on it with no back face -> no hidden brick plate 4 mm in front of a hidden face = no near-coplanar layer to
+z-fight under the three.js 0.05-2000 m frustum), chamfer 0.012 -> 0.0045; residue thick 0.025-0.035 -> 0.008-0.013, chamfer 0.010 -> 0.003;
+plaster_edge (206,199,188) -> (184,176,163) + grime; tex band 2.5 -> 2.0 px, slope_gain 3.5 -> 2.6, contact 5 -> 3.5 px / k .5 -> .42,
+lip 1.6 px x1.07 -> 1.2 px x1.05; NSTR plaster 1.25 -> 1.1, brick 1.1 -> 1.0.
+Full run_all (11:06): IoU S .808 N .812 W .740 E .748 top .942 outline 1.19 footprint .851, skyline 4.58/4.21/6.32/6.17 m (= M12);
+circulation PASS 86, both negatives caught; walk PASS (87 wp, 0 penetrations, 0 stuck). Triangles 162,763 -> 161,143; GLB 37.91 -> 37.16 MB,
+building_opt 4.88 -> 4.81 MB. Sheets: compare/wall/m12b_plaster_thin_closeup.jpg, compare/wall/m12b_webgl_before_after.jpg,
+final/m12b_closeups_before_after.jpg.

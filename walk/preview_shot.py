@@ -11,7 +11,8 @@ SHOTS = [("preview_house_wall_W4", (-16.2, -27.0, 4.2), (-20.4, -27.0)),     # p
          ("preview_nave", (0.0, 7.0, 6.6), (0.0, 40.0)),
          ("preview_plaza", (-7.0, -24.0, 4.2), (0.0, -2.0)),
          ("preview_stairs_south", (5.0, -56.5, 1.7), (0.0, -44.0)),
-         ("preview_cathedral_steps", (-2.5, -9.5, 4.2), (0.0, -1.0))]         # gap #9: cathedral steps close-up           # gap #9: south monumental stairs from the approach                  # plaza setts, cathedral steps + facade                      # nave looking toward the apse          # E1 (tone B, stone GF, half-timber)
+         ("preview_cathedral_steps", (-2.5, -9.5, 4.2), (0.0, -1.0)),
+         ("preview_house_row_E", (-1.0, -24.0, 5.8), (17.0, -8.0))]   # M10: east house row from the plaza         # gap #9: cathedral steps close-up           # gap #9: south monumental stairs from the approach                  # plaza setts, cathedral steps + facade                      # nave looking toward the apse          # E1 (tone B, stone GF, half-timber)
 async def main():
     async with async_playwright() as p:
         br = await p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])

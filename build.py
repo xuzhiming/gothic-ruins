@@ -38,6 +38,7 @@ def pin(name):
         else: st.seed(f"{(RU or {}).get('seed', 0)}:{name}:{k}")
 SC = Scene()
 geom.DECAL = {k: SC.B("Decal", "decal_" + k) for k in ("streak", "grime", "crack", "lath")} if RU else None
+geom.WIN = P["houses"].get("windows"); geom.WFRAME = SC.B("WinFrame", "wframe") if geom.WIN and geom.WIN.get("cross") else None   # gap #11 cross windows
 WXC = lambda **k: dict({"cracks": RU["weather"]["cracks_cathedral"]} if RU else {}, **k)   # cathedral wall weathering spec
 SP = {"spaces": {}, "doors": [], "stairs": [], "lifts": [], "open_links": [], "entrance": "approach"}
 LEAVES = []          # (name, Bucket, hinge Vector, props)
@@ -560,7 +561,8 @@ for sg, yard in ((-1, "yard_W"), (1, "yard_E")):
 # =====================================================================================
 # 3. townhouses
 # =====================================================================================
-HS = P["houses"]; SH = HS["storey_h"]; HT = HS["wall_t"]; PT = HS["part_t"]; SL = HS["slab_t"]
+HOLES = []
+HS = P["houses"]; PLY = HS["plaster_layer"]; SH = HS["storey_h"]; HT = HS["wall_t"]; PT = HS["part_t"]; SL = HS["slab_t"]
 class Frame:
     """local house coords: u = depth from the street face (inward), v = along the street, z absolute"""
     def __init__(s, kind, a, b):
@@ -582,7 +584,7 @@ def windows_row(L, n, skip=None, w=0.95, sill=0.9, top=2.25, pad=1.2, kind="flat
     if n <= 0: return []
     xs = [pad + (L - 2*pad)*(i + 0.5)/n for i in range(n)]
     if skip is not None: xs = [x for x in xs if abs(x - skip) > skip_d]
-    return [{"s": x, "w": w, "sill": sill, "h": top + (0.3 if kind == "round" else 0), "kind": kind, "glass": True, "mull": 1} for x in xs]
+    return [{"s": x, "w": w, "sill": sill, "h": top + (0.3 if kind == "round" else 0), "kind": kind, "glass": True, "mull": 1, "cross": True} for x in xs]
 
 class Mirror:
     """the same house frame seen from the rear (u -> D - u); used to build rear dormers with the street-dormer code"""
@@ -592,24 +594,61 @@ class Mirror:
     def p2(s, u, v): return s.fr.p2(s.D - u, v)
     def dir(s, du, dv): return s.fr.dir(-du, dv)
 
-def patch_face(bk, p0, p1, z0, z1, nrm, n, rng, avoid=()):
-    """brick patches where the plaster has fallen off (seeded layout), kept clear of the openings in `avoid`"""
-    if n <= 0 or z1 - z0 < 1.2: return
-    p0, p1 = Vector((p0[0], p0[1], 0)), Vector((p1[0], p1[1], 0)); d = p1 - p0; L = d.length; S = d/L
-    N = Vector((nrm[0], nrm[1], 0)).normalized(); placed = 0
+def patch_face(p0, p1, z0, z1, n, rng, avoid=()):
+    """seeded layout of the patches where the lime plaster has fallen off (M11 draw sequence kept exactly: the house rng stream
+    and so every later seeded choice is unchanged). Returns [(s, zc, w, h, lobes)] along p0->p1; gap #12 turns them into
+    ragged holes in the plaster skin (brick recessed behind) instead of brick boxes stuck on the face."""
+    if n <= 0 or z1 - z0 < 1.2: return []
+    L = (Vector((p1[0], p1[1], 0)) - Vector((p0[0], p0[1], 0))).length; placed = 0; out = []
     for _ in range(n*6):
         if placed >= n: break
         w, h = rng.uniform(0.6, 2.0), rng.uniform(0.5, min(1.5, z1 - z0 - 0.3))
         if L < w + 0.5: continue
         s, zc = rng.uniform(w/2 + 0.2, L - w/2 - 0.2), rng.uniform(z0 + h/2 + 0.1, z1 - h/2 - 0.1)
-        we, he = w*1.3, h*1.3   # ragged pieces reach ~0.64 x the core size
+        we, he = w*1.3, h*1.3   # ragged outline reaches ~0.65 x the core size
         if any(abs(s - a["s"]) < (we + a["w"])/2 + 0.15 and zc + he/2 > z0 + a.get("sill", 0) - 0.15 and zc - he/2 < z0 + a["h"] + 0.15 for a in avoid): continue
         if s - we/2 < 0.1 or s + we/2 > L - 0.1 or zc - he/2 < z0 + 0.05 or zc + he/2 > z1 - 0.05: continue
-        c = p0 + S*s + N*0.03; obox(bk, (c.x, c.y, zc), S, N, (0, 0, 1), w/2*0.7, 0.02, h/2*0.75)
-        for _k in range(3):   # ragged outline: a few overlapping smaller pieces around the core
-            ds, dz = rng.uniform(-w/2, w/2)*0.6, rng.uniform(-h/2, h/2)*0.6; c2 = c + S*ds - N*(0.006 + 0.004*_k)   # stepped back: no coplanar faces
-            obox(bk, (c2.x, c2.y, zc + dz), S, N, (0, 0, 1), w*rng.uniform(0.18, 0.34), 0.02 - 0.002*_k, h*rng.uniform(0.18, 0.34))
-        placed += 1
+        lobes = []
+        for _k in range(3):   # (the M11 ragged pieces) -> lobes of the break outline
+            ds, dz = rng.uniform(-w/2, w/2)*0.6, rng.uniform(-h/2, h/2)*0.6
+            sx = w*rng.uniform(0.18, 0.34); sz = h*rng.uniform(0.18, 0.34); lobes.append((ds, dz, sx, sz))
+        out.append((s, zc, w, h, lobes)); placed += 1
+    return out
+
+def skin_holes(pats, L, H, z0, ops, mirror, key):
+    """gap #12: patch layout (patch_face frame) -> plaster-skin holes in the wall's own frame (s from the wall's p0, z from z0):
+    (front loop = back grown by the chamfer, back loop, brick-plate loop). Overlapping / out-of-bounds holes are dropped."""
+    out, boxes = [], []
+    for i, (s, zc, w, h, lobes) in enumerate(pats):
+        sc = L - s if mirror else s; zl = zc - z0; rx, rz = 0.42*w, 0.42*h
+        bumps = [((-ds if mirror else ds), dz, 0.35*(sx/w + sz/h)) for ds, dz, sx, sz in lobes]
+        kk = f"{key}_{i}"; back = rag_poly(sc, zl, rx, rz, kk, PLY["rag_n"], PLY["rag_amp"], bumps)
+        front = rag_poly(sc, zl, rx, rz, kk, PLY["rag_n"], PLY["rag_amp"], bumps, grow=PLY["chamfer"])
+        plate = rag_poly(sc, zl, rx, rz, kk, PLY["rag_n"], PLY["rag_amp"], bumps, grow=PLY["brick_grow"])   # plate sides buried in the skin
+        bb = (min(p[0] for p in front), max(p[0] for p in front), min(p[1] for p in front), max(p[1] for p in front))
+        if bb[0] < 0.06 or bb[1] > L - 0.06 or bb[2] < 0.06 or bb[3] > H - 0.06: continue
+        if any(bb[0] < c[1] + 0.04 and bb[1] > c[0] - 0.04 and bb[2] < c[3] + 0.04 and bb[3] > c[2] - 0.04 for c in boxes): continue
+        if any(bb[0] < q["s"] + q["w"]/2 + 0.05 and bb[1] > q["s"] - q["w"]/2 - 0.05 and bb[3] > q.get("sill", 0.0) - 0.05 and bb[2] < q["h"] + 0.05 for q in ops): continue
+        boxes.append(bb); out.append((front, back, plate))
+    return out, boxes
+
+def lime_islands(L, H, ops, rr, key):
+    """gap #12: lime-plaster residue sheets left ON a brick street face (independent rng: no seeded stream touched).
+    Returns [(back, front, thick)] wall-local + their boxes (decals kept off them)."""
+    R = PLY["residue"]; n = int(round(R["per_m2"]*L*H)); out, boxes = [], []; mg = R["margin"]
+    for i in range(n*8):
+        if len(out) >= n: break
+        sz = rr.uniform(*R["size"]); rx, rz = sz/2*rr.uniform(0.8, 1.3), sz/2*rr.uniform(0.6, 1.0)
+        s, z = rr.uniform(0.3 + rx, max(0.31 + rx, L - 0.3 - rx)), rr.uniform(0.35 + rz, max(0.36 + rz, H - 0.35 - rz)); th = rr.uniform(*R["thick"])
+        bb = (s - rx*1.3, s + rx*1.3, z - rz*1.3, z + rz*1.3)
+        if bb[0] < 0.25 or bb[1] > L - 0.25 or bb[2] < 0.2 or bb[3] > H - 0.2: continue
+        if any(bb[0] < c[1] + 0.1 and bb[1] > c[0] - 0.1 and bb[2] < c[3] + 0.1 and bb[3] > c[2] - 0.1 for c in boxes): continue
+        if any(bb[0] < q["s"] + q["w"]/2 + mg and bb[1] > q["s"] - q["w"]/2 - mg and bb[3] > q.get("sill", 0.0) - mg and bb[2] < q["h"] + mg for q in ops): continue
+        kk = f"{key}_{i}"; bumps = [(rr.uniform(-1, 1)*rx, rr.uniform(-1, 1)*rz, rr.uniform(0.1, 0.25)) for _ in range(2)]
+        back = rag_poly(s, z, rx, rz, kk, PLY["residue"]["rag_n"], PLY["residue"]["rag_amp"], bumps)
+        front = rag_poly(s, z, rx, rz, kk, PLY["residue"]["rag_n"], PLY["residue"]["rag_amp"], bumps, grow=-R["chamfer"])
+        boxes.append(bb); out.append((back, front, th))
+    return out, boxes
 
 def timber_face(tim, fr, uu, W, z0, z1, pattern, rng, ops, out=-1):
     """half-timber frame on a street/rear face at depth uu: sole/sill/head rails, posts at the ends and at every window
@@ -639,7 +678,8 @@ def dormer(G, fr, ud, vd, ze, tp, hsl, hgl, tim, rng, timber, PL="plaster"):
     zs = ze + ud*tp; hd = 1.6; ub = ud + hd/tp + 0.2; wd = 0.85
     fr.box(SC.B(G, PL), ud, ub, vd - wd, vd + wd, zs - 0.4, zs + hd)
     a = fr.M(ud - 0.02, vd - 0.5, 0); b = fr.M(ud - 0.02, vd + 0.5, 0)
-    extrude(hgl, [(0, zs + 0.15), (1.0, zs + 0.15), (1.0, zs + 1.25), (0, zs + 1.25)], Vector((a.x, a.y, 0)), Vector((b.x - a.x, b.y - a.y, 0)).normalized(), (0, 0, 1), 0.06)
+    if geom.WIN and geom.WIN.get("cross"): geom.cross_panel(geom.WFRAME, hgl, a, b - a, fr.dir(-1, 0), zs + 0.15, zs + 1.25, 1.0)   # gap #11
+    else: extrude(hgl, [(0, zs + 0.15), (1.0, zs + 0.15), (1.0, zs + 1.25), (0, zs + 1.25)], Vector((a.x, a.y, 0)), Vector((b.x - a.x, b.y - a.y, 0)).normalized(), (0, 0, 1), 0.06)
     for sgn in (-1, 1):
         E0, E1 = fr.M(ud - 0.25, vd + sgn*(wd + 0.25), zs + hd - 0.1), fr.M(ub, vd + sgn*(wd + 0.25), zs + hd - 0.1)
         R0, R1 = fr.M(ud - 0.25, vd, zs + hd + 0.75), fr.M(ub, vd, zs + hd + 0.75)
@@ -655,7 +695,7 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
     dog-leg stairs, street door + leaf, roof (gables, street cross gables, dormers both sides, chimneys), patches."""
     hid = h["id"]; W = h["w"]; floors = h["floors"]; rng = random.Random(1000 + seed); pin("house_" + hid)
     G = f"House_{hid}"
-    PL = {"A": "plaster", "B": "plaster_b", "C": "plaster_c"}[h.get("tone", "A")]   # per-house lime-plaster tone
+    PL = {"A": "plaster", "B": "plaster_b", "C": "plaster_c", "D": "plaster_d"}[h.get("tone", "A")]   # per-house lime-plaster tone
     mat_of = lambda k: PL if MATS[k] == "plaster" else MATS[k]
     gfm, upm = SC.B(G, mat_of(h["gf"])), SC.B(G, mat_of(h["upper"])); plas = SC.B(G, PL); brk = SC.B(G, "brick")
     tim = SC.B(G, "timber"); hsl = SC.B(G, "slate"); hgl = SC.B("Glass", "glass"); chim = SC.B("Chimneys", "brick_red")
@@ -686,20 +726,45 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
         isp = MATS[h["gf"] if f == 0 else h["upper"]] == "plaster"
         wxh = lambda out: ({"out": (out.x, out.y), "ground": f == 0, "top": f == floors - 1, "cracks": RU["weather"]["cracks_house"],
                             "lath": RU["weather"]["lath_house"] if isp else 0.0} if RU else None)
-        wall(mat, fr.p2(u0 + HT/2, 0), fr.p2(u0 + HT/2, W), z0, z1, HT, ops, hgl, tim, wx=wxh(fr.dir(-1, 0)))   # street face
-        rops = windows_row(W, h["rear_win"] - (1 if f == 0 else 0), w=h["win_w"])
-        wall(mat, fr.p2(D - HT/2, W), fr.p2(D - HT/2, 0), z0, z1, HT, rops, hgl, tim, wx=wxh(fr.dir(1, 0)))      # rear face
-        for vv, ext in ((0.15, ext_v0), (W - 0.15, ext_v1)):
-            wall(mat, fr.p2(u0 + HT, vv), fr.p2(D - HT, vv), z0, z1, 0.3, windows_row(D - HT - u0 - HT, 2) if ext else [], hgl, tim,
-                 wx=wxh(fr.dir(0, -1 if vv < 1 else 1)) if ext else None)
-        # brick patches on plaster (street face, exposed end faces)
-        if h["patches"] and MATS[h["gf"] if f == 0 else h["upper"]] == "plaster":
-            patch_face(brk, fr.p2(u0, W), fr.p2(u0, 0), z0, z1, fr.dir(-1, 0), max(1, h["patches"]//(floors + 1)), rng, [dict(o, s=W - o["s"]) for o in ops])
+        # gap #12: lime plaster is the outer shell. Patch layout first (same house-rng draws/order as M11: street face, then the
+        # exposed end faces) -> holes in a plaster skin over a recessed body, brick plates behind; brick faces get raised lime residue.
+        Le = D - HT - u0 - HT; eops = windows_row(Le, 2); skins = {}
+        if h["patches"] and isp:
+            npf = max(1, h["patches"]//(floors + 1))
+            pats = patch_face(fr.p2(u0, W), fr.p2(u0, 0), z0, z1, npf, rng, [dict(o, s=W - o["s"]) for o in ops])
+            skins["street"] = skin_holes(pats, W, z1 - z0, z0, ops, True, f"{hid}_{f}_s")
             for vv, ext in ((0.0, ext_v0), (W, ext_v1)):
                 if ext:
                     a, b = (fr.p2(u0 + HT, vv), fr.p2(D - HT, vv)) if vv == 0.0 else (fr.p2(D - HT, vv), fr.p2(u0 + HT, vv))
-                    patch_face(brk, a, b, z0, z1, fr.dir(0, -1 if vv == 0.0 else 1), max(1, h["patches"]//(floors + 1)), rng,
+                    pats = patch_face(a, b, z0, z1, npf, rng,
                                [{"s": s_, "w": 0.95, "sill": 0.9, "h": 2.25} for s_ in ([o["s"] for o in windows_row(D - 2*HT - u0, 2)] if vv == 0.0 else [D - 2*HT - u0 - o["s"] for o in windows_row(D - 2*HT - u0, 2)])])
+                    skins[vv] = skin_holes(pats, Le, z1 - z0, z0, eops, vv != 0.0, f"{hid}_{f}_{int(vv > 0)}")
+        for k_, (hl, bxs) in skins.items():   # gap #12 debug/inspection: world centres of the skin holes
+            for c in bxs:
+                sc_, zc_ = (c[0] + c[1])/2, z0 + (c[2] + c[3])/2
+                if k_ == "street": pw = fr.p2(u0, sc_)
+                else: pw = fr.p2(u0 + HT + sc_, k_)
+                HOLES.append({"house": hid, "face": str(k_), "floor": f, "p": [round(pw[0], 2), round(pw[1], 2), round(zc_, 2)], "w": round(c[1] - c[0], 2), "h": round(c[3] - c[2], 2)})
+        sk_ = lambda k: (dict(r=PLY["skin_r"], gap=PLY["gap"], holes=skins[k][0], brick=SC.B(G, "brick_bare"), edge=SC.B(G, "plaster_edge")) if k in skins and skins[k][0] else None)
+        isl = None
+        if MATS[h["gf"] if f == 0 else h["upper"]] == "brick":   # lime residue islands on the brick street face (independent rng)
+            isl = lime_islands(W, z1 - z0, ops, random.Random(PLY["residue"]["seed"] + 101*seed + f), f"{hid}_{f}_r")
+        dav = (skins["street"][1] if sk_("street") else []) + (isl[1] if isl else [])
+        geom.DAVOID = [(c[0] - 0.03, c[1] + 0.03, c[2] - 0.03, c[3] + 0.03) for c in dav]
+        wall(mat, fr.p2(u0 + HT/2, 0), fr.p2(u0 + HT/2, W), z0, z1, HT, ops, hgl, tim, wx=wxh(fr.dir(-1, 0)), outdir=fr.dir(-1, 0),
+             flush=bool(timber and MATS[h["gf"] if f == 0 else h["upper"]] == "plaster"), skin=sk_("street"))   # street face (half-timbered storey: frame lining in the reveal, posts frame it)
+        geom.DAVOID = []
+        if isl:
+            o_ = fr.p2(u0, 0); o3 = Vector((o_[0], o_[1], z0)); S_ = fr.dir(0, 1); S3 = Vector((S_[0], S_[1], 0)).normalized(); N_ = fr.dir(-1, 0)
+            for back, front, th in isl[0]: raised_island(plas, o3, S3, Vector((0, 0, 1)), Vector((N_[0], N_[1], 0)).normalized(), back, front, th, SC.B(G, "plaster_edge"))
+        rops = windows_row(W, h["rear_win"] - (1 if f == 0 else 0), w=h["win_w"])
+        wall(mat, fr.p2(D - HT/2, W), fr.p2(D - HT/2, 0), z0, z1, HT, rops, hgl, tim, wx=wxh(fr.dir(1, 0)), outdir=fr.dir(1, 0), flush=True)      # rear face (outer silhouette: flush cross windows)
+        for vv, ext in ((0.15, ext_v0), (W - 0.15, ext_v1)):
+            kv = 0.0 if vv < 1 else W
+            geom.DAVOID = [(c[0] - 0.03, c[1] + 0.03, c[2] - 0.03, c[3] + 0.03) for c in (skins[kv][1] if sk_(kv) else [])]
+            wall(mat, fr.p2(u0 + HT, vv), fr.p2(D - HT, vv), z0, z1, 0.3, windows_row(D - HT - u0 - HT, 2) if ext else [], hgl, tim,
+                 wx=wxh(fr.dir(0, -1 if vv < 1 else 1)) if ext else None, outdir=fr.dir(0, -1 if vv < 1 else 1), flush=True, skin=sk_(kv) if ext else None)
+            geom.DAVOID = []
         if f >= 1:   # floor slab (reaching out under the jetty) with the stair hole of the flight arriving from below
             lane = st["u1"] if (f - 1) % 2 == 0 else st["u2"]
             hv0, hv1 = (v0, v0 + (n - 1)*tr) if (f - 1) % 2 == 0 else (v0 + tr, v0 + n*tr)
@@ -770,7 +835,8 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
         gable(gm, fr.p2(uf, vv), fr.p2(D, vv), ze, zr_ - 0.12, 0.3)
         if ext:   # attic window in the exposed end gable (+ timber framing on a half-timbered gable)
             a = fr.M(ur - 0.5, vv + (-0.17 if vv < 1 else 0.17), 0); b = fr.M(ur + 0.5, vv + (-0.17 if vv < 1 else 0.17), 0)
-            extrude(hgl, [(0, ze + 1.0), (1.0, ze + 1.0), (1.0, ze + 2.1), (0, ze + 2.1)], Vector((a.x, a.y, 0)), Vector((b.x - a.x, b.y - a.y, 0)).normalized(), (0, 0, 1), 0.06)
+            if geom.WIN and geom.WIN.get("cross"): geom.cross_panel(geom.WFRAME, hgl, a, b - a, fr.dir(0, -1 if vv < 1 else 1), ze + 1.0, ze + 2.1, 1.0)   # gap #11
+            else: extrude(hgl, [(0, ze + 1.0), (1.0, ze + 1.0), (1.0, ze + 2.1), (0, ze + 2.1)], Vector((a.x, a.y, 0)), Vector((b.x - a.x, b.y - a.y, 0)).normalized(), (0, 0, 1), 0.06)
             if h.get("gable_timber") or (timber and MATS[h["upper"]] == "plaster"):
                 vo = vv + (-0.19 if vv < 1 else 0.19)
                 beam(tim, fr.M(uf + 0.1, vo, ze + 0.05), fr.M(D - 0.1, vo, ze + 0.05), 0.16, 0.08, up=(0, 0, 1))
@@ -791,7 +857,8 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
         for k in range(nwin):
             vw = vc + (0 if nwin == 1 else (-0.8 if k == 0 else 0.8))
             a = fr.M(uf - 0.02, vw - 0.5, 0); b = fr.M(uf - 0.02, vw + 0.5, 0)
-            extrude(hgl, [(0, ze + 0.4), (1.0, ze + 0.4), (1.0, ze + 1.6), (0, ze + 1.6)], Vector((a.x, a.y, 0)), Vector((b.x - a.x, b.y - a.y, 0)).normalized(), (0, 0, 1), 0.06)
+            if geom.WIN and geom.WIN.get("cross"): geom.cross_panel(geom.WFRAME, hgl, a, b - a, fr.dir(-1, 0), ze + 0.4, ze + 1.6, 1.0)   # gap #11 (street cross gable)
+            else: extrude(hgl, [(0, ze + 0.4), (1.0, ze + 0.4), (1.0, ze + 1.6), (0, ze + 1.6)], Vector((a.x, a.y, 0)), Vector((b.x - a.x, b.y - a.y, 0)).normalized(), (0, 0, 1), 0.06)
         if timber and MATS[h["upper"]] == "plaster":
             for k in (-1, 1):
                 beam(tim, fr.M(uf - 0.04, vc + k*hw, ze), fr.M(uf - 0.04, vc, za - 0.1), 0.16, 0.08, up=fr.dir(1, 0))
@@ -962,12 +1029,13 @@ else: print("ruin pins:", len(PINS_USED), "used,", len([p for p in PINS_USED if 
 for o in list(bpy.data.objects): bpy.data.objects.remove(o, do_unlink=True)
 for m in list(bpy.data.meshes): bpy.data.meshes.remove(m)
 MATS = {}
-MPROPS = {"brick_red": (0.9, 0.0), "stair": (0.9, 0.0), "stair_riser": (0.92, 0.0), "stair_side": (0.9, 0.0), "stone": (0.85, 0.0), "rubble": (0.95, 0.0), "slate": (0.6, 0.0), "brick": (0.9, 0.0), "plaster": (0.92, 0.0), "plaster_b": (0.92, 0.0), "plaster_c": (0.92, 0.0), "timber": (0.8, 0.0),
+MPROPS = {"brick_red": (0.9, 0.0), "brick_bare": (0.9, 0.0), "plaster_edge": (0.92, 0.0), "stair": (0.9, 0.0), "stair_riser": (0.92, 0.0), "stair_side": (0.9, 0.0), "stone": (0.85, 0.0), "rubble": (0.95, 0.0), "slate": (0.6, 0.0), "brick": (0.9, 0.0), "plaster": (0.92, 0.0), "plaster_b": (0.92, 0.0), "plaster_c": (0.92, 0.0), "plaster_d": (0.92, 0.0), "timber": (0.8, 0.0), "wframe": (0.75, 0.0),
           "cobble": (0.9, 0.0), "iron": (0.62, 0.55), "glass": (0.3, 0.2), "soil": (1.0, 0.0), "stone_moss": (0.92, 0.0), "rubble_moss": (0.97, 0.0),
           "decal_streak": (0.95, 0.0), "decal_grime": (0.97, 0.0), "decal_crack": (0.95, 0.0), "decal_lath": (0.9, 0.0)}
-NMAP = {"stone": "stone_n", "stone_moss": "stone_n", "slate": "slate_n", "brick": "brick_n", "brick_red": "brick_n", "cobble": "cobble_n",
-        "stair": "stair_n", "stair_riser": "stair_riser_n", "stair_side": "stair_side_n", "rubble": "rubble_n", "rubble_moss": "rubble_n", "soil": "soil_n"}
-NSTR = {"slate": 0.9, "cobble": 1.0, "stair": 0.9, "soil": 1.0}
+NMAP = {"stone": "stone_n", "stone_moss": "stone_n", "slate": "slate_n", "brick": "brick_n", "brick_red": "brick_clean_n", "brick_bare": "brick_clean_n", "cobble": "cobble_n",
+        "stair": "stair_n", "stair_riser": "stair_riser_n", "stair_side": "stair_side_n", "rubble": "rubble_n", "rubble_moss": "rubble_n", "soil": "soil_n",
+        "plaster": "plaster_n", "plaster_b": "plaster_b_n", "plaster_c": "plaster_c_n", "plaster_d": "plaster_d_n"}   # M10: spall relief
+NSTR = {"slate": 0.9, "cobble": 1.0, "stair": 0.9, "soil": 1.0}; NSTR.update({k: v for k, v in PLY["nstr"].items()})   # gap #12: stronger lime/brick relief
 def material(name):
     if name in MATS: return MATS[name]
     m = bpy.data.materials.new(name.capitalize()); m.use_nodes = True
@@ -1012,4 +1080,6 @@ json.dump(SP, open(os.path.join(OUT, "spaces.json"), "w"), indent=0)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "building.blend"))
 if not os.environ.get("NO_EXPORT"):
     bpy.ops.export_scene.gltf(filepath=os.path.join(OUT, "building.glb"), export_format="GLB", export_extras=True, export_yup=True, export_apply=False)
+json.dump(HOLES, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "compare", "wall", "m12_holes.json"), "w"), indent=0)   # gap #12
+print(f"skin holes: {len(HOLES)}")
 print(f"BUILD OK t={time.time() - T0:.1f}s")

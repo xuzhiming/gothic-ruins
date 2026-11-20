@@ -25,8 +25,8 @@ import json
 GRADE_F = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "compare", "mat", "grade.json")
 GRADE = {k: v for k, v in json.load(open(GRADE_F)).items() if not k.startswith("_")} if os.path.exists(GRADE_F) else {}
 CONTRAST = json.load(open(GRADE_F)).get("_contrast", {}) if os.path.exists(GRADE_F) else {}
-TILE_M = {"stone": 3.0, "stone_moss": 3.0, "rubble": 4.0, "rubble_moss": 4.0, "slate": 2.0, "brick": 2.0, "brick_red": 2.0, "stair": 2.0, "stair_riser": 2.0, "stair_side": 2.0,
-          "cobble": 4.0, "timber": 1.5, "soil": 6.0, "iron": 1.0}   # = geom.TEX_M (tile size in metres)
+TILE_M = {"stone": 3.0, "stone_moss": 3.0, "rubble": 4.0, "rubble_moss": 4.0, "slate": 2.0, "brick": 2.0, "brick_bare": 2.0, "plaster_edge": 1.0, "brick_red": 2.0, "stair": 2.0, "stair_riser": 2.0, "stair_side": 2.0,
+          "cobble": 4.0, "timber": 1.5, "soil": 6.0, "iron": 1.0, "plaster": 4.0, "plaster_b": 4.0, "plaster_c": 4.0, "plaster_d": 8.0, "wframe": 1.0}   # = geom.TEX_M (tile size in metres)
 def contrast(name, rgb):
     """gap #8: two-band tonal contrast, k = [k_low, k_high], applied multiplicatively in linear light on log-luminance (no clipping of
     darks, hue/chroma kept): low band = gaussian blur of linear luminance at 0.12 m (what survives at the 0.12 m/px iso view: patches,
@@ -38,18 +38,22 @@ def contrast(name, rgb):
 def s2l(c): return np.where(c <= 0.04045, c/12.92, ((c + 0.055)/1.055)**2.4)
 def l2s(c): return np.where(c <= 0.0031308, 12.92*c, 1.055*np.maximum(c, 0)**(1/2.4) - 0.055)
 def save(name, rgb, alpha=None):
-    if name in CONTRAST: rgb = contrast(name, np.clip(rgb, 0, 1))
-    if name in GRADE:   # gap #7: per-texture colour calibration against the reference renders (linear-light per-channel gain)
+    if name in M10_RAW:   # gap #10: wall recipes targeted at the ref elevations; optional fitted gain only
+        kname = {"brick_bare": "brick", "plaster_edge": "plaster_d"}.get(name, name)   # gap #12: bare brick behind the plaster skin = same fitted brick gain
+        if kname in WALL_K: rgb = l2s(np.clip(s2l(np.clip(rgb, 0, 1))*np.array(WALL_K[kname], float)[None, None], 0, 1))
+        rgb = np.clip(rgb, 0, 1)
+    elif name in CONTRAST: rgb = contrast(name, np.clip(rgb, 0, 1))
+    if name in GRADE and name not in M10_RAW:   # gap #7: per-texture colour calibration against the reference renders (linear-light per-channel gain)
         rgb = l2s(np.clip(s2l(np.clip(rgb, 0, 1))*np.array(GRADE[name], float)[None, None], 0, 1))
     a = np.clip(rgb*255, 0, 255).astype(np.uint8)
     if alpha is not None: a = np.dstack([a, np.clip(alpha*255, 0, 255).astype(np.uint8)])
     Image.fromarray(a).save(os.path.join(OUT, name + ".png"))
 def col(c): return np.array(c, float)/255
-def save_normal(name, h, strength):
+def save_normal(name, h, strength, res=512):
     """tangent-space normal map (OpenGL convention, +Y = up the texture) from a periodic height field (np.roll -> seamless)"""
     dx = (np.roll(h, -1, 1) - np.roll(h, 1, 1))/2*strength; dy = (np.roll(h, -1, 0) - np.roll(h, 1, 0))/2*strength
     n = np.dstack([-dx, dy, np.ones_like(h)]); n /= np.linalg.norm(n, axis=2, keepdims=True)
-    Image.fromarray(np.clip((n*0.5 + 0.5)*255, 0, 255).astype(np.uint8)).resize((512, 512), Image.LANCZOS).save(os.path.join(OUT, name + ".png"))
+    Image.fromarray(np.clip((n*0.5 + 0.5)*255, 0, 255).astype(np.uint8)).resize((res, res), Image.LANCZOS).save(os.path.join(OUT, name + ".png"))
 def sm(x, a, b): t = np.clip((x - a)/(b - a), 0, 1); return t*t*(3 - 2*t)
 def blocks(n, rows, cols, mortar, seed, stagger=True):
     """periodic running-bond block layout: rows | n and cols | n. returns block id, mortar mask, distance-to-joint (px)"""
@@ -67,35 +71,57 @@ def moss_layer(img, n, seed, cover, joints=None):
     mc = col((64, 72, 44))*(0.7 + 0.5*g[..., None]) + col((30, 22, 4))*pnoise(seed + 2, n, 1.5, kmin=4.0)[..., None]*0.5
     mask = mask*0.8
     return img*(1 - mask[..., None]) + mc*mask[..., None]
-# ---------------- stone ashlar (cathedral): 1024 px over 3 m, 8 courses x 4 blocks
+# ---------------- M10 (gap #10, wall textures replaced to match the original renderings ref/isometric.png + elevations, see
+# compare/mat/wall_map.md). Recipes in M10_RAW are colour-targeted directly against the reference elevations (no grade.json gain /
+# contrast: those were fitted to the old recipes) -- WALL_K below holds the per-texture linear gains from compare/wall/fit_wall.py.
+M10_RAW = {"stone", "stone_moss", "rubble", "rubble_moss", "brick", "brick_bare", "plaster_edge", "plaster", "plaster_b", "plaster_c", "plaster_d", "timber"}
+WALL_K_F = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "compare", "wall", "wall_gain.json")
+WALL_K = {k: v for k, v in json.load(open(WALL_K_F)).items() if not k.startswith("_")} if os.path.exists(WALL_K_F) else {}
+# ---------------- stone ashlar (cathedral, house ground floors): 1024 px over 3 m, 8 courses (0.375 m) x 4 blocks (0.75 m).
+# ref (left_west / front_south cathedral): light warm-grey ashlar Lab ~(58, 1, 4) lit, clear darker joints, per-block tone steps,
+# dark soot runoff, pale weathered arrises.
 def stone(seed=1):
     n = 1024; bid, mort, d = blocks(n, 8, 4, 3, seed)
     pb = per_block(bid, seed + 1, 3)
-    base = col((132, 127, 118))*(0.93 + 0.1*pb[..., :1]) + (pb - 0.5)*0.01
+    base = col((148, 142, 135))*(0.82 + 0.3*pb[..., :1]) + (pb - 0.5)*0.012
     tone = pnoise(seed + 2, n, 2.2, kmin=1.0); mott = pnoise(seed + 3, n, 1.4, kmin=4.0); grain = pnoise(seed + 4, n, 0.3, kmin=60.0)
-    img = base*(0.82 + 0.16*tone[..., None] + 0.1*mott[..., None] + 0.08*grain[..., None])
-    img *= (0.9 + 0.1*np.clip(d/7.0, 0, 1))[..., None]                     # worn, darker arrises along the joints
-    ero = (pb[..., 1] < 0.04)                                                 # eroded / spalled blocks
-    pit = pnoise(seed + 5, n, 1.0, kmin=12.0)
-    img = np.where(ero[..., None], img*(0.75 + 0.25*pit[..., None]), img)
+    img = base*(0.86 + 0.14*tone[..., None] + 0.1*mott[..., None] + 0.07*grain[..., None])
+    img *= (0.84 + 0.16*np.clip(d/8.0, 0, 1))[..., None]                     # worn, darker arrises along the joints
+    ero = (pb[..., 1] < 0.05); pit = pnoise(seed + 5, n, 1.0, kmin=12.0)      # eroded / spalled blocks
+    img = np.where(ero[..., None], img*(0.72 + 0.25*pit[..., None]), img)
     streak = pnoise(seed + 6, n, 1.8, kx=1.0, ky=5.0, kmin=2.0)               # soot / water runoff (long in v)
-    s = sm(streak, 0.5, 0.95)*(0.4 + 0.6*tone)
-    img = img*(1 - 0.3*s[..., None]) + col((50, 47, 42))*0.3*s[..., None]
-    lich = sm(pnoise(seed + 7, n, 1.1, kmin=14.0), 0.86, 0.95)                # pale lichen spots
-    img = img*(1 - 0.5*lich[..., None]) + col((168, 166, 132))*0.5*lich[..., None]
-    img[mort] = img[mort]*0.7 + col((80, 76, 68))*0.3
+    s = sm(streak, 0.55, 0.95)*(0.4 + 0.6*tone)
+    img = img*(1 - 0.38*s[..., None]) + col((58, 55, 50))*0.38*s[..., None]
+    lich = sm(pnoise(seed + 7, n, 1.1, kmin=14.0), 0.88, 0.96)
+    img = img*(1 - 0.4*lich[..., None]) + col((172, 168, 140))*0.4*lich[..., None]
+    img[mort] = col((104, 99, 91))*(0.85 + 0.3*pnoise(seed + 8, n, 0.6, kmin=20)[mort][..., None])
     return img, mort
 img, mort = stone(); save("stone", img)
 _b, _m, _d = blocks(1024, 8, 4, 3, 1); save_normal("stone_n", np.clip(_d/6.0, 0, 1) + 0.15*pnoise(9, 1024, 1.2, kmin=6.0), 3.0)
 save("stone_moss", moss_layer(img, 1024, 31, 0.34, joints=mort.astype(float)))
-# ---------------- rubble masonry (plinths, ruins): 512 px over 4 m
+# ---------------- rubble / plinth masonry (terrace walls, house plinths, ruins): 512 px over 4 m. ref: big rough squared blocks
+# (rows 0.5 m, blocks 0.5-1.0 m, random per-row offsets), light greige Lab ~(57, 2, 6), dark deep joints (62,60,55), weathered faces.
 def rubble(seed=2):
-    n = 512; bid, mort, d = blocks(n, 8, 4, 5, seed); pb = per_block(bid, seed + 1, 3)
-    img = col((120, 114, 104))*(0.75 + 0.4*pb[..., :1]) + (pb - 0.5)*0.015
-    img *= (0.7 + 0.5*pnoise(seed + 2, n, 1.5, kmin=2.0)[..., None])*(0.7 + 0.3*np.clip(d/10, 0, 1))[..., None]
-    img[mort] = col((58, 54, 48))*(0.8 + 0.4*pnoise(seed + 3, n, 0.5, kmin=20)[mort][..., None])
-    return img, mort
-img, mort = rubble(); save("rubble", img); _b, _m, _d = blocks(512, 8, 4, 5, 2); save_normal("rubble_n", np.clip(_d/9.0, 0, 1) + 0.25*pnoise(42, 512, 1.4, kmin=3.0), 3.0); save("rubble_moss", moss_layer(img, 512, 41, 0.4, joints=mort.astype(float)))
+    n = 512; rows = 8; rh = n//rows; rng = np.random.default_rng(seed)
+    y = np.arange(n)[:, None].repeat(n, 1); x = np.arange(n)[None, :].repeat(n, 0)
+    yw = (y + np.round(14*(pnoise(seed + 11, n, 2.2, kmin=2.0) - 0.5))).astype(int) % n    # wavy, uneven courses (periodic warp)
+    xw = (x + np.round(10*(pnoise(seed + 12, n, 2.2, kmin=2.0) - 0.5))).astype(int) % n
+    r = yw//rh; K = 8; cuts = np.full((rows, K), n*4)
+    for i in range(rows):                                     # each course: 5-7 blocks with random joint positions (periodic in u)
+        k_ = int(rng.integers(5, 8)); w_ = rng.uniform(0.65, 1.35, k_); cuts[i, :k_] = np.sort(np.round((rng.uniform(0, n) + np.cumsum(w_/w_.sum()*n)) % n))
+    C = cuts[r]; valid = C < n*2; kk = (valid & (C <= xw[..., None])).sum(-1); nk = valid.sum(-1); bid = r*16 + kk % nk
+    dist = np.where(valid, np.abs(((xw[..., None] - C) + n/2) % n - n/2), 1e9).min(-1)
+    dy = np.minimum(yw % rh, rh - 1 - yw % rh); d = np.minimum(dist, dy)
+    wob = 3.0*pnoise(seed + 9, n, 1.2, kmin=6.0); mort = d < 3 + wob
+    pb = per_block(bid, seed + 1, 3)
+    img = col((150, 139, 127))*(0.74 + 0.42*pb[..., :1]) + (pb - 0.5)*0.03
+    img *= (0.76 + 0.34*pnoise(seed + 2, n, 1.5, kmin=2.0)[..., None])*(0.62 + 0.38*np.clip((d - 3)/16, 0, 1))[..., None]   # rounded, darker edges
+    s = sm(pnoise(seed + 4, n, 1.7, kx=1.0, ky=5.0, kmin=2.0), 0.6, 0.95); img = img*(1 - 0.35*s[..., None]) + col((60, 56, 50))*0.35*s[..., None]
+    lich = sm(pnoise(seed + 5, n, 1.3, kmin=8.0), 0.82, 0.93); img = img*(1 - 0.35*lich[..., None]) + col((120, 124, 88))*0.35*lich[..., None]
+    img[mort] = col((56, 53, 48))*(0.8 + 0.4*pnoise(seed + 3, n, 0.5, kmin=20)[mort][..., None])
+    h = np.sqrt(np.clip((d - 2)/14.0, 0, 1)) + 0.25*pnoise(42, n, 1.4, kmin=3.0)
+    return img, mort, h
+img, mort, h = rubble(); save("rubble", img); save_normal("rubble_n", h, 3.0); save("rubble_moss", moss_layer(img, 512, 41, 0.4, joints=mort.astype(float)))
 # ---------------- slate (gap #7: blue-grey, 0.25 m courses x 0.5 m slates, light lower edges + shadow line, per-slate variation,
 # lichen + lost slates kept): 1024 px over 2 m. UVs are slope-aligned (build.py roof_slope): image rows = courses parallel to the eave.
 def slate(seed=3):
@@ -114,35 +140,93 @@ def slate(seed=3):
     h = (y/rh)*0.8 + 0.2*np.clip(d/4, 0, 1); h[mort] = 0; h[broken] = 0.1
     return img, h
 img, h = slate(); save("slate", img); save_normal("slate_n", h, 4.0)
-# ---------------- brick: 512 px over 2 m, 32 courses x 8. brick_red = chimney stacks (the previous sooty red recipe, matches the
-# reference chimneys); brick = house walls where the render is gone (gap #7: paler, weathered, more per-brick variation like the ref)
+# ---------------- brick (M10): 512 px over 2 m, 32 courses (6.25 cm) x 8 (25 cm). brick_red = chimney stacks (unchanged).
+# brick = house walls (E3/E4 bodies, brick ground floors, patches): ref front_south E4 / iso east row -> soft salmon brick
+# Lab ~(52, 7, 12) (much less saturated than before), pale lime mortar, per-brick tone, lime-wash / plaster residue (~12 %), soot.
 bid, mort, d = blocks(512, 32, 8, 2, 4); pb = per_block(bid, 5, 3)
 img = col((128, 84, 64))*(0.72 + 0.45*pb[..., :1]) + (pb - 0.5)*0.05
 img *= (0.8 + 0.3*pnoise(14, 512, 1.6, kmin=2.0)[..., None])
 s_ = sm(pnoise(15, 512, 1.6, kx=1.0, ky=6.0, kmin=3.0), 0.5, 0.95); img = img*(1 - 0.45*s_[..., None]) + col((40, 32, 28))*0.45*s_[..., None]
 img[mort] = col((140, 132, 118))*(0.7 + 0.3*pnoise(16, 512, 0.5, kmin=20)[mort][..., None]); save("brick_red", img)
-img = col((150, 108, 86))*(0.55 + 0.8*pb[..., :1]) + (pb - 0.5)*0.07
-img *= (0.6 + 0.75*pnoise(14, 512, 1.6, kmin=2.0)[..., None])   # gap #8: stronger patch mottling (survives at iso scale, ref L* IQR ~21)
-lime = sm(pnoise(23, 512, 1.8, kmin=2.0), 0.62, 0.86); img = img*(1 - 0.5*lime[..., None]) + col((178, 168, 152))*0.5*lime[..., None]   # lime wash residue
-s_ = sm(pnoise(15, 512, 1.6, kx=1.0, ky=6.0, kmin=3.0), 0.5, 0.95); img = img*(1 - 0.5*s_[..., None]) + col((52, 42, 36))*0.5*s_[..., None]
-img[mort] = col((150, 142, 128))*(0.72 + 0.3*pnoise(16, 512, 0.5, kmin=20)[mort][..., None]); save("brick", img)
-save_normal("brick_n", np.clip(d/2.0, 0, 1) + 0.1*pnoise(24, 512, 1.0, kmin=8.0), 2.5)
-# ---------------- plaster (gap #3, unchanged recipe): 1024 px over 4 m, tones A/B/C
-def plaster(name, base, seed):
-    n = 1024
+def brick_field(n, tile_m, seed, rgb, var=0.32):
+    """salmon brick + pale mortar at true scale (6.25 cm courses, 25 cm bricks) for a tile of tile_m metres"""
+    rows, cols = int(round(tile_m/0.0625)), int(round(tile_m/0.25)); bid, mort, d = blocks(n, rows, cols, max(1, n//rows//7), seed)
+    pb = per_block(bid, seed + 1, 3)
+    img = col(rgb)*(1 - var/2 + var*pb[..., :1]) + (pb - 0.5)*0.035
+    img *= (0.86 + 0.22*pnoise(seed + 2, n, 1.6, kmin=2.0)[..., None])
+    img[mort] = col((172, 162, 147))*(0.82 + 0.22*pnoise(seed + 3, n, 0.5, kmin=20)[mort][..., None])
+    return img, mort, d
+# gap #12 (M12): the lime plaster is the OUTER layer. Height: lime ~0.85 > brick face ~0.35 > joints ~0.12, a 2-4 px sloped break
+# band; baked micro-AO: dark contact shadow on the brick just inside the break, lit thick lip on the plaster edge (the M11 rim
+# darkened the plaster OUTSIDE the break = read as brick on top). Normals saved at 1024 px (M11: 512 px for 4-8 m tiles).
+PLT = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "params.json")))["houses"]["plaster_layer"]["tex"]
+from scipy import ndimage
+def pdist(mask):
+    """periodic euclidean distance (px) from every pixel to the nearest pixel NOT in mask (0 outside the mask)"""
+    n = mask.shape[0]; t = np.tile(mask, (3, 3)); d = ndimage.distance_transform_edt(t); return d[n:2*n, n:2*n]
+def layered(m, bd, grain, base_img, brick_img, bmort):
+    """lime layer over brick: m = brick exposed. returns albedo, height"""
+    T = PLT; din = pdist(m); dout = pdist(~m)          # px into the brick / px into the plaster from the break
+    hb = np.where(bmort, T["h_joint"], T["h_brick"] + 0.06*np.clip(bd/2.0 - 0.5, 0, 1))
+    ramp = np.clip(1.0 - din/T["band_px"], 0, 1)       # sloped break band on the brick side (plaster edge slopes down to brick)
+    h = np.where(m, hb + (T["h_lime"] - hb)*ramp**1.5, T["h_lime"]) + 0.04*grain
+    ao = 1.0 - T["contact_k"]*np.exp(-np.maximum(din - T["band_px"]*0.6, 0)/T["contact_px"])   # contact shadow just inside the break
+    img = np.where(m[..., None], brick_img*np.where(m, ao, 1.0)[..., None], base_img)
+    edge = m & (ramp > 0.25)                            # broken plaster edge (fresh lime section) on the slope
+    img = np.where(edge[..., None], base_img*T["edge_gain"]*(0.9 + 0.1*ramp)[..., None], img)
+    lip = (~m) & (dout < T["lip_px"])                   # lit thick outer lip
+    img = np.where(lip[..., None], np.clip(base_img*T["lip_gain"], 0, 1), img)
+    return img, h
+img, mort, d = brick_field(512, 2.0, 4, (156, 124, 105), var=0.4)
+save_normal("brick_clean_n", np.where(mort, PLT["h_joint"], PLT["h_brick"] + 0.06*np.clip(d/2.0 - 0.5, 0, 1)) + 0.04*pnoise(24, 512, 0.4, kmin=40.0), PLT["slope_gain"])   # gap #12: bare bond (chimney brick_red)
+# gap #12: lime residue = sharp-edged sheets lying ON the brick (height above the brick face, lit lip, contact shadow on the brick
+# around them), not soft grey stains embedded in the bond (M11: smoothstep 0.52-0.62 and a height below the joint relief)
+bare = img.copy()
+lf = pnoise(23, 512, 1.9, kmin=1.5) + 0.06*pnoise(25, 512, 1.0, kmin=12.0); lime = lf > np.quantile(lf, PLT["residue_thr"])
+lime = ndimage.binary_opening(np.tile(lime, (3, 3)), iterations=2)[512:1024, 512:1024]
+grain = pnoise(24, 512, 0.4, kmin=40.0)
+lt = col((182, 172, 160))[None, None]*(0.94 + 0.12*pnoise(26, 512, 1.4, kmin=4.0))[..., None]
+img, hh = layered(~lime, d, grain, lt, img, mort)
+s_ = sm(pnoise(15, 512, 1.6, kx=1.0, ky=6.0, kmin=3.0), 0.55, 0.95); img = img*(1 - 0.4*s_[..., None]) + col((60, 50, 44))*0.4*s_[..., None]
+save("brick", img)
+bare = bare*(1 - 0.4*s_[..., None]) + col((60, 50, 44))*0.4*s_[..., None]; save("brick_bare", bare)   # gap #12: brick seen through the skin holes
+save_normal("brick_n", hh, PLT["slope_gain"], res=512)
+# ---------------- plaster (M10): 1024 px over 4 m. Weathered lime render with large spalls exposing salmon brick (true scale) and a
+# dark rim at the break, vertical runoff streaks, damp clouds. Tones (ref zones, compare/mat/wall_map.md):
+#   A cream (iso W gable / fs W4 upper)            plaster_d  cream, heavy spalls (fs W4 / lw NW gable: big brick-showing areas)
+#   B grey-beige half-timber infill (lw row)       C warm tan infill (iso east row)
+def plaster(name, base, seed, cover, dirt=0.3, streaks=0.45, n=1024, tile=4.0):
     tone = pnoise(seed, n, 2.4, kmin=1.0); mott = pnoise(seed + 1, n, 1.6, kmin=3.0); grain = pnoise(seed + 2, n, 0.4, kmin=40.0)
-    streak = pnoise(seed + 3, n, 1.7, kx=1.0, ky=7.0, kmin=4.0); pits = pnoise(seed + 4, n, 0.2, kmin=60.0)
-    lum = 1.0 + 0.07*(tone - 0.5) + 0.04*(mott - 0.5) + 0.035*(grain - 0.5)
-    img = np.array(base, float)[None, None]/255*lum[..., None]
-    g = np.clip((streak - 0.6)/0.4, 0, 1)**1.4; grime = np.array((112, 106, 96), float)/255
-    img = img*(1 - 0.15*g[..., None]) + grime*(0.15*g[..., None])*0.6
-    p = (pits > 0.93)[..., None]; img = np.where(p, img*0.86, img); save(name, img)
-plaster("plaster", (198, 191, 176), 501); plaster("plaster_b", (184, 181, 172), 511); plaster("plaster_c", (201, 189, 166), 521)
-# ---------------- timber (weathered silver-brown oak, grain along u, shakes)
+    lum = 1.0 + 0.12*(tone - 0.5) + 0.08*(mott - 0.5) + 0.06*(grain - 0.5)
+    img = col(base)[None, None]*lum[..., None]
+    g = sm(pnoise(seed + 3, n, 1.7, kx=1.0, ky=7.0, kmin=4.0), 0.5, 0.95)
+    img = img*(1 - streaks*g[..., None]) + col((92, 84, 74))*streaks*g[..., None]                 # runoff streaks
+    dc = sm(pnoise(seed + 5, n, 2.0, kmin=1.5), 0.55, 0.9); img = img*(1 - dirt*dc[..., None])  # damp / dirt clouds
+    sp = 0.88*pnoise(seed + 6, n, 2.6, kmin=2.0) + 0.12*pnoise(seed + 7, n, 1.6, kmin=10.0)       # ragged-edged spalls
+    thr = np.quantile(sp, 1 - cover); m = sp > thr
+    br, bm, bd = brick_field(n, tile, seed + 8, (160, 124, 104))
+    br *= (0.82 + 0.2*pnoise(seed + 9, n, 1.5, kmin=3.0))[..., None]
+    img, h = layered(m, bd, grain, img, br, bm)
+    save(name, img); save_normal(name + "_n", h, PLT["slope_gain"], res=PLT["normal_res"])
+# gap #12: fresh broken section of the lime coat (break edges of the skin holes / residue sheets): paler, no spalls, 1 m tile
+n = 256; g1 = pnoise(541, n, 0.5, kmin=30.0); g2 = pnoise(542, n, 1.6, kmin=3.0)
+g3 = sm(pnoise(543, n, 1.8, kmin=2.0), 0.45, 0.9)   # M12b: aged warm grey-white section (not bright white), light grime
+save("plaster_edge", col(tuple(PLT["edge_rgb"]))[None, None]*(0.92 + 0.08*g1 + 0.06*g2 - 0.08*g3)[..., None])
+plaster("plaster",   (190, 181, 168), 501, 0.12)
+plaster("plaster_b", (160, 147, 134), 511, 0.18, dirt=0.2)
+plaster("plaster_c", (170, 150, 131), 521, 0.22, dirt=0.2)
+plaster("plaster_d", (202, 193, 184), 531, 0.44, dirt=0.18, streaks=0.3, n=2048, tile=8.0)   # 8 m tile (2048 px, same 256 px/m): big spalls without visible repeats
+# ---------------- timber (M10): weathered grey-brown oak, ref lw row / iso (82,77,71)-(115,106,97): lighter + greyer than before
 n = 512; gr = pnoise(8, n, 1.2, kx=10.0, ky=1.0, kmin=2.0); fine = pnoise(9, n, 0.6, kx=12.0, ky=1.0, kmin=10.0)
-img = col((92, 76, 60))*(0.62 + 0.38*gr[..., None] + 0.18*fine[..., None])
-sil = pnoise(10, n, 2.0, kmin=1.0); img = img*(1 - 0.35*sil[..., None]) + col((120, 116, 106))*0.35*sil[..., None]   # silvering
-img = np.where((fine < 0.12)[..., None], img*0.45, img); save("timber", img)
+img = col((78, 68, 58))*(0.7 + 0.3*gr[..., None] + 0.14*fine[..., None])
+sil = pnoise(10, n, 2.0, kmin=1.0); img = img*(1 - 0.4*sil[..., None]) + col((96, 90, 82))*0.4*sil[..., None]   # silvering
+img = np.where((fine < 0.1)[..., None], img*0.55, img); save("timber", img)
+# ---------------- window frames (gap #11): pale weathered painted oak (ref cross windows: light grey-cream casings / bars ~(176,170,160)),
+# 256 px over 1 m, grain along u, flaking paint showing grey wood, grime
+n = 256; gr = pnoise(61, n, 1.2, kx=10.0, ky=1.0, kmin=2.0); fl = pnoise(62, n, 1.8, kmin=3.0); gm = pnoise(63, n, 1.6, kmin=1.5)
+img = col((178, 172, 161))*(0.9 + 0.1*gr[..., None]); peel = sm(fl, 0.72, 0.8)
+img = img*(1 - peel[..., None]) + col((118, 110, 98))*(0.85 + 0.3*gr[..., None])*peel[..., None]
+img *= (0.88 + 0.12*gm)[..., None]; save("wframe", img)
 # ---------------- cobbles (gap #7): rounded granite setts in staggered rows like the reference plaza (rows 0.5 m, setts 0.35-0.7 m;
 # the ref draws them ~0.8 m, kept smaller for street level), domed tops, dark mossy joints. 512 px over 4 m, periodic.
 rng = np.random.default_rng(10); N = 512; R = 8; rh = N//R

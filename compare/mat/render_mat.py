@@ -14,7 +14,7 @@ CATS = {  # category -> (id colour, rule(group, material))
  "stone_cathedral": ((255, 0, 0), lambda g, m: g in ("Cathedral", "Tracery") and m.startswith("Stone")),
  "slate": ((0, 0, 255), lambda g, m: m == "Slate" and (g == "CathRoof" or g.startswith("House_"))),
  "plaster": ((255, 255, 0), lambda g, m: m.startswith("Plaster")),
- "brick": ((255, 0, 255), lambda g, m: m == "Brick" and g.startswith("House_")),
+ "brick": ((255, 0, 255), lambda g, m: m in ("Brick", "Brick_bare") and g.startswith("House_")),   # gap #12: + brick behind the plaster skin
  "timber": ((0, 255, 0), lambda g, m: m == "Timber" and (g.startswith("House_") or g == "?")),
  "stone_plinth": ((0, 255, 255), lambda g, m: g in ("Balustrade", "Plinth")),
  "plinth_rock": ((128, 64, 0), lambda g, m: g == "Base"),

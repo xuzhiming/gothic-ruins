@@ -45,9 +45,17 @@ for m, c in CATS.items():
     o = stat(a[mask]); r = REF[m]
     res["materials"][m] = {"ref": r, "ours": o, "dE2000": round(float(deltaE_ciede2000(np.array(r["lab"]), np.array(o["lab"]))), 2)}
 res["mean_dE00"] = round(float(np.mean([v["dE2000"] for v in res["materials"].values()])), 2)
+# M10: house plaster now carries its own spalls (exposed brick inside the plaster material, like the ref rectangle which mixes lime
+# and brick), so also compare like with like: the same 85th-percentile "light" statistic on our plaster mask -> lime colour
+pm = ndi.binary_erosion(np.abs(mid - srgb(np.array(CATS["plaster"], float)).round()).max(2) <= 3, iterations=1)
+if pm.sum() >= 20:
+    o = stat(a[pm], "light"); r = REF["plaster"]; res["plaster_lime85"] = {"ref": r, "ours": o, "dE2000": round(float(deltaE_ciede2000(np.array(r["lab"]), np.array(o["lab"]))), 2)}
+    mats = dict(res["materials"]); mats["plaster"] = res["plaster_lime85"]; res["mean_dE00_lime85"] = round(float(np.mean([v["dE2000"] for v in mats.values()])), 2)
 json.dump(res, open(os.path.join(H, f"beauty_{TAG}.json"), "w"), indent=1)
 w = res["whole"]; print("whole building  ref Lab", w["ref"]["mean_lab"], "ours", w["ours"]["mean_lab"], "dE00", w["dE00_mean"],
     "| IQR L ref/ours", w["ref"]["IQR_L"], w["ours"]["IQR_L"])
 for m, v in res["materials"].items():
     print(f"{m:16s} ref {str(tuple(int(x) for x in v['ref']['rgb'])):>16s} ours {str(tuple(int(x) for x in v['ours']['rgb'])):>16s} dE00 {v['dE2000']:5.1f}  dL {v['ours']['lab'][0]-v['ref']['lab'][0]:6.1f} db {v['ours']['lab'][2]-v['ref']['lab'][2]:5.1f}")
 print("mean dE00 under beauty light", res["mean_dE00"])
+if "plaster_lime85" in res:
+    v = res["plaster_lime85"]; print(f"plaster lime (p85 both) ref {tuple(int(x) for x in v['ref']['rgb'])} ours {tuple(int(x) for x in v['ours']['rgb'])} dE00 {v['dE2000']:.1f} dL {v['ours']['lab'][0]-v['ref']['lab'][0]:.1f} -> mean dE00 (plaster as p85) {res['mean_dE00_lime85']}")

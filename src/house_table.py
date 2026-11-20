@@ -23,10 +23,10 @@ R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #         cross [(v_frac, half_width_m)], dormers (street, v_frac), rear_dormers, chimneys [(v_frac, u_frac of depth)],
 #         win (per storey, street side), win_w, rear_win, door (v_frac), door_kind, gf_arch (arched GF windows), shop (wide GF window),
 #         holes (roof hole fraction), patches (brick patches on plaster), pentice, src,
-#         tone = lime-plaster tone A off-white / B grey / C warm beige (refs show all three; assignment by eye from the iso/elevations)
+#         tone = lime-plaster tone (M10, compare/mat/wall_map.md): A cream, B grey-beige half-timber infill, C warm tan infill, D cream with heavy spalls (W4 / NW gable)
 TABLE = [
  # ---------------- west row (street on its east side) ----------------
- dict(id="W0", tone="A", w_px=115, eave_dz=0.0, pitch=33, gf="plaster", upper="plaster", timber="grid", jetty=0.30, setback=0.0,
+ dict(id="W0", tone="B", w_px=115, eave_dz=0.0, pitch=33, gf="plaster", upper="plaster", timber="grid", jetty=0.30, setback=0.0,
       cross=[(0.56, 3.2)], dormers=[], rear_dormers=[0.45], chimneys=[(0.05, 0.80), (0.30, 0.86)], win=[3, 4, 4], win_w=0.95, rear_win=4,
       door=0.35, door_kind="flat", gf_arch=False, shop=True, holes=0.12, patches=0, pentice=True,
       src="plan 115 px; west elev. house 1: 4 windows/storey, half-timber on all storeys, damaged rear dormer, shop window; 2 chimneys at the N end (plan)"),
@@ -34,15 +34,15 @@ TABLE = [
       cross=[(0.50, 4.5)], dormers=[], rear_dormers=[0.5], chimneys=[(0.93, 0.85)], win=[2, 3, 3], win_w=0.9, rear_win=3,
       door=0.45, door_kind="round", gf_arch=False, shop=False, holes=0.15, patches=0, pentice=False,
       src="plan 104 px; west elev. house 2: eave ~0.8 m lower, highest ridge rise (5.1 m), 3 windows, round-arched door, chimney at S end; iso: big street gable"),
- dict(id="W2", tone="B", w_px=92, eave_dz=0.2, pitch=37, gf="stone", upper="plaster", timber="x", jetty=0.45, setback=0.0,
+ dict(id="W2", tone="A", w_px=92, eave_dz=0.2, pitch=37, gf="stone", upper="plaster", timber="x", jetty=0.45, setback=0.0,
       cross=[(0.50, 3.8)], dormers=[], rear_dormers=[0.3, 0.7], chimneys=[(0.08, 0.82)], win=[2, 3, 3], win_w=0.9, rear_win=3,
       door=0.5, door_kind="round", gf_arch=False, shop=False, holes=0.10, patches=0, pentice=True,
       src="plan 92 px, big chimney at the N party wall; west elev. house 3: X-braced half-timber, 2 rear dormers; iso: deep jetty"),
- dict(id="W3", tone="A", w_px=108, eave_dz=-0.3, pitch=36, gf="brick", upper="plaster", timber="grid", jetty=0.30, setback=0.2,
+ dict(id="W3", tone="C", w_px=108, eave_dz=-0.3, pitch=36, gf="brick", upper="plaster", timber="grid", jetty=0.30, setback=0.2,
       cross=[], dormers=[0.30, 0.72], rear_dormers=[], chimneys=[(0.12, 0.75)], win=[3, 4, 4], win_w=0.95, rear_win=4,
       door=0.43, door_kind="flat", gf_arch=False, shop=False, holes=0.22, patches=4, pentice=False,
       src="plan 108 px, large roof hole; west elev. house 4 (hole with rafters): brick-patched ground floor, 4 windows; no street gable -> 2 dormers"),
- dict(id="W4", tone="A", w_px=150, eave_dz=0.3, pitch=40, gf="plaster", upper="plaster", timber=None, jetty=0.0, setback=0.0,
+ dict(id="W4", tone="D", w_px=150, eave_dz=0.3, pitch=40, gf="plaster", upper="plaster", timber=None, jetty=0.0, setback=0.0,
       cross=[(0.30, 3.0)], dormers=[0.70], rear_dormers=[0.4], chimneys=[(0.08, 0.85), (0.78, 0.22)], win=[3, 4, 4], win_w=1.0, rear_win=4,
       door=0.55, door_kind="round", gf_arch=False, shop=False, holes=0.18, patches=14, pentice=False,
       src="plan 150 px incl. the south gable; front elev.: south gable plaster with large brick patches, 3 storeys + attic (gable reads ~50 deg at the front elevation's narrower depth = 40 deg on the 11 m plan depth)"),
@@ -69,7 +69,7 @@ TABLE = [
       src="plan 165 px incl. south gable, 2 rear chimneys; front elev.: brick lower storeys, half-timbered gable, round-arched ground floor"),
 ]
 CORNER = [
- dict(id="NW", tone="A", eave_dz=0.0, pitch=40, gf="plaster", upper="plaster", timber="braced", jetty=0.30, setback=0.0,
+ dict(id="NW", tone="D", eave_dz=0.0, pitch=40, gf="plaster", upper="plaster", timber="braced", jetty=0.30, setback=0.0,
       cross=[], dormers=[0.62], rear_dormers=[0.55], chimneys=[(0.08, 0.80), (0.88, 0.80), (0.28, 0.40)], win=[3, 4], win_w=0.95, rear_win=4,
       door=0.45, door_kind="flat", gf_arch=False, shop=False, holes=0.18, patches=8, pentice=False, rubble_end="v0",
       src="plan: 3 chimneys, street dormer; north elev.: 2 storeys half-timber, dormer + hole, rubble W end; west elev.: plaster gable with brick patches"),

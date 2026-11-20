@@ -18,6 +18,7 @@ SHOTS = {
     "06_street_west":    (((-17.7, -3.0, 5.85), (-17.2, 25.0, 7.5), 24), "warm", 9/16, {}),
     "07_apse_NE":        (((26.0, 84.0, 36.0), (0.0, 36.0, 12.0), 32), "warm", 9/16, {}),
     "08_hero_iso_dusk":  ("iso", "dusk", 960/808, {"exposure": 0.9, "sun": 6.0}),
+    "09_house_row_E":    (((-1.0, -24.0, 8.0), (17.0, -8.0, 9.0), 24), "warm", 9/16, {}),   # M10 wall close-up: east house row from the plaza
 }
 cam, preset, asp, ex = SHOTS[SHOT]; sc = bpy.context.scene; F.show_all(sc)
 if "fog" in ex: F.WARM = dict(F.WARM, fog=ex["fog"])
