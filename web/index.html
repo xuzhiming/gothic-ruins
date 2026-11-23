@@ -2,14 +2,17 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<title>Gothic cathedral complex - preview (orbit / walk)</title>
+<title>Gothic cathedral complex - preview (orbit / walk / fly)</title>
 <style>
   html,body{margin:0;height:100%;overflow:hidden;background:#d9d6d0;font-family:system-ui,sans-serif}
-  #hud{position:absolute;left:12px;top:10px;color:#f2f0ea;font-size:13px;line-height:1.5;background:rgba(20,20,24,.55);padding:8px 12px;border-radius:6px;max-width:460px;pointer-events:none}
-  #bar{position:absolute;right:12px;top:10px;display:flex;gap:6px}
+  #hud{position:absolute;left:12px;top:10px;color:#f2f0ea;font-size:13px;line-height:1.5;background:rgba(20,20,24,.55);padding:8px 12px;border-radius:6px;max-width:min(520px,58vw);pointer-events:none}
+  #bar{position:absolute;right:12px;top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:70%}
   #bar button{background:#3d3a36;color:#fff;border:0;border-radius:5px;padding:7px 12px;cursor:pointer;font-size:13px}
   #bar button.on{background:#9a6b3c}
-  #cross{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#fff;opacity:.8;display:none}
+  #touch{position:absolute;right:12px;bottom:16px;display:none;gap:8px}
+  #touch button{background:rgba(20,20,24,.72);color:#fff;border:0;border-radius:8px;padding:14px 16px;font-size:15px;touch-action:none}
+  @media (pointer: coarse), (max-width: 800px){ #touch.live{display:flex} }
+  #cross{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#fff;opacity:.8;display:none;pointer-events:none}
   #load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#333;font-size:18px}
 </style>
 <script type="importmap">
@@ -23,7 +26,8 @@
 <body>
 <div id="load">loading model…</div>
 <div id="hud"></div>
-<div id="bar"><button id="bOrbit" class="on">Orbit 环绕</button><button id="bWalk">Walk 漫游</button><button id="bStart">Start 入口</button></div>
+<div id="bar"><button id="bOrbit" class="on" type="button">Orbit 环绕</button><button id="bWalk" type="button">Walk 漫游</button><button id="bFly" type="button">Fly 飞行</button><button id="bStart" type="button">Start 入口</button></div>
+<div id="touch"><button id="tJump" type="button" hidden>跳跃</button><button id="tUp" type="button" hidden>上升</button><button id="tDown" type="button" hidden>下降</button></div>
 <div id="cross"></div>
 <script type="module" src="./main.js"></script>
 </body>
