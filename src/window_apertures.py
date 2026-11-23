@@ -52,6 +52,10 @@ def clip_new_roof(bk,start,footprints):
         for planes in footprints:
             result=[]
             for poly in pieces:
+                # A separating plane proves no intersection: preserve the whole
+                # original face and its UVs, rather than tessellating empty space.
+                if len(planes)>4 and any(all(n.dot(v)-d>1e-7 for v in poly) for n,d in planes):
+                    result.append(poly); continue
                 inside=poly
                 for n,d in planes:
                     inside,outside=_split(inside,n,d)
@@ -79,3 +83,12 @@ def clip_new_roof(bk,start,footprints):
 def roof_footprint(fr,u0,u1,v0,v1):
     origin=fr.M(0,0); u=fr.dir(1,0); v=fr.dir(0,1)
     return [(u,u.dot(origin)+u1),(-u,(-u).dot(origin)-u0),(v,v.dot(origin)+v1),(-v,(-v).dot(origin)-v0)]
+
+
+def convex_prism(poly,o,S,T):
+    """Outward half-planes of a convex 2-D hole, extruded along its normal."""
+    poly=geom.ccw(poly);o,S,T=Vector(o),Vector(S),Vector(T);planes=[]
+    for a,b in zip(poly,poly[1:]+poly[:1]):
+        n=S*(b[1]-a[1])-T*(b[0]-a[0])
+        planes.append((n,n.dot(o+S*a[0]+T*a[1])))
+    return planes

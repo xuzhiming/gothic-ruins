@@ -1,0 +1,70 @@
+[
+  {
+    "id": "Cathedral/decorative_spire_lucarne/1",
+    "building_id": "Cathedral",
+    "category": "decorative_spire_lucarne",
+    "component": "tower_SW_spire",
+    "floor": "spire",
+    "orientation": "E",
+    "center": [
+      -8.201,
+      6.9399999999999995,
+      32.0
+    ],
+    "glass_modeled": false,
+    "opening_modeled": false,
+    "diagnostic": "solid_stone_roof_ornament_not_a_glazed_window",
+    "source": "build.py upper_tower spire lucarnes: box stone + cone slate; no window definition"
+  },
+  {
+    "id": "Cathedral/decorative_spire_lucarne/2",
+    "building_id": "Cathedral",
+    "category": "decorative_spire_lucarne",
+    "component": "tower_SW_spire",
+    "floor": "spire",
+    "orientation": "N",
+    "center": [
+      -9.1,
+      7.8389999999999995,
+      32.0
+    ],
+    "glass_modeled": false,
+    "opening_modeled": false,
+    "diagnostic": "solid_stone_roof_ornament_not_a_glazed_window",
+    "source": "build.py upper_tower spire lucarnes: box stone + cone slate; no window definition"
+  },
+  {
+    "id": "Cathedral/decorative_spire_lucarne/3",
+    "building_id": "Cathedral",
+    "category": "decorative_spire_lucarne",
+    "component": "tower_SW_spire",
+    "floor": "spire",
+    "orientation": "W",
+    "center": [
+      -9.998999999999999,
+      6.9399999999999995,
+      32.0
+    ],
+    "glass_modeled": false,
+    "opening_modeled": false,
+    "diagnostic": "solid_stone_roof_ornament_not_a_glazed_window",
+    "source": "build.py upper_tower spire lucarnes: box stone + cone slate; no window definition"
+  },
+  {
+    "id": "Cathedral/decorative_spire_lucarne/4",
+    "building_id": "Cathedral",
+    "category": "decorative_spire_lucarne",
+    "component": "tower_SW_spire",
+    "floor": "spire",
+    "orientation": "S",
+    "center": [
+      -9.1,
+      6.0409999999999995,
+      32.0
+    ],
+    "glass_modeled": false,
+    "opening_modeled": false,
+    "diagnostic": "solid_stone_roof_ornament_not_a_glazed_window",
+    "source": "build.py upper_tower spire lucarnes: box stone + cone slate; no window definition"
+  }
+]

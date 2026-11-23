@@ -23,6 +23,12 @@ class ApertureTests(unittest.TestCase):
    for i in f:
     self.assertAlmostEqual(b.uv[i][0],b.v[i].x/2,places=5)
     self.assertAlmostEqual(b.uv[i][1],b.v[i].y/2,places=5)
+ def test_circle_prism_keeps_completely_external_decal_face_identical(self):
+  b=geom.Bucket('test','stone');b.face([(1.6,0,1.6),(2,0,1.6),(2,0,2),(1.6,0,2)])
+  before=[tuple(v) for v in b.v];uv=list(b.uv)
+  wa.clip_new_roof(b,0,[wa.convex_prism(geom.ngon(0,0,2,96),(0,0,0),(1,0,0),(0,0,1))])
+  self.assertEqual(len(b.f),1,'outside the true circle must not be fragmented by tangent half-planes')
+  self.assertEqual([tuple(v) for v in b.v],before);self.assertEqual(b.uv,uv)
  def test_gable_preserves_bounds(self):
   b=geom.Bucket('test','plaster')
   wa.panel(b,[(0,0),(6,0),(3,5)], [[(2.5,1),(3.5,1),(3.5,2),(2.5,2)]], (0,0,0),(1,0,0),(0,0,1),.3)

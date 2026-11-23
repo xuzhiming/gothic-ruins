@@ -1,0 +1,31 @@
+test_decorative_blinds_remain_opaque (__main__.AllWindows.test_decorative_blinds_remain_opaque) ... ok
+test_each_exported_glb_window_matches_scene_ray_presence (__main__.AllWindows.test_each_exported_glb_window_matches_scene_ray_presence) ... ok
+test_each_window_has_bidirectional_evidence (__main__.AllWindows.test_each_window_has_bidirectional_evidence) ... ok
+test_exhaustive_geometry_mapping (__main__.AllWindows.test_exhaustive_geometry_mapping) ... ok
+test_glb_preserves_alpha_and_geometry (__main__.AllWindows.test_glb_preserves_alpha_and_geometry) ... ok
+test_nw_dormer_has_no_uncut_roof_lip (__main__.AllWindows.test_nw_dormer_has_no_uncut_roof_lip) ... FAIL
+test_rose_has_no_wall_weather_decal_across_opening (__main__.AllWindows.test_rose_has_no_wall_weather_decal_across_opening) ... FAIL
+test_true_glass_material_not_opaque (__main__.AllWindows.test_true_glass_material_not_opaque) ... ok
+
+======================================================================
+FAIL: test_nw_dormer_has_no_uncut_roof_lip (__main__.AllWindows.test_nw_dormer_has_no_uncut_roof_lip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/gothic/check/test_all_windows.py", line 12, in test_nw_dormer_has_no_uncut_roof_lip
+    r=W['NW/dormer/dormer/attic/S/1'];bad=[h for p in r['ray_evidence'] for h in p['from_outside'] if h['kind']=='roof'];self.assertFalse(bad,repr(bad))
+                                                                                                                         ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+AssertionError: [{'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-21.0, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-21.0, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.94, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.94, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.81, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.81, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.68, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.68, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.44, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.44, 37.53608, 11.68546], 'kind': 'roof'}] is not false : [{'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-21.0, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-21.0, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.94, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.94, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.81, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.81, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.68, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.68, 37.53608, 11.68546], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.32742, 'point': [-20.44, 37.45742, 11.61946], 'kind': 'roof'}, {'object': 'House_NW_slate', 'polygon': 111, 'material': 'Slate', 'window_ids': [], 'distance': 0.40608, 'point': [-20.44, 37.53608, 11.68546], 'kind': 'roof'}]
+
+======================================================================
+FAIL: test_rose_has_no_wall_weather_decal_across_opening (__main__.AllWindows.test_rose_has_no_wall_weather_decal_across_opening)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/gothic/check/test_all_windows.py", line 14, in test_rose_has_no_wall_weather_decal_across_opening
+    r=W['Cathedral/rose/facade_rose/upper_facade/S/1'];self.assertFalse(r['near_transparent_decor_layers'])
+                                                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'Decal_decal_crack': 3} is not false
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.021s
+
+FAILED (failures=2)
