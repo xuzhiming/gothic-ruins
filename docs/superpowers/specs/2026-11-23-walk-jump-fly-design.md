@@ -48,6 +48,8 @@
 
 ## 玻璃
 
+资产集成后以 `docs/glass-web-contract.md` 为准：只处理材质名恰好是 `Glass`、且导出为混合透明的材质。`Glass_blind` 保持不透明。不改 `renderOrder`。`Glass_glass` 留在碰撞体里。
+
 真正玻璃必须同时满足：
 
 - 网格或材质的 `userData.role === "glass"`

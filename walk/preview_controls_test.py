@@ -68,23 +68,29 @@ async def main():
             blend = by[("Glass_glass", "BLEND", 0.35)]
             opacity = by[("Pane", "", 0.4)]
             mask = by[("Cutout", "MASK", 1)]
-            check("blind stays opaque", (not blind["cls"]["realGlass"]) and blind["pol"]["transparent"] is False and blind["pol"]["castShadow"] is True)
-            check("name Glass is not enough", (not name_only["cls"]["realGlass"]) and name_only["pol"]["transparent"] is False and name_only["pol"]["opacity"] == 1)
-            check("opaque role glass stays opaque", (not opaque_role["cls"]["realGlass"]) and opaque_role["pol"]["transparent"] is False)
-            check("blend glass flags", blend["cls"]["realGlass"] and blend["pol"]["transparent"] is True and blend["pol"]["depthWrite"] is False and blend["pol"]["castShadow"] is False and blend["pol"]["renderOrder"] == 1 and abs(blend["pol"]["opacity"] - 0.35) < 1e-6)
-            check("opacity glass flags", opacity["cls"]["realGlass"] and opacity["pol"]["depthWrite"] is False and opacity["pol"]["castShadow"] is False and abs(opacity["pol"]["opacity"] - 0.4) < 1e-6)
-            check("mask glass not forced blend", (not mask["cls"]["realGlass"]) and mask["pol"]["transparent"] is False)
+            check("blind stays opaque", (not blind["cls"]["realGlass"]) and blind["pol"]["transparent"] is False and blind["pol"]["castShadow"] is True and blind["pol"]["depthWrite"] is True)
+            check("Glass_blind name is not clear glass", (not name_only["cls"]["realGlass"]) and name_only["pol"]["transparent"] is False and name_only["pol"]["opacity"] == 1 and name_only["pol"]["renderOrder"] == 0)
+            check("opaque material named Glass stays opaque", (not opaque_role["cls"]["realGlass"]) and opaque_role["pol"]["transparent"] is False and opaque_role["pol"]["castShadow"] is True)
+            check("exact blended Glass flags", blend["cls"]["realGlass"] and blend["pol"]["transparent"] is True and blend["pol"]["depthWrite"] is False and blend["pol"]["depthTest"] is True and blend["pol"]["castShadow"] is False and blend["pol"]["receiveShadow"] is False and blend["pol"]["renderOrder"] == 0 and abs(blend["pol"]["opacity"] - 0.35) < 1e-6)
+            check("other blended names stay put", (not opacity["cls"]["realGlass"]) and opacity["pol"]["castShadow"] is True and abs(opacity["pol"]["opacity"] - 0.4) < 1e-6 and opacity["pol"]["depthWrite"] is True)
+            check("mask name is not clear glass", (not mask["cls"]["realGlass"]) and mask["pol"]["transparent"] is False and mask["pol"]["castShadow"] is True)
 
         surfaces = await ev(f"{W}.surfaces ? {W}.surfaces() : null")
         check("surface report", isinstance(surfaces, list) and len(surfaces) > 0)
         if isinstance(surfaces, list):
             bad_opaque = [r for r in surfaces if (not r.get("blended")) and r.get("transparent") and not str(r.get("material", "")).lower().startswith("decal") and r.get("role") != "decor"]
             check("live opaque not forced transparent", not bad_opaque, str(bad_opaque[:3]))
-            real = [r for r in surfaces if r.get("realGlass")]
+            real = [r for r in surfaces if r.get("material") == "Glass"]
+            blind_rows = [r for r in surfaces if r.get("material") == "Glass_blind"]
             notes["real_glass"] = len(real)
-            notes["e2e_glass"] = "runtime_flags_match_export" if real else "pending_final_glb"
+            notes["glass_blind"] = len(blind_rows)
+            notes["e2e_glass"] = "loaded_glb_flags_visual_separate"
+            check("loaded Glass panes", len(real) >= 1, str(len(real)))
             for r in real:
-                check("live real glass flags", (r.get("castShadow") is False) and (r.get("depthWrite") is False) and (r.get("transparent") is True) and r.get("renderOrder") == 1, r.get("mesh"))
+                check("loaded Glass contract", r.get("realGlass") and r.get("transparent") is True and r.get("depthWrite") is False and r.get("depthTest") is True and r.get("renderOrder") == 0 and abs(r.get("opacity", 1) - 0.24) < 0.02 and abs(r.get("roughness", 1) - 0.09) < 0.02 and abs(r.get("metalness", 1)) < 0.01 and r.get("side") == 2, str({k: r.get(k) for k in ("mesh", "opacity", "roughness", "metalness", "side", "depthWrite", "renderOrder")}))
+            check("loaded Glass_blind", len(blind_rows) >= 1, str(len(blind_rows)))
+            for r in blind_rows:
+                check("loaded Glass_blind opaque", (not r.get("realGlass")) and r.get("transparent") is False and r.get("depthWrite") is True and r.get("opacity", 0) >= 0.999, str(r.get("mesh")))
             decals = [r for r in surfaces if str(r.get("material", "")).lower().startswith("decal")]
             check("decals present", len(decals) > 0, str(len(decals)))
             if decals:

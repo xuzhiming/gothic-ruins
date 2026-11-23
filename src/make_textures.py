@@ -291,6 +291,10 @@ r = sm(pnoise(13, N, 1.5, kmin=3.0), 0.55, 0.9); st_ = sm(pnoise(17, N, 1.5, ky=
 img = col((36, 34, 33))*(0.8 + 0.4*pnoise(18, N, 0.5, kmin=20)[..., None]); rc = col((112, 54, 24))*(0.7 + 0.5*pnoise(19, N, 0.8, kmin=8)[..., None])
 m = np.clip(r + 0.4*st_, 0, 1)[..., None]*0.35; save("iron", img*(1 - m) + rc*m)   # gap #7: ref gate is dark grey, little rust
 g = pnoise(20, N, 2.0, kmin=1.0); save("glass", col((40, 48, 52))[None, None]*(0.65 + 0.5*g[..., None]) + col((50, 45, 35))*0.3*sm(pnoise(21, N, 1.4, kmin=3), 0.5, 0.9)[..., None])
+# Transparent glass only: pale low-saturation grey-green, slight dirt. Original glass.png remains unchanged for blind panels.
+clear = col((184,204,197))[None,None,:]*(.98 + .025*g[...,None])
+clear -= sm(pnoise(21,N,1.4,kmin=3),.5,.9)[...,None]*col((10,10,8))*.35
+save("glass_clear",clear)
 # soil (gap #7): the platform's flanks in the ref are layered rock / packed earth with embedded stones, not plain soil.
 # 512 px over 6 m (vertical faces: image rows = height), periodic warped strata.
 strata = pnoise(22, N, 1.6, kx=3.0, ky=1.0, kmin=2.5)                                  # horizontal rock lenses (kx>1: long in x)

@@ -1,5 +1,5 @@
-// Real glass is role "glass" plus an exported blend signal.
-// Names are ignored, so blind windows and opaque Glass_* materials stay opaque.
+// Clear glass is the material whose name is exactly "Glass".
+// Glass_blind and any other name that merely contains "Glass" stay untouched.
 
 export function alphaModeOf(mat) {
   const ud = (mat && mat.userData) || {};
@@ -16,30 +16,31 @@ export function isBlendedMaterial(mat) {
   return false;
 }
 
-export function hasGlassRole(mesh, mat) {
-  const role = (mesh && mesh.userData && mesh.userData.role) || (mat && mat.userData && mat.userData.role) || '';
-  return role === 'glass';
+// Exact exported pane. An opaque material that happens to be named Glass is not forced transparent.
+export function isExactClearGlass(mat) {
+  return !!(mat && mat.name === 'Glass' && isBlendedMaterial(mat));
 }
 
-export function isRealGlass(mesh, mat) {
-  return hasGlassRole(mesh, mat) && isBlendedMaterial(mat);
-}
-
-// Keep exported opacity and color. Transparent glass skips the depth buffer and shadow maps
-// so the wall behind it stays visible; renderOrder 1 sits after opaque walls and before decals.
+// Depth write and shadow casting are per the glass contract. Opacity, color, and the map stay
+// as the GLB exported them. renderOrder is left alone so decals (renderOrder 2) keep their order.
 export function applySurfacePolicy(mesh) {
   const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-  let real = false;
+  let clear = 0;
+  let other = 0;
   for (const mat of mats) {
     if (!mat || /^Decal/i.test(mat.name || '')) continue;
-    if (!isRealGlass(mesh, mat)) continue;
-    real = true;
+    if (!isExactClearGlass(mat)) {
+      if (mat.name) other++;
+      continue;
+    }
+    clear++;
     mat.transparent = true;
     mat.depthWrite = false;
+    mat.depthTest = true;
   }
-  if (real) {
+  if (clear && !other) {
     mesh.castShadow = false;
-    mesh.renderOrder = Math.max(mesh.renderOrder || 0, 1);
+    mesh.receiveShadow = false;
   }
-  return real;
+  return clear > 0;
 }

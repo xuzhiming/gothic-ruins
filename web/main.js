@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { MeshBVH } from 'three-mesh-bvh';
-import { applySurfacePolicy, isBlendedMaterial, isRealGlass } from './surface.js';
+import { applySurfacePolicy, isBlendedMaterial, isExactClearGlass } from './surface.js';
 
 const Q = new URLSearchParams(location.search);
 const TEST = Q.has('test');
@@ -368,15 +368,14 @@ window.__walk = {
   clearLid() { lid = null; },
   clearInput: clearKeys,
   classifySurface(desc) {
-    const mesh = { name: desc.meshName || '', userData: { role: desc.role || '' } };
     const mat = plainMat(desc);
-    return { blended: isBlendedMaterial(mat), glassRole: (desc.role === 'glass' || desc.materialRole === 'glass'), realGlass: isRealGlass(mesh, mat) };
+    return { blended: isBlendedMaterial(mat), exactGlass: mat.name === 'Glass', realGlass: isExactClearGlass(mat) };
   },
   applyPolicy(desc) {
     const mat = plainMat(desc);
-    const mesh = { name: desc.meshName || '', userData: { role: desc.role || '' }, material: mat, castShadow: true, receiveShadow: true, renderOrder: 0 };
+    const mesh = { name: desc.meshName || '', userData: { role: desc.role || '' }, material: mat, castShadow: true, receiveShadow: true, renderOrder: desc.renderOrder || 0 };
     applySurfacePolicy(mesh);
-    return { castShadow: mesh.castShadow, receiveShadow: mesh.receiveShadow, renderOrder: mesh.renderOrder, transparent: mat.transparent, opacity: mat.opacity, depthWrite: mat.depthWrite };
+    return { castShadow: mesh.castShadow, receiveShadow: mesh.receiveShadow, renderOrder: mesh.renderOrder, transparent: mat.transparent, opacity: mat.opacity, depthWrite: mat.depthWrite, depthTest: mat.depthTest !== false };
   },
   surfaces() {
     const rows = [];
@@ -387,13 +386,60 @@ window.__walk = {
         if (!mat) continue;
         rows.push({
           mesh: o.name, role: (o.userData && o.userData.role) || '', material: mat.name || '',
-          transparent: !!mat.transparent, opacity: mat.opacity, depthWrite: mat.depthWrite,
-          castShadow: o.castShadow, renderOrder: o.renderOrder,
-          blended: isBlendedMaterial(mat), realGlass: isRealGlass(o, mat),
+          transparent: !!mat.transparent, opacity: mat.opacity, depthWrite: mat.depthWrite, depthTest: mat.depthTest !== false,
+          roughness: mat.roughness, metalness: mat.metalness, side: mat.side,
+          castShadow: o.castShadow, receiveShadow: o.receiveShadow, renderOrder: o.renderOrder,
+          blended: isBlendedMaterial(mat), realGlass: isExactClearGlass(mat),
         });
       }
     });
     return rows;
+  },
+  lookAt(ex, ey, ez, tx, ty, tz) {
+    fly = false; jumpQueued = false; setMode('walk');
+    player.pos.set(ex, ez - EYE, -ey); player.vel.set(0, 0, 0);
+    const dx = tx - ex, dy = ty - ey, dz = tz - ez, h = Math.hypot(dx, dy) || 1e-6;
+    player.yaw = Math.atan2(-dx, dy);
+    player.pitch = THREE.MathUtils.clamp(-Math.atan2(dz, h), -1.2, 1.2);
+    syncCamera();
+  },
+  viewProbes() {
+    const take = (pred, limit) => {
+      const out = [];
+      gltf.scene.updateMatrixWorld(true);
+      gltf.scene.traverse(o => {
+        if (!o.isMesh || out.length >= limit) return;
+        const mats = Array.isArray(o.material) ? o.material : [o.material];
+        if (!pred(o, mats)) return;
+        const g = o.geometry, p = g.attributes.position;
+        const nTri = Math.floor(g.index ? g.index.count / 3 : p.count / 3);
+        if (!nTri) return;
+        for (const f of [0.15, 0.4, 0.62, 0.85]) {
+          if (out.length >= limit) break;
+          const t = Math.min(nTri - 1, Math.floor(nTri * f));
+          const ia = g.index ? g.index.getX(t * 3) : t * 3;
+          const ib = g.index ? g.index.getX(t * 3 + 1) : t * 3 + 1;
+          const ic = g.index ? g.index.getX(t * 3 + 2) : t * 3 + 2;
+          const a = new THREE.Vector3().fromBufferAttribute(p, ia).applyMatrix4(o.matrixWorld);
+          const b = new THREE.Vector3().fromBufferAttribute(p, ib).applyMatrix4(o.matrixWorld);
+          const c = new THREE.Vector3().fromBufferAttribute(p, ic).applyMatrix4(o.matrixWorld);
+          const n = b.clone().sub(a).cross(c.clone().sub(a));
+          if (n.lengthSq() < 1e-10) continue;
+          n.normalize();
+          const cent = a.add(b).add(c).multiplyScalar(1 / 3);
+          out.push({
+            mesh: o.name, material: (mats.find(m => m && m.name === 'Glass') || mats[0]).name,
+            x: cent.x, y: -cent.z, z: cent.y, nx: n.x, ny: -n.z, nz: n.y,
+          });
+        }
+      });
+      return out;
+    };
+    return {
+      glass: take((o, mats) => mats.some(m => isExactClearGlass(m)), 8),
+      blind: take((o, mats) => mats.some(m => m && m.name === 'Glass_blind'), 4),
+      decal: take((o, mats) => mats.some(m => m && /^Decal/i.test(m.name || '')), 4),
+    };
   },
   glassSample,
 };
