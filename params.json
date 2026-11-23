@@ -901,6 +901,54 @@
     "brick": 1.0
    },
    "_doc_m12b": "M12b (thin traditional lime coat): skin_r 0.035->0.015 (brick recessed 1.5 cm = the whole skin; the body's outer face is the brick, gap 0.012->0: no hidden plate), chamfer 0.012->0.0045, residue thick 0.025-0.035 -> 0.008-0.013, chamfer 0.010->0.003; break-edge lime darker/older; texture break band/contact shadow scaled to a 1-1.5 cm coat."
+  },
+  "face_material_overrides": {
+   "enabled": true,
+   "_doc": "M13 approved aerial 1/2: exact E4 south end wall and plaza-facing street wall, identified by camera projection. Face-local copies of W4 Plaster_d broad-spall material, matching W4 UV phase. No shared material/texture edits, no geometry changes. Original 15 mm coat params and 8-13 mm islands retained.",
+   "house": "E4",
+   "source_material": "Plaster_d",
+   "eligible": [
+    "Brick",
+    "Plaster"
+   ],
+   "faces": {
+    "south": {
+     "axis": 1,
+     "plane": -32.901,
+     "normal": [
+      0,
+      -1,
+      0
+     ],
+     "tolerance": 0.003,
+     "material_name": "Plaster_M13_E4_South",
+     "tile_m": 8.0,
+     "u_axis": 0,
+     "u_sign": -1,
+     "phase": [
+      0.20962888665997995,
+      0.8072653884964682
+     ]
+    },
+    "street": {
+     "axis": 0,
+     "plane": 20.35,
+     "normal": [
+      -1,
+      0,
+      0
+     ],
+     "tolerance": 0.018,
+     "material_name": "Plaster_M13_E4_Street",
+     "tile_m": 8.0,
+     "u_axis": 1,
+     "u_sign": 1,
+     "phase": [
+      0.20962888665997995,
+      0.8072653884964682
+     ]
+    }
+   }
   }
  },
  "walk": {

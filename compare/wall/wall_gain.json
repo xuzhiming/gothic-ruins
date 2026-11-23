@@ -1,0 +1,53 @@
+{
+ "plaster": [
+  0.85,
+  0.85,
+  0.85
+ ],
+ "plaster_b": [
+  0.7228,
+  0.7228,
+  0.7228
+ ],
+ "plaster_c": [
+  0.7228,
+  0.7228,
+  0.7228
+ ],
+ "plaster_d": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "brick": [
+  0.62,
+  0.62,
+  0.62
+ ],
+ "stone": [
+  0.7759,
+  0.7759,
+  0.7759
+ ],
+ "stone_moss": [
+  0.7759,
+  0.7759,
+  0.7759
+ ],
+ "rubble": [
+  0.72,
+  0.72,
+  0.72
+ ],
+ "rubble_moss": [
+  0.72,
+  0.72,
+  0.72
+ ],
+ "timber": [
+  0.56,
+  0.56,
+  0.56
+ ],
+ "_doc": "M10 per-texture linear gains (scalar) from compare/wall/patch_de.py + mat_compare iso dL; applied in make_textures.save to M10_RAW recipes"
+}

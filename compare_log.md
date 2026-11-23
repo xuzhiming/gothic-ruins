@@ -612,3 +612,30 @@ Full run_all (11:06): IoU S .808 N .812 W .740 E .748 top .942 outline 1.19 foot
 circulation PASS 86, both negatives caught; walk PASS (87 wp, 0 penetrations, 0 stuck). Triangles 162,763 -> 161,143; GLB 37.91 -> 37.16 MB,
 building_opt 4.88 -> 4.81 MB. Sheets: compare/wall/m12b_plaster_thin_closeup.jpg, compare/wall/m12b_webgl_before_after.jpg,
 final/m12b_closeups_before_after.jpg.
+
+
+## M13: approved broad-spall plaster applied to actual E4 model faces (2026-11-23 01:17 EST)
+Source design: final/m13_wall_edit/{contact_sheet_edited.png,final_aerial_before_after.png,final_close_wall1.png,final_close_wall2.png}.
+House resolved by actual camera projection (02_aerial_south: camera 0,-98,40 -> 0,-18,5, lens32):
+1 = E4 south end/gable wall (normal -Y), y=-32.901, x=20.35..31.35. Center (25.85,-32.9,9) -> (2096,793) in 2560x1440.
+2 = E4 plaza/street-facing wall (normal -X), x=20.35, y=-32.901..-14.574. Center (20.35,-23.7365,9) -> (1856,681).
+Reference3 = W4 south end wall. This mapping is independently confirmed rather than guessed from an old E4 label.
+Implementation: src/face_materials.py called after geometry creation before BOTH Blend save and GLB export. Parameters in houses.face_material_overrides.
+Face-local copies of Plaster_d (W4's existing broad spall texture + normals), 8 m planar UV scale, W4-matched phase, mirrored U on south end.
+No source texture edits, no shared material mutation. 49 south + 512 street polygons reassigned; geometry/topology unchanged.
+The existing 15 mm M12b shell parameters, 8-13 mm raised residue geometry, and bevels remain unchanged. New broad spall boundaries are material/normal
+relief, not newly cut physical holes (a texture-only scope, not a new plaster-shell modeling task).
+Isolation: 180 mesh objects geometry byte-identical; zero non-target face material/UV changes; all 40 PNG texture bytes identical;
+spaces.json and ruin_log.json identical; silhouette masks S/N/W/E/top/foot all pixel-identical (0 changed pixels).
+Full run_all_m13.log: EXIT 0. IoU S .8078 N .8119 W .7404 E .7477; skyline MAE 4.580/4.215/6.316/6.168 m;
+top IoU .9420, outline 1.186 m, footprint .8514. Circulation 86 reachable, both negatives caught.
+WASD PASS: 87 waypoints, 1214 samples, 287.3m path, 15.82m climb, 0 penetrations/stuck/level warnings, four door ratios 1.0, no page errors.
+Triangles 161143 (unchanged). Raw GLB 37160716 -> 37164256 bytes; WebP/Meshopt GLB 4807584 -> 4810236 bytes (+2652).
+Optimiser deduplicates identical plaster copies: material aliases may merge in optimized GLB; UVs preserve the face-local look.
+Actual exported GLBs viewed in unchanged web/index.html via existing __walk test hooks: aerial, south, street and near-wall; zero page errors.
+Review helper initially stalled because RAF suppression also blocked Playwright's default RAF polling; fixed helper polling/return, no production viewer edits.
+Read inspected actual Cycles aerial and both close-ups plus final/m13_model/{aerial_ref_before_after.jpg,wall1_ref_before_after.jpg,
+wall2_ref_before_after.jpg,webgl_before_after.jpg}: broad grey-white old plaster and connected bare brick patches now visible, matching the approved
+character rather than small lime speckles. Exact patch contours differ from the 2D painted design. Cycles and actual optimized GLB agree in layout;
+WebGL's lighting is flatter/warmer. Existing timber/windows/roof and other faces unchanged. No visible z-fighting in inspected views, not a universal guarantee.
+No GitHub/repo operations, no deployment, no messages to asset management. Backup: tmp/before_m13/.

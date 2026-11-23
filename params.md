@@ -233,6 +233,28 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 | `houses.plaster_layer.nstr.plaster_c` | 1.1 | I |  |
 | `houses.plaster_layer.nstr.plaster_d` | 1.1 | I |  |
 | `houses.plaster_layer.nstr.brick` | 1.0 | I |  |
+| `houses.face_material_overrides.enabled` | true | I |  |
+| `houses.face_material_overrides.house` | "E4" | I |  |
+| `houses.face_material_overrides.source_material` | "Plaster_d" | I |  |
+| `houses.face_material_overrides.eligible` | ["Brick", "Plaster"] | I |  |
+| `houses.face_material_overrides.faces.south.axis` | 1 | I |  |
+| `houses.face_material_overrides.faces.south.plane` | -32.901 | I |  |
+| `houses.face_material_overrides.faces.south.normal` | [0, -1, 0] | I |  |
+| `houses.face_material_overrides.faces.south.tolerance` | 0.003 | I |  |
+| `houses.face_material_overrides.faces.south.material_name` | "Plaster_M13_E4_South" | I |  |
+| `houses.face_material_overrides.faces.south.tile_m` | 8.0 | I |  |
+| `houses.face_material_overrides.faces.south.u_axis` | 0 | I |  |
+| `houses.face_material_overrides.faces.south.u_sign` | -1 | I |  |
+| `houses.face_material_overrides.faces.south.phase` | [0.20962888665997995, 0.8072653884964682] | I |  |
+| `houses.face_material_overrides.faces.street.axis` | 0 | I |  |
+| `houses.face_material_overrides.faces.street.plane` | 20.35 | I |  |
+| `houses.face_material_overrides.faces.street.normal` | [-1, 0, 0] | I |  |
+| `houses.face_material_overrides.faces.street.tolerance` | 0.018 | I |  |
+| `houses.face_material_overrides.faces.street.material_name` | "Plaster_M13_E4_Street" | I |  |
+| `houses.face_material_overrides.faces.street.tile_m` | 8.0 | I |  |
+| `houses.face_material_overrides.faces.street.u_axis` | 1 | I |  |
+| `houses.face_material_overrides.faces.street.u_sign` | 1 | I |  |
+| `houses.face_material_overrides.faces.street.phase` | [0.20962888665997995, 0.8072653884964682] | I |  |
 | `walk.eye` | 1.6 | I | walk-mode eye height and capsule radius |
 | `walk.radius` | 0.3 | I | walk-mode eye height and capsule radius |
 | `compare_lock` | ["cathedral.pinnacle_h", "cathedral.apse.wall_top", "cathedral.nave_wall_top", "cathedral.tower_sw", "cathedral.tower_se", "cathedral.clerestory_pinnacles", "cathedral.facade_pinnacle_top", "cathedral.aisle_front_lancet", "houses.list", "ruin", "cathedral.apse.cy"] | I | params the compare loop may not change (design intent / visual fidelity) |

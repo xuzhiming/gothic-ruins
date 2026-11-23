@@ -1075,6 +1075,9 @@ for (name, bk, hinge, props) in LEAVES:   # hinge empty (rotated by the viewer) 
     for k, v in props.items(): emp[k] = v
     ch = make_obj(name + "_mesh", bk, origin=Vector(hinge), props={"role": "door_leaf_mesh"}); ch.location = (0, 0, 0); ch.parent = emp; nf += bk.nfaces()
 print(f"objects: {len(bpy.data.objects)}  faces: {nf}  leaves: {len(LEAVES)}  spaces: {len(SP['spaces'])}  doors: {len(SP['doors'])}  stairs: {len(SP['stairs'])}  t={time.time() - T0:.1f}s")
+# M13: face-local copies only; geometry and shared material recipes stay unchanged.
+import face_materials
+face_materials.apply(P["houses"].get("face_material_overrides"), ROOT)
 SP["meta"] = {"plaza_z": PZ, "cathedral_floor_z": ZC, "params": os.path.basename(os.environ.get("PARAMS", "params.json"))}
 json.dump(SP, open(os.path.join(OUT, "spaces.json"), "w"), indent=0)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "building.blend"))

@@ -4,7 +4,7 @@
 
 在线预览：https://gothic-ruins.pages.dev （Cloudflare Pages，每次推送到 `main` 从 `web/` 自动部署）
 
-**当前版本 v1.2**（2026-11-20）：M10 外墙贴图按原效果图重做 + M11 十字窗（Kreuzstock）+ M12b 石灰抹灰为砖外的 1.5 cm 薄层外壳。见下方「版本记录」。
+**当前版本 v1.3 / M13**（2026-11-23）：在 v1.2（M10 外墙贴图 + M11 十字窗 + M12b 1.5 cm 薄石灰壳）基础上，按确认效果将东侧前排房屋 `E4` 南山墙与朝广场临街墙面改为大片灰白旧抹灰与不规则成片裸砖（独立面级材质与连续 8 m UV），其余墙面与几何不变。说明：`docs/renders/` 高清 8 图库本次未重渲，仍对应 v1.2。
 
 ![轴测效果图](docs/beauty_iso.png)
 
@@ -12,7 +12,7 @@
 
 ## 高清效果图
 
-Cycles 暖光预设渲染（`./render_final.sh` 重渲；仓库里是 JPG，PNG 原图不入库）。
+Cycles 暖光预设渲染（`./render_final.sh` 重渲；仓库里是 JPG，PNG 原图不入库）。**注：本组 8 张高清图库仍为 v1.2（M12b）渲染，M13 本次仅更新顶部 `docs/beauty_iso.png` 与网页预览 `web/building_opt.glb`，未重渲 8 张高清图库。**
 
 ![总览](docs/renders/contact_sheet.jpg)
 
@@ -40,7 +40,7 @@ Cycles 暖光预设渲染（`./render_final.sh` 重渲；仓库里是 JPG，PNG 
 
 - **动线检查**：86 个空间全部可从入口到达；71 处门洞/开口射线全部打穿，其中 69 处侧向射线确认打穿了真实墙体；25 段楼梯踏步高 150–180 mm、踏面至少 260 mm、净空至少 2.1 m，全部合格。反向测试：故意堵住 `W3_door`、把 `W3_stair_01` 一级踏步抬高 60 mm，两项都被检查抓出。详见 `check/circulation_report.md`。
 - **实走测试**：无头 Chrome 按 WASD 走完约 287 m（广场、大殿、后殿、钟楼、西排一栋房子的三层），0 次穿墙、0 次卡住，途经 4 扇自动门在通过时均为全开。详见 `walk/walk_result.json`。
-- **导出**：161,143 个三角面；原始 GLB 约 37.2 MB，经 gltf-transform（贴图转 WebP、几何 Meshopt）后 `web/building_opt.glb` 约 4.81 MB（4,807,584 字节）。
+- **导出**：161,143 个三角面；原始 GLB 约 37.2 MB，经 gltf-transform（贴图转 WebP、几何 Meshopt）后 `web/building_opt.glb` 约 4.81 MB（4,810,236 字节）。
 
 并排对照图：
 
@@ -54,6 +54,10 @@ Cycles 暖光预设渲染（`./render_final.sh` 重渲；仓库里是 JPG，PNG 
 
 ## 版本记录
 
+- **v1.3 / M13**（2026-11-23）
+  - **E4 双墙面大片剥落覆盖**：经相机投影确认，将东排南端 `E4` 南山墙（外法向 `-Y`）与朝广场临街墙（外法向 `-X`）共 561 个多边形改为独立复制的 `Plaster_d` 材质与连续 8 m 平面 UV（`src/face_materials.py`，参数在 `params.json` 的 `houses.face_material_overrides`），呈大片灰白旧抹灰与成片裸砖；其余 180 个网格对象几何、屋顶、门窗、原贴图、M12b 1.5 cm 薄石灰参数及其他墙面均保持零变化。
+  - **校准文件**：补入 `compare/wall/wall_gain.json`，确保仓库内可独立运行 `src/make_textures.py` 复现贴图色彩增益。
+  - **检查与构建**：完整 `run_all.sh` 通过（IoU 南 .808 / 北 .812 / 西 .740 / 东 .748，平面 .942、建筑轮廓 .851；动线 86 空间可达、两项负测抓出；WASD 实走 287.3 m 零穿墙/卡住）；`web/building_opt.glb` 为 4,810,236 字节。注：`docs/renders/` 高清 8 图库未随 M13 重渲，仍为 v1.2。
 - **v1.2**（2026-11-20）
   - **M10 外墙贴图**：按原始效果图重做所有房屋外墙的灰泥（4 种色调，W4/NW 为大面积剥落露砖）、砖、石、毛石和木构贴图；分区色差 ΔE00 均值 8.36 → 5.67。说明见 `compare/mat/wall_map.md`。
   - **M11 十字窗**：所有房屋窗户改为带竖梃和横档的十字窗，含外框、窗台、内凹玻璃；参数在 `params.json` 的 `houses.windows`，说明见 `compare/mat/window_map.md`。
