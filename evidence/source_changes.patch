@@ -1,0 +1,1101 @@
+--- a/build.py
++++ b/build.py
+@@ -13,6 +13,7 @@
+ ROOT = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(ROOT, "src"))
+ import importlib, geom; importlib.reload(geom)
+ import window_apertures as WA; WA.RECORDS.clear()
++from alley_layout import row_layout, partition_v, alley_routes, guard_boxes, ground_window_centers, preserve_window_damage
+ from geom import *
+ from mathutils import Vector
+ T0 = time.time()
+@@ -91,7 +92,18 @@
+ box(rub, -ux, ux, ty0, P["stairs_south"]["upper"]["y_top"], 0, TZ)        # under the upper flight
+ ap = ST["approach"]; box(SC.B("Approach", "rubble"), ap[0], ap[1], ap[2], ap[3], -0.3, 0.0, top=SC.B("Approach", "cobble"))
+ base = SC.B("Base", "soil")
+-box(base, -31.8, 31.8, -51.4, 51.4, -3.2, 0.0, skip=(5,))
++bx0, bx1 = ST.get("base_x", [-31.8, 31.8])
++box(base, bx0, bx1, -51.4, 51.4, -3.2, 0.0, skip=(5,))
++AC = P["houses"].get("alleys", {})
++if AC.get("enabled"):
++    # Solid cobbled return decks bridge the narrower north band (±29) safely.
++    for side,sg in (("W",-1),("E",1)):
++        xa,xb=sorted((sg*ST["north_band"][1],sg*ST["main"][1]))
++        box(SC.B("RearPlatform_"+side,"rubble"), xa,xb,ST["main"][3],ST["main"][3]+AC["north_platform_depth"],0,PZ,top=SC.B("RearPlatform_"+side,"cobble"))
++    for gd in guard_boxes(P):
++        xa,xb,ya,yb=gd["bounds"]
++        # Continuous weather-textured stone, deliberately NOT ruined/open balustrade.
++        box(SC.B("AlleyGuard_"+gd["id"],"stone"),xa,xb,ya,yb,PZ,PZ+gd["height"])
+ # monumental stairs (south): lower flight ground -> landing strip (TZ), upper flight -> plaza (PZ)
+ SS = P["stairs_south"]; stp = SC.B("Stairs", "stair_riser")   # gap #9: treads "stair", risers "stair_riser", stringers "stair_side"
+ STK = dict(top=SC.B("Stairs", "stair"), sides=SC.B("Stairs", "stair_side"))
+@@ -156,7 +168,19 @@
+                       (lo["x"][1] + 0.25, lo["y_bot"] + 0.3, 0.0)):
+         post(sg*x, y, z)
+     nb_ = ST["north_band"]
+-    balustrade((sg*(nb_[1] - 0.25), nb_[2]), (sg*(nb_[1] - 0.25), nb_[3]), PZ, h=ST["parapet_h"], bk=rub)
++    if AC.get("enabled"):
++        # Replay the ORIGINAL rail's draws without retaining its obstructing 2m
++        # segment. This preserves later unpinned cathedral finials/tracery exactly.
++        marks={k:(len(b.v),len(b.f),len(b.uv)) for k,b in SC.b.items()}
++        balustrade((sg*(nb_[1]-.25),nb_[2]),(sg*(nb_[1]-.25),nb_[3]),PZ,h=ST["parapet_h"],bk=rub)
++        original_after=RR.getstate()
++        for k,b in list(SC.b.items()):
++            nv,nf,nu=marks.get(k,(0,0,0));del b.v[nv:];del b.f[nf:];del b.uv[nu:]
++        RR.seed(f"t24u:north-rail:{sg}")
++        balustrade((sg*(nb_[1]-.25),nb_[2]+AC["north_platform_depth"]),(sg*(nb_[1]-.25),nb_[3]),PZ,h=ST["parapet_h"],bk=rub)
++        RR.setstate(original_after)
++    else:
++        balustrade((sg*(nb_[1]-.25),nb_[2]),(sg*(nb_[1]-.25),nb_[3]),PZ,h=ST["parapet_h"],bk=rub)
+     balustrade((sg*10.2, nb_[3] - 0.25), (sg*(nb_[1]), nb_[3] - 0.25), PZ, h=ST["parapet_h"], bk=rub)
+ 
+ # bollards + chains (U: semicircle to the south + straight legs to y_end)
+@@ -722,7 +746,7 @@
+     zf = [PZ + f*SH for f in range(floors)]
+     ze = PZ + floors*SH + 0.3 + h["eave_dz"] + (HS["eave_extra"] if floors == HS["floors_row"] else HS["corner"]["eave_extra"])
+     st = HS["stair"]; n = st["riser_n"]; rz = SH/n; tr = st["tread"]; v0 = st["v0"]
+-    pu = HS["partition_u"]; dv = min(max(h["door"]*W, 1.4), W - 1.4); pdv = HS["partition_door_v"]
++    pu = HS["partition_u"]; dv = min(max(h["door"]*W, 1.4), W - 1.4); pdv = partition_v(HS, W) if AC.get("enabled") else HS["partition_door_v"]
+     timber = h["timber"]
+     # ---- plan: spaces first
+     for f in range(floors):
+@@ -735,6 +759,10 @@
+         if f == 0:
+             gk = "round" if h["gf_arch"] else "flat"
+             wins = windows_row(W, h["win"][0], skip=dv, sill=1.0, w=h["win_w"], kind=gk, skip_d=1.5)
++            if AC.get("enabled") and h["row"] in ("W", "E"):
++                # Preserve every original GF slot after proportional narrowing.
++                template = windows_row(W, 1, sill=1.0, w=h["win_w"], kind=gk)[0]
++                wins = [dict(template, s=x) for x in ground_window_centers(HS, h)]
+             if h["shop"] and wins:   # one wide shop window (3 lights) instead of the window furthest from the door
+                 k = max(range(len(wins)), key=lambda i: abs(wins[i]["s"] - dv)); wins[k].update({"w": 2.1, "mull": 2, "sill": 0.8})
+                 if any(abs(wins[k]["s"] - o["s"]) < 1.7 for o in wins if o is not wins[k]) or abs(wins[k]["s"] - dv) < 2.0 or wins[k]["s"] < 1.3 or wins[k]["s"] > W - 1.3:
+@@ -770,6 +798,8 @@
+             isl = lime_islands(W, z1 - z0, ops, random.Random(PLY["residue"]["seed"] + 101*seed + f), f"{hid}_{f}_r")
+         dav = (skins["street"][1] if sk_("street") else []) + (isl[1] if isl else [])
+         geom.DAVOID = [(c[0] - 0.03, c[1] + 0.03, c[2] - 0.03, c[3] + 0.03) for c in dav]
++        if AC.get("enabled") and h["row"] in ("W","E"):
++            preserve_window_damage(HS,hid,"street",f,"E" if h["row"]=="W" else "W",ops)
+         wall(mat, fr.p2(u0 + HT/2, 0), fr.p2(u0 + HT/2, W), z0, z1, HT, ops, hgl, tim, wx=wxh(fr.dir(-1, 0)), outdir=fr.dir(-1, 0),
+              flush=bool(timber and MATS[h["gf"] if f == 0 else h["upper"]] == "plaster"), skin=sk_("street"))   # street face (half-timbered storey: frame lining in the reveal, posts frame it)
+         geom.DAVOID = []
+@@ -777,12 +807,23 @@
+             o_ = fr.p2(u0, 0); o3 = Vector((o_[0], o_[1], z0)); S_ = fr.dir(0, 1); S3 = Vector((S_[0], S_[1], 0)).normalized(); N_ = fr.dir(-1, 0)
+             for back, front, th in isl[0]: raised_island(plas, o3, S3, Vector((0, 0, 1)), Vector((N_[0], N_[1], 0)).normalized(), back, front, th, SC.B(G, "plaster_edge"))
+         rops = windows_row(W, h["rear_win"] - (1 if f == 0 else 0), w=h["win_w"])
++        if AC.get("enabled") and h["row"] in ("W","E"):
++            preserve_window_damage(HS,hid,"rear",f,"W" if h["row"]=="W" else "E",rops)
+         wall(mat, fr.p2(D - HT/2, W), fr.p2(D - HT/2, 0), z0, z1, HT, rops, hgl, tim, wx=wxh(fr.dir(1, 0)), outdir=fr.dir(1, 0), flush=True)      # rear face (outer silhouette: flush cross windows)
+         for vv, ext in ((0.15, ext_v0), (W - 0.15, ext_v1)):
+             kv = 0.0 if vv < 1 else W
+             geom.DAVOID = [(c[0] - 0.03, c[1] + 0.03, c[2] - 0.03, c[3] + 0.03) for c in (skins[kv][1] if sk_(kv) else [])]
+-            wall(mat, fr.p2(u0 + HT, vv), fr.p2(D - HT, vv), z0, z1, 0.3, windows_row(D - HT - u0 - HT, 2) if ext else [], hgl, tim,
+-                 wx=wxh(fr.dir(0, -1 if vv < 1 else 1)) if ext else None, outdir=fr.dir(0, -1 if vv < 1 else 1), flush=True, skin=sk_(kv) if ext else None)
++            alley_side = AC.get("enabled") and h["row"] in ("W", "E") and not ext
++            # New side weather must not consume RR or house-rng draws used by existing ruin.
++            old_rr = geom.RR
++            if alley_side: geom.RR = random.Random(f"t24u:{hid}:{f}:{int(vv > 1)}")
++            try:
++                sideops=windows_row(D - HT - u0 - HT,2) if ext else []
++                if AC.get("enabled") and h["row"] in ("W","E"):
++                    preserve_window_damage(HS,hid,"end",f,"N" if vv<1 else "S",sideops)
++                wall(mat, fr.p2(u0 + HT, vv), fr.p2(D - HT, vv), z0, z1, 0.3, sideops, hgl, tim,
++                     wx=wxh(fr.dir(0, -1 if vv < 1 else 1)) if (ext or alley_side) else None, outdir=fr.dir(0, -1 if vv < 1 else 1), flush=True, skin=sk_(kv) if ext else None)
++            finally: geom.RR = old_rr
+             geom.DAVOID = []
+         if f >= 1:   # floor slab (reaching out under the jetty) with the stair hole of the flight arriving from below
+             lane = st["u1"] if (f - 1) % 2 == 0 else st["u2"]
+@@ -939,9 +980,9 @@
+ hx0, hx1 = HS["row_x"]; ry0, ry1 = HS["row_y"]; Dh = hx1 - hx0
+ HL = {h["id"]: h for h in HS["list"]}
+ for side in ("W", "E"):
+-    street = "street_W" if side == "W" else "street_E"; hs = [h for h in HS["list"] if h["row"] == side]; vs = 0.0
++    street = "street_W" if side == "W" else "street_E"; hs = row_layout(HS, side); vs = 0.0
+     for i, h in enumerate(hs):
+-        fr = Frame(side, hx0 + h["setback"], ry1 - vs)
++        fr = Frame(side, hx0 + h["setback"], h["north"])
+         house(h, fr, Dh - h["setback"], street, ext_v0=(i == 0), ext_v1=(i == len(hs) - 1), seed=i + (10 if side == "E" else 0))
+         vs += h["w"]
+ cn = HS["corner"]
+@@ -954,7 +995,25 @@
+ for sg, nm in ((-1, "W"), (1, "E")):
+     space(f"street_{nm}", (sg*sx_, 10.0, PZ), "outdoor"); space(f"north_{nm}", (sg*12.5, 44.0, PZ), "outdoor")
+     open_link("plaza", f"street_{nm}", [(0, -12, PZ), (0, -4.5, PZ), (sg*sx_, -4.5, PZ), (sg*sx_, 10.0, PZ)])
+-    open_link(f"street_{nm}", f"north_{nm}", [(sg*sx_, 10.0, PZ), (sg*sx_, yB + 0.9, PZ), (sg*12.5, yB + 1.1, PZ), (sg*12.5, 44.0, PZ)])
++    if AC.get("enabled"):
++        north_route=next(rt for rt in alley_routes(P) if rt["id"]=="turn_"+nm)
++        open_link(f"street_{nm}", f"north_{nm}", [(sg*sx_,10.,PZ)]+north_route["path"][1:])
++    else:
++        open_link(f"street_{nm}", f"north_{nm}", [(sg*sx_, 10.0, PZ), (sg*sx_, yB + 0.9, PZ), (sg*12.5, yB + 1.1, PZ), (sg*12.5, 44.0, PZ)])
++
++# Explicit connected circulation for every transverse alley, longitudinal rear lane and north return.
++ALLEY_ROUTES = alley_routes(P)
++for rt in ALLEY_ROUTES:
++    path=rt["path"];a,b=Vector(path[0]),Vector(path[-1]);mid=Vector(path[1]) if rt["kind"]=="north_turn" else (a+b)/2
++    space(rt["id"],mid,"outdoor",net_width=rt["net_width"])
++for rt in ALLEY_ROUTES:
++    side=rt["side"];path=rt["path"];mid=R2((Vector(path[0])+Vector(path[-1]))/2)
++    if rt["kind"]=="alley":
++        open_link("street_"+side,rt["id"],[path[0],mid]);open_link(rt["id"],"rear_"+side,[mid,path[-1]])
++    elif rt["kind"]=="rear":open_link(rt["id"],"turn_"+side,path)
++    else:
++        sg=-1 if side=="W" else 1
++        open_link(rt["id"],"north_"+side,path)
+ 
+ # =====================================================================================
+ # 3b. ruin: rubble piles + fallen rafters (colliding, only where the circulation keep-out test allows), debris (decor)
+@@ -1045,7 +1104,7 @@
+     D_ = RU["debris"]; pin("debris")
+     chips(D_["nave"], -5.0, 5.0, 8.0, 37.0, ZC, [DEB_st, DEB_sl, DEB_sl, DEB_sl, DEB_tb, DEB_rb], size=(0.05, 0.3))
+     chips(D_["wall_base"]//2, -15.2, 15.2, 4.0, 36.0, ZC, [DEB_st, DEB_rb], pred=lambda x, y: 13.6 < abs(x) < 15.3)
+-    chips(D_["wall_base"]//2, -hx0, hx0, ry0, ry1, PZ, [DEB_br, DEB_sl, DEB_rb, DEB_tb], pred=lambda x, y: hx0 - 1.1 < abs(x) < hx0 - 0.1)
++    chips(D_["wall_base"]//2, -hx0, hx0, ry0, ry1, PZ, [DEB_br, DEB_sl, DEB_rb, DEB_tb], pred=lambda x, y: hx0 - 1.1 < abs(x) < hx0 - 0.1 and not any(rt["kind"]=="alley" and _sd((x,y),rt["path"][0],rt["path"][-1]) < AC["net_width"]/2 + .4 for rt in ALLEY_ROUTES))
+     chips(D_["plaza"], -16.0, 16.0, -33.0, -6.0, PZ, [DEB_st, DEB_sl, DEB_rb])
+     pin("debris_stairs")
+     for st_id in ("cathedral_steps", "stairs_south_upper", "stairs_south_lower"):   # chips + cracked / spalled treads near the step ends
+--- a/params.json
++++ b/params.json
+@@ -18,8 +18,8 @@
+  "site": {
+   "plaza_z": 4.2,
+   "main": [
+-   -31.35,
+-   31.35,
++   -33.15,
++   33.15,
+    -32.9,
+    30.3
+   ],
+@@ -58,7 +58,11 @@
+   "balustrade_h": 1.1,
+   "post_w": 1.1,
+   "post_h": 2.1,
+-  "plinth_course": 0.35
++  "plinth_course": 0.35,
++  "base_x": [
++   -33.6,
++   33.6
++  ]
+  },
+  "stairs_south": {
+   "upper": {
+@@ -314,7 +318,7 @@
+     "patches": 0,
+     "pentice": true,
+     "src": "plan 115 px; west elev. house 1: 4 windows/storey, half-timber on all storeys, damaged rear dormer, shop window; 2 chimneys at the N end (plan)",
+-    "w": 12.773,
++    "w": 11.601054,
+     "row": "W",
+     "floors": 3
+    },
+@@ -360,7 +364,7 @@
+     "patches": 0,
+     "pentice": false,
+     "src": "plan 104 px; west elev. house 2: eave ~0.8 m lower, highest ridge rise (5.1 m), 3 windows, round-arched door, chimney at S end; iso: big street gable",
+-    "w": 11.551,
++    "w": 10.491388,
+     "row": "W",
+     "floors": 3
+    },
+@@ -407,7 +411,7 @@
+     "patches": 0,
+     "pentice": true,
+     "src": "plan 92 px, big chimney at the N party wall; west elev. house 3: X-braced half-timber, 2 rear dormers; iso: deep jetty",
+-    "w": 10.219,
++    "w": 9.280844,
+     "row": "W",
+     "floors": 3
+    },
+@@ -449,7 +453,7 @@
+     "patches": 4,
+     "pentice": false,
+     "src": "plan 108 px, large roof hole; west elev. house 4 (hole with rafters): brick-patched ground floor, 4 windows; no street gable -> 2 dormers",
+-    "w": 11.996,
++    "w": 10.894903,
+     "row": "W",
+     "floors": 3
+    },
+@@ -501,7 +505,7 @@
+     "patches": 14,
+     "pentice": false,
+     "src": "plan 150 px incl. the south gable; front elev.: south gable plaster with large brick patches, 3 storeys + attic (gable reads ~50 deg at the front elevation's narrower depth = 40 deg on the 11 m plan depth)",
+-    "w": 16.661,
++    "w": 15.131811,
+     "row": "W",
+     "floors": 3
+    },
+@@ -547,7 +551,7 @@
+     "patches": 0,
+     "pentice": true,
+     "src": "plan 119 px, chimney at the N end (rear); east elev. house 5 (north): half-timber, 3 windows, dormer",
+-    "w": 13.218,
++    "w": 12.004779,
+     "row": "E",
+     "floors": 3
+    },
+@@ -590,7 +594,7 @@
+     "patches": 0,
+     "pentice": false,
+     "src": "plan 96 px; east elev. house 4: big roof hole, brick infill, lower eave",
+-    "w": 10.663,
++    "w": 9.684527,
+     "row": "E",
+     "floors": 3
+    },
+@@ -636,7 +640,7 @@
+     "patches": 0,
+     "pentice": true,
+     "src": "plan 92 px; east elev. house 3: X-braced half-timber, arched ground-floor windows, tallest ridge",
+-    "w": 10.219,
++    "w": 9.281005,
+     "row": "E",
+     "floors": 3
+    },
+@@ -681,7 +685,7 @@
+     "patches": 0,
+     "pentice": false,
+     "src": "plan 97 px, 2 chimneys at the N party wall (street + rear side); east elev. house 2: brick infill, rear roof hole",
+-    "w": 10.774,
++    "w": 9.785408,
+     "row": "E",
+     "floors": 3
+    },
+@@ -734,7 +738,7 @@
+     "pentice": false,
+     "gable_timber": true,
+     "src": "plan 165 px incl. south gable, 2 rear chimneys; front elev.: brick lower storeys, half-timbered gable, round-arched ground floor",
+-    "w": 18.327,
++    "w": 16.645281,
+     "row": "E",
+     "floors": 3
+    },
+@@ -949,6 +953,365 @@
+      ]
+     }
+    }
++  },
++  "alleys": {
++   "enabled": true,
++   "net_width": 1.4,
++   "finish_allowance": 0.025,
++   "south_datums": {
++    "W": -32.9,
++    "E": -32.901
++   },
++   "rear_extension": 1.8,
++   "guard_thickness": 0.25,
++   "guard_height": 1.1,
++   "north_platform_depth": 2.0
++  },
++  "window_damage": {
++   "W0/street/F0/E": [
++    false,
++    false,
++    false
++   ],
++   "W0/rear/F0/W": [
++    true,
++    false,
++    true
++   ],
++   "W0/end/F0/N": [
++    false,
++    false
++   ],
++   "W0/street/F1/E": [
++    false,
++    false,
++    false,
++    false
++   ],
++   "W0/rear/F1/W": [
++    true,
++    false,
++    false,
++    true
++   ],
++   "W0/end/F1/N": [
++    true,
++    false
++   ],
++   "W0/street/F2/E": [
++    false,
++    false,
++    true,
++    false
++   ],
++   "W0/rear/F2/W": [
++    false,
++    true,
++    false,
++    false
++   ],
++   "W0/end/F2/N": [
++    false,
++    true
++   ],
++   "W1/street/F0/E": [
++    true,
++    false
++   ],
++   "W1/rear/F0/W": [
++    true,
++    false
++   ],
++   "W1/street/F1/E": [
++    true,
++    false,
++    false
++   ],
++   "W1/rear/F1/W": [
++    false,
++    false,
++    true
++   ],
++   "W1/street/F2/E": [
++    false,
++    false,
++    false
++   ],
++   "W1/rear/F2/W": [
++    true,
++    true,
++    false
++   ],
++   "W2/street/F0/E": [
++    false,
++    false
++   ],
++   "W2/rear/F0/W": [
++    false,
++    false
++   ],
++   "W2/street/F1/E": [
++    false,
++    false,
++    false
++   ],
++   "W2/rear/F1/W": [
++    true,
++    false,
++    true
++   ],
++   "W2/street/F2/E": [
++    false,
++    false,
++    false
++   ],
++   "W2/rear/F2/W": [
++    false,
++    false,
++    true
++   ],
++   "W3/street/F0/E": [
++    false,
++    false
++   ],
++   "W3/rear/F0/W": [
++    true,
++    true,
++    false
++   ],
++   "W3/street/F1/E": [
++    false,
++    false,
++    true,
++    true
++   ],
++   "W3/rear/F1/W": [
++    false,
++    true,
++    false,
++    true
++   ],
++   "W3/street/F2/E": [
++    true,
++    true,
++    false,
++    false
++   ],
++   "W3/rear/F2/W": [
++    true,
++    false,
++    false,
++    true
++   ],
++   "W4/street/F0/E": [
++    false,
++    true
++   ],
++   "W4/rear/F0/W": [
++    false,
++    true,
++    false
++   ],
++   "W4/end/F0/S": [
++    false,
++    true
++   ],
++   "W4/street/F1/E": [
++    false,
++    true,
++    true,
++    false
++   ],
++   "W4/rear/F1/W": [
++    false,
++    true,
++    false,
++    false
++   ],
++   "W4/end/F1/S": [
++    true,
++    true
++   ],
++   "W4/street/F2/E": [
++    false,
++    false,
++    false,
++    true
++   ],
++   "W4/rear/F2/W": [
++    true,
++    false,
++    true,
++    true
++   ],
++   "W4/end/F2/S": [
++    true,
++    false
++   ],
++   "E0/street/F0/W": [
++    false,
++    false
++   ],
++   "E0/rear/F0/E": [
++    false,
++    false
++   ],
++   "E0/end/F0/N": [
++    false,
++    true
++   ],
++   "E0/street/F1/W": [
++    false,
++    false,
++    false
++   ],
++   "E0/rear/F1/E": [
++    true,
++    false,
++    false
++   ],
++   "E0/end/F1/N": [
++    true,
++    false
++   ],
++   "E0/street/F2/W": [
++    false,
++    false,
++    true
++   ],
++   "E0/rear/F2/E": [
++    false,
++    false,
++    false
++   ],
++   "E0/end/F2/N": [
++    true,
++    false
++   ],
++   "E1/street/F0/W": [
++    false,
++    false
++   ],
++   "E1/rear/F0/E": [
++    false,
++    false
++   ],
++   "E1/street/F1/W": [
++    false,
++    false,
++    false
++   ],
++   "E1/rear/F1/E": [
++    false,
++    false,
++    false
++   ],
++   "E1/street/F2/W": [
++    false,
++    false,
++    false
++   ],
++   "E1/rear/F2/E": [
++    true,
++    true,
++    false
++   ],
++   "E2/street/F0/W": [
++    false
++   ],
++   "E2/rear/F0/E": [
++    false
++   ],
++   "E2/street/F1/W": [
++    true,
++    false
++   ],
++   "E2/rear/F1/E": [
++    false,
++    false
++   ],
++   "E2/street/F2/W": [
++    true,
++    false,
++    true
++   ],
++   "E2/rear/F2/E": [
++    false,
++    true
++   ],
++   "E3/street/F0/W": [
++    false,
++    false
++   ],
++   "E3/rear/F0/E": [
++    false,
++    false
++   ],
++   "E3/street/F1/W": [
++    true,
++    true,
++    true
++   ],
++   "E3/rear/F1/E": [
++    true,
++    false,
++    false
++   ],
++   "E3/street/F2/W": [
++    false,
++    true,
++    false
++   ],
++   "E3/rear/F2/E": [
++    false,
++    true,
++    false
++   ],
++   "E4/street/F0/W": [
++    false,
++    false
++   ],
++   "E4/rear/F0/E": [
++    false,
++    true,
++    false
++   ],
++   "E4/end/F0/S": [
++    true,
++    true
++   ],
++   "E4/street/F1/W": [
++    false,
++    false,
++    false,
++    false
++   ],
++   "E4/rear/F1/E": [
++    true,
++    true,
++    true,
++    true
++   ],
++   "E4/end/F1/S": [
++    true,
++    false
++   ],
++   "E4/street/F2/W": [
++    true,
++    true,
++    false,
++    false
++   ],
++   "E4/rear/F2/E": [
++    true,
++    false,
++    false,
++    false
++   ],
++   "E4/end/F2/S": [
++    false,
++    false
++   ]
+   }
+  },
+  "walk": {
+--- a/run_all.sh
++++ b/run_all.sh
+@@ -8,6 +8,7 @@
+ BL=${BLENDER:-/home/box/.local/bin/blender}
+ GT=${GLTF_TRANSFORM:-$( [ -x tools/gltf/node_modules/.bin/gltf-transform ] && echo tools/gltf/node_modules/.bin/gltf-transform || echo /workspace/tools/gltf/node_modules/.bin/gltf-transform)}   # project-local copy first (shared /workspace/tools may be reset by other jobs)
+ PORT=${PORT:-8766}
++BL_ARGS=(-t "${BLENDER_THREADS:-4}" --python-exit-code 1)
+ mkdir -p logs renders compare/out
+ step(){ echo; echo "=== [$(date +%H:%M:%S)] $*"; }
+ 
+@@ -22,22 +23,25 @@
+ python3 src/params_md.py
+ 
+ step "3/8 build (Blender background, procedural)"
+-$BL -b -P build.py > logs/build.log 2>&1 || { tail -30 logs/build.log; exit 1; }
++$BL "${BL_ARGS[@]}" -b -P build.py > logs/build.log 2>&1 || { tail -30 logs/build.log; exit 1; }
+ grep -E "BUILD OK|spaces" logs/build.log | tail -3
+ 
+ # Glass regression: actual saved Blend, through-hole rays and supported material API.
+-$BL -b -P check/test_aperture_geometry.py > logs/glass_geometry.log 2>&1
+-$BL -b building.blend -P check/test_glass_assets.py -- --report check/glass_report.json > logs/glass_assets.log 2>&1
++$BL "${BL_ARGS[@]}" -b -P check/test_aperture_geometry.py > logs/glass_geometry.log 2>&1
++$BL "${BL_ARGS[@]}" -b building.blend -P check/test_glass_assets.py -- --report check/glass_report.json > logs/glass_assets.log 2>&1
+ python3 -c "import json; r=json.load(open('check/glass_report.json')); assert r['PASS'],r; print('glass apertures:',r['apertures'],'| unobstructed:',r['unobstructed_apertures'],'| retained occlusions:',r['retained_occlusions'])"
+ python3 check/test_m13_faces.py
+ 
+ step "4/8 orthographic renders + silhouette compare + side-by-side"
+-$BL -b building.blend -P src/render_sil.py -- renders 0.1 --shaded > logs/render_sil.log 2>&1
++$BL "${BL_ARGS[@]}" -b building.blend -P src/render_sil.py -- renders 0.1 --shaded > logs/render_sil.log 2>&1
+ python3 compare/compare.py renders compare/out --sbs | tee logs/compare.log | tail -8
+ python3 compare/diag_side.py renders compare/diag current | tee logs/diag_side.log | grep IoU
+ 
+ step "5/8 circulation check (+ negative tests)"
+-$BL -b building.blend -P check/circulation_check.py > logs/check.log 2>&1 || true
++if python3 -c 'import json,sys;sys.exit(0 if json.load(open("params.json"))["houses"].get("alleys",{}).get("enabled") else 1)'; then
++  $BL "${BL_ARGS[@]}" -b building.blend -P check/test_alley_assets.py > logs/alleys.log 2>&1
++fi
++$BL "${BL_ARGS[@]}" -b building.blend -P check/circulation_check.py > logs/check.log 2>&1 || true
+ python3 - <<'PY'
+ import json, sys
+ main, neg, neg2 = json.load(open("check/circulation_report.json"))
+@@ -53,6 +57,9 @@
+ cp spaces.json web/spaces.json
+ ls -l building.glb web/building_opt.glb | awk '{print $5, $9}'
+ 
++if [ "${SKIP_WEB_TEST:-0}" = "1" ]; then
++  step "7/8 web test NOT EXECUTED (asset-only, cloud validation required)"
++else
+ step "7/8 preview server + headless-Chrome walk test"
+ if ! curl -sf -o /dev/null "http://localhost:$PORT/index.html"; then
+   nohup python3 -m http.server "$PORT" --directory "$R/web" > logs/http.log 2>&1 &
+@@ -61,9 +68,11 @@
+ python3 walk/walk_test.py --url "http://localhost:$PORT/index.html" | tee logs/walk.log | tail -4
+ python3 -c "import json,sys; r=json.load(open('walk/walk_result.json')); print('walk:', 'PASS' if r['PASS'] else 'FAIL'); sys.exit(0 if r['PASS'] else 1)"
+ 
++fi
++
+ if [ "${FAST:-0}" != "1" ]; then
+   step "8/8 beauty render (Cycles, isometric reference angle)"
+-  $BL -b building.blend -P src/render_beauty.py -- renders/beauty_iso.png ${BEAUTY_SAMPLES:-96} ${BEAUTY_RES:-1600} --az 22 --el 50 --warm --fog $(python3 -c "import json;print(json.load(open('compare/mat/warm_light.json'))['fog'])") > logs/beauty.log 2>&1
++  $BL "${BL_ARGS[@]}" -b building.blend -P src/render_beauty.py -- renders/beauty_iso.png ${BEAUTY_SAMPLES:-96} ${BEAUTY_RES:-1600} --az 22 --el 50 --warm --fog $(python3 -c "import json;print(json.load(open('compare/mat/warm_light.json'))['fog'])") > logs/beauty.log 2>&1
+   ls -l renders/beauty_iso.png | awk '{print $5, $9}'
+ fi
+ step "done - preview: http://localhost:$PORT/index.html"
+--- a/src/house_table.py
++++ b/src/house_table.py
+@@ -88,6 +88,12 @@
+     h = dict(h); h["row"] = "N"; h["floors"] = HS["corner"]["floors"]; out.append(h)
+ for h in out: h["cross"] = [list(c) for c in h["cross"]]; h["chimneys"] = [list(c) for c in h["chimneys"]]
+ HS["list"] = out
++from alley_layout import row_layout
++if HS.get("alleys", {}).get("enabled"):
++    out = [dict(h) for side in ("W", "E") for h in row_layout(HS, side)] + [h for h in out if h["row"] == "N"]
++    for h in out:
++        h.pop("north", None); h.pop("south", None)
++    HS["list"] = out
+ HS["_list_doc"] = "per-house look + shell parameters, generated by src/house_table.py from the hand-read table (do not edit here)"
+ json.dump(P, open(os.path.join(R, "params.json"), "w"), indent=1)
+ md = ["# houses_table.md - per-house parameters (generated by src/house_table.py)", "", __doc__.strip(), "",
+--- a/src/geom.py
++++ b/src/geom.py
+@@ -392,6 +392,7 @@
+             poly = ([(a, spring), (b, spring), (b, H), (a, H)] if kind == "flat" else [curve[-1], (b, H), (a, H)] + curve[:-1])
+             extrude(bk, poly, o, S, T, tb, ob, **BX)
+         lost = RUIN is not None and RR.random() < RUIN["glass"]["missing_cathedral" if frame is not None and frame.group == "Tracery" else "missing_house"]
++        lost = q.get("pane_missing", lost)   # explicit semantic ruin state; ordinary draw above still consumed
+         if q.get("glass") and glass is not None:
+             outline = [(a, sill)] + [(b, sill)] + ([(b, spring), (a, spring)] if kind == "flat" else list(reversed(arch_curve(a, b, spring, kind, k))))
+             cross = q.get("cross") and WIN is not None and WIN.get("cross") and WFRAME is not None and outdir is not None
+--- a/check/test_glass_assets.py
++++ b/check/test_glass_assets.py
+@@ -49,7 +49,24 @@
+             d={'v':[list(v.co) for v in o.data.vertices],'f':[list(p.vertices) for p in o.data.polygons],'uv':[list(u.uv) for u in o.data.uv_layers.active.data] if o.data.uv_layers.active else [],'m':[m.name for m in o.data.materials]}
+             return hashlib.sha256(json.dumps(d,sort_keys=True).encode()).hexdigest()
+         before={'Chimneys_brick_red':'ac42594b2135bfb6f0f1f5321042d36b38182f8256c0f59eba52545f3298b93d'}
+-        check(fp(bpy.data.objects['Chimneys_brick_red'])==before['Chimneys_brick_red'],'Original E4 chimney geometry retained exactly')
++        P=json.load(open(os.path.join(ROOT,'params.json')))
++        if not P['houses'].get('alleys',{}).get('enabled'):
++            check(fp(bpy.data.objects['Chimneys_brick_red'])==before['Chimneys_brick_red'],'Original E4 chimney geometry retained exactly')
++        else:
++            # t24u explicitly changes house widths/locations. A world-space hash of
++            # ALL stacks is no longer an invariant; retain the occluding E4 stack
++            # at its approved parametric position, original .9 x1.6m footprint.
++            sys.path.insert(0,os.path.join(ROOT,'src'))
++            from alley_layout import row_layout
++            H=P['houses'];e4=next(h for h in row_layout(H,'E') if h['id']=='E4');ch=H['chimney']
++            vfrac,ufrac=e4['chimneys'][1];D=H['row_x'][1]-H['row_x'][0];uf=-e4['jetty']*(e4['floors']-1)
++            vv=min(max(vfrac*e4['w'],ch['w']/2+.3),e4['w']-ch['w']/2-.3)
++            uc=min(max(uf+ufrac*(D-uf)-ch['d']/2,uf+.4),D-ch['d']-.4)
++            x0=H['row_x'][0]+uc;x1=x0+ch['d'];yc=e4['north']-vv
++            pts=[v.co for v in bpy.data.objects['Chimneys_brick_red'].data.vertices if x0-.001<=v.co.x<=x1+.001 and abs(v.co.y-yc)<=ch['w']/2+.001]
++            extents=([min(v[k] for v in pts) for k in (0,1)],[max(v[k] for v in pts) for k in (0,1)]) if pts else ([],[])
++            expected=([x0,yc-ch['w']/2],[x1,yc+ch['w']/2])
++            check(len(pts)>=8 and all(abs(a-b)<.002 for A,B in zip(extents,expected) for a,b in zip(A,B)),'Approved E4 chimney retained at scaled-row datum with original footprint')
+         wall_clear=0
+         for dx,dz in ((0,0),(-.22,-.18),(.22,-.18),(-.22,.18),(.22,.18)):
+             cc=c+s*dx+Vector((0,0,dz)); hit=t_nochimney.ray_cast(cc-n*half,n,2*half)
+--- a/src/alley_layout.py
++++ b/src/alley_layout.py
+@@ -0,0 +1,73 @@
++"""Shared metric t24u layout: no Blender imports or random state."""
++def row_layout(houses, side):
++    hs=[dict(h) for h in houses['list'] if h['row']==side]
++    cfg=houses.get('alleys',{});enabled=cfg.get('enabled',False)
++    gap=cfg['net_width']+2*cfg['finish_allowance'] if enabled else 0.
++    north=houses['row_y'][1];south=cfg.get('south_datums',{}).get(side,houses['row_y'][0])
++    usable=north-south-gap*(len(hs)-1);total=sum(h['w_px'] for h in hs)
++    for i,h in enumerate(hs):
++        h['w']=round(usable*h['w_px']/total,6) if enabled else h['w']
++        h['north']=north;h['south']=round(north-h['w'],6)
++        if enabled and i==len(hs)-1:h['south']=south;h['w']=round(north-south,6)
++        north=h['south']-gap
++    return hs
++
++def partition_v(houses,width):
++    return min(houses['partition_door_v'],width-1.15)
++
++def alley_routes(P):
++    H=P['houses'];cfg=H.get('alleys',{})
++    if not cfg.get('enabled'):return []
++    z=P['site']['plaza_z'];outer=P['site']['main'][1];back=H['row_x'][1]
++    rx=(back+.12+outer-cfg['guard_thickness'])/2
++    yn=H['row_y'][1]+cfg['north_platform_depth']/2;result=[]
++    for side,sg in [('W',-1),('E',1)]:
++        hs=row_layout(H,side)
++        for i,(a,b) in enumerate(zip(hs,hs[1:])):
++            y=(a['south']+b['north'])/2
++            result.append(dict(id=f'alley_{side}{i}{i+1}',kind='alley',side=side,net_width=cfg['net_width'],path=[[sg*19.,y,z],[sg*rx,y,z]]))
++        result.append(dict(id=f'rear_{side}',kind='rear',side=side,net_width=1.4,path=[[sg*rx,H['row_y'][0]+.65,z],[sg*rx,yn,z]]))
++        # The NEW platform has 1.4m swept width. Beyond x=18 the existing
++        # NW/NE-to-cathedral diagonal pinch admits the .60m player, NOT 1.4m.
++        # These existing-road points were measured by BVH grid search, no assets moved.
++        join=[(18.,yn),(15.75,yn),(15.75,36.05),(15.7,36.05),(15.7,36.2),(15.65,36.2),(15.65,36.25),(15.6,36.25),(15.6,36.3),(15.45,36.3),(15.45,36.35),(12.5,36.35),(12.5,44.)]
++        path=[[sg*rx,yn,z]]+[[sg*x,y,z] for x,y in join]
++        result.append(dict(id=f'turn_{side}',kind='north_turn',side=side,net_width=1.4,segment_widths=[1.4]+[.6]*(len(path)-2),path=path))
++    return result
++
++def guard_boxes(P):
++    H=P['houses'];c=H['alleys'];s=P['site'];outer=s['main'][1];t=c['guard_thickness'];yn=H['row_y'][1];yt=yn+c['north_platform_depth'];ys=H['row_y'][0]
++    boxes=[]
++    for side,sg in [('W',-1),('E',1)]:
++        def add(name,x0,x1,y0,y1):
++            a,b=sorted([sg*x0,sg*x1]);boxes.append(dict(id=f'{side}_{name}',bounds=[a,b,y0,y1],height=c['guard_height']))
++        add('outer',outer-t,outer,ys,yt)
++        add('south',H['row_x'][1]-.04,outer,ys,ys+t)
++        add('north',28.5,outer,yt-t,yt)
++    return boxes
++
++def ground_window_centers(houses,h):
++    """Keep original GF slot selection; reflow only if fixed pad/skip loses a slot.
++
++    Old 1.5m center exclusion was aesthetic, not an opening width. Scaling the
++    original selected centers retains each opening with >.1m masonry to the door.
++    """
++    n=h['win'][0];W=h['w'];dv=min(max(h['door']*W,1.4),W-1.4)
++    current=[1.2+(W-2.4)*(i+.5)/n for i in range(n)]
++    current=[x for x in current if abs(x-dv)>1.5]
++    peers=[v for v in houses['list'] if v['row']==h['row']]
++    L=houses['row_y'][1]-houses['row_y'][0]
++    oldw=round(L*h['w_px']/sum(v['w_px'] for v in peers),3)
++    olddv=min(max(h['door']*oldw,1.4),oldw-1.4)
++    old=[1.2+(oldw-2.4)*(i+.5)/n for i in range(n)]
++    old=[x for x in old if abs(x-olddv)>1.5]
++    return current if len(current)==len(old) else [x*W/oldw for x in old]
++
++def preserve_window_damage(houses,hid,component,floor,orientation,ops):
++    """Original asset's semantic ruin states, independent of rescaled weather draws."""
++    states=houses.get('window_damage',{}).get(f'{hid}/{component}/F{floor}/{orientation}')
++    if states is None:return ops
++    glass=[o for o in ops if o.get('glass')]
++    if len(glass)!=len(states):raise ValueError(('changed original window slot count',hid,component,floor,len(glass),len(states)))
++    for o,missing in zip(glass,states):o['pane_missing']=missing
++    return ops
+--- a/check/test_alley_layout.py
++++ b/check/test_alley_layout.py
+@@ -0,0 +1,54 @@
++"""Approved t24u contract, pure layout (no Blender)."""
++import unittest, json, sys, importlib.util
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
++class Layout(unittest.TestCase):
++ def setUp(self):
++  self.P=json.loads((ROOT/'params.json').read_text())
++ def module(self):
++  self.assertIsNotNone(importlib.util.find_spec('alley_layout'),'missing approved alley layout module')
++  import alley_layout;return alley_layout
++ def test_eight_real_net_width_reservations(self):
++  m=self.module(); gaps=[]
++  for side in 'WE':
++   hs=m.row_layout(self.P['houses'],side)
++   self.assertEqual(len(hs),5)
++   gaps += [a['south']-b['north']-2*self.P['houses']['alleys']['finish_allowance'] for a,b in zip(hs,hs[1:])]
++  self.assertEqual(len(gaps),8);self.assertTrue(all(g>=1.4-1e-6 for g in gaps),gaps)
++ def test_depth_datums_and_proportional_widths(self):
++  m=self.module();self.assertEqual(self.P['houses']['row_x'],[20.35,31.35])
++  for s,end in [('W',-32.9),('E',-32.901)]:
++   hs=m.row_layout(self.P['houses'],s);self.assertAlmostEqual(hs[0]['north'],30.3);self.assertAlmostEqual(hs[-1]['south'],end,places=6)
++   ratios=[h['w']/h['w_px'] for h in hs];self.assertLess(max(ratios)-min(ratios),1e-7)
++ def test_partition_stair_clearance(self):
++  m=self.module()
++  for s in 'WE':
++   for h in m.row_layout(self.P['houses'],s):
++    v=m.partition_v(self.P['houses'],h['w']);self.assertGreater(v-.45,7.40);self.assertLessEqual(v+.75,h['w']-.35+1e-6)
++ def test_original_ground_window_slots_and_door_clearance(self):
++  m=self.module();self.assertTrue(hasattr(m,'ground_window_centers'),'missing slot-preserving GF layout')
++  for side in 'WE':
++   for h in m.row_layout(self.P['houses'],side):
++    centers=m.ground_window_centers(self.P['houses'],h)
++    baseline=[v for v in self.P['houses']['list'] if v['row']==side]
++    oldw=round(63.2*h['w_px']/sum(v['w_px'] for v in baseline),3)
++    dv=oldw*h['door'];xs=[1.2+(oldw-2.4)*(i+.5)/h['win'][0] for i in range(h['win'][0])]
++    expected=sum(abs(x-dv)>1.5 for x in xs)
++    self.assertEqual(len(centers),expected,h['id'])
++    for x in centers:self.assertGreater(abs(x-h['w']*h['door']),.6+h['win_w']/2+.1,h['id'])
++ def test_pane_damage_is_semantic_not_row_rng_order(self):
++  m=self.module();self.assertTrue(hasattr(m,'preserve_window_damage'),'missing stable per-slot ruin preservation')
++  H=self.P['houses'];ops=[{'glass':True} for _ in H['window_damage']['W1/street/F2/E']]
++  result=m.preserve_window_damage(H,'W1','street',2,'E',ops)
++  self.assertEqual([o['pane_missing'] for o in result],H['window_damage']['W1/street/F2/E'])
++ def test_routes_and_outer_extension(self):
++  m=self.module();routes=m.alley_routes(self.P)
++  self.assertEqual(sum(r['kind']=='alley' for r in routes),8)
++  self.assertEqual(sum(r['kind']=='rear' for r in routes),2)
++  self.assertEqual(sum(r['kind']=='north_turn' for r in routes),2)
++  self.assertEqual(self.P['site']['main'][:2],[-33.15,33.15])
++  for r in routes:
++   if r['kind']=='north_turn':
++    self.assertEqual(r['path'][-1][1],44.)
++    self.assertEqual(abs(r['path'][-1][0]),12.5)
++if __name__=='__main__':unittest.main(verbosity=2)
+--- a/check/test_asset_pipeline.py
++++ b/check/test_asset_pipeline.py
+@@ -0,0 +1,11 @@
++import unittest
++from pathlib import Path
++class Pipeline(unittest.TestCase):
++ def test_explicit_asset_only_web_skip(self):
++  text=(Path(__file__).resolve().parents[1]/'run_all.sh').read_text()
++  self.assertIn('SKIP_WEB_TEST',text)
++  self.assertIn('web test NOT EXECUTED',text)
++ def test_approved_alley_audit_in_pipeline(self):
++  text=(Path(__file__).resolve().parents[1]/'run_all.sh').read_text()
++  self.assertIn('check/test_alley_assets.py',text)
++if __name__=='__main__':unittest.main()
+--- a/check/test_alley_assets.py
++++ b/check/test_alley_assets.py
+@@ -0,0 +1,98 @@
++"""Saved-scene full-width capsule/floor/guard audit plus real BVH negative fixtures.
++blender -b building.blend -P check/test_alley_assets.py -- [report.json]
++"""
++import bpy,json,sys,math,os
++from pathlib import Path
++from mathutils import Vector
++from mathutils.bvhtree import BVHTree
++ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
++from alley_layout import alley_routes,guard_boxes
++P=json.loads((ROOT/'params.json').read_text());routes=alley_routes(P);S=json.loads((ROOT/'spaces.json').read_text())
++args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
++OUT=Path(args[0]) if args else ROOT/'check/alley_report.json'
++def tree(omit=None,block=None):
++ vs=[];fs=[];names=[]
++ for ob in bpy.context.scene.objects:
++  if ob.type!='MESH' or ob.name.startswith('DoorLeaf_') or ob.get('role') in ('decor','glass_never'):continue
++  if omit and omit(ob):continue
++  n=len(vs);vs.extend(ob.matrix_world@v.co for v in ob.data.vertices)
++  for f in ob.data.polygons:fs.append([n+i for i in f.vertices]);names.append(ob.name)
++ if block:
++  x,y,z=block;n=len(vs)
++  vs.extend(Vector((x+a*.35,y+b*.8,z+c*1.1)) for a,b,c in [(-1,-1,0),(-1,1,0),(1,1,0),(1,-1,0),(-1,-1,2),(-1,1,2),(1,1,2),(1,-1,2)])
++  for ids in [(0,1,2,3),(4,7,6,5),(0,4,5,1),(1,5,6,2),(2,6,7,3),(3,7,4,0)]:fs.append([n+i for i in ids]);names.append('NEGATIVE_BLOCK')
++ return BVHTree.FromPolygons(vs,fs),names
++
++def ray(T,o,d,L):
++ p,n,i,t=T[0].ray_cast(Vector(o),Vector(d),L)
++ return (t,T[1][i]) if p is not None else (None,None)
++
++def inspect(T,quick=False):
++ failures=[];count=0;min_gap=999.;min_rear=999.;min_head=3.
++ for r in [dict(rt,path=[a,b],net_width=rt.get('segment_widths',[rt['net_width']]*(len(rt['path'])-1))[j]) for rt in routes for j,(a,b) in enumerate(zip(rt['path'],rt['path'][1:]))]:
++  a,b=map(Vector,(r['path'][0],r['path'][-1]));delta=b-a;length=delta.length;dire=delta.normalized();lat=Vector((-dire.y,dire.x,0));steps=math.ceil(length/.20)
++  for i in range(steps+1):
++   p=a+delta*i/steps;count+=1
++   for off in (-(r['net_width']/2-.005),0.,r['net_width']/2-.005):
++    q=p+lat*off;dist,_=ray(T,q+Vector((0,0,.12)),(0,0,-1),.18)
++    if dist is None or abs(dist-.12)>.02:failures.append([r['id'],'missing_floor',i,off])
++   for off in (-(r['net_width']/2-.30),0.,r['net_width']/2-.30):
++    q=p+lat*off
++    hd,_=ray(T,q+Vector((0,0,.01)),(0,0,1),3.)
++    min_head=min(min_head,hd if hd is not None else 999)
++    if hd is not None and hd<2.09:failures.append([r['id'],'headroom',i,off,hd])
++    # Capsule is a swept .30m sphere with centerline z=.30..1.30.
++    # Nearest-surface checks catch oblique obstacles between radial rays.
++    for j in range(11):
++     center=q+Vector((0,0,.30+j*.10));near=T[0].find_nearest(center,.301)
++     if near[0] is not None and near[3]<.299:
++      failures.append([r['id'],'capsule_nearest',i,off,j,T[1][near[2]],round(near[3],5)])
++    for h in (.05,.30,.80,1.30,1.60):
++     for angle in range(0,360,45):
++      d=(math.cos(math.radians(angle)),math.sin(math.radians(angle)),0)
++      dist,name=ray(T,q+Vector((0,0,h)),d,.30)
++      if dist is not None:failures.append([r['id'],'capsule',i,off,h,name,round(dist,4)])
++   if r['kind']=='rear' and -31.5<p.y<29.5:
++    for h in (.1,.8,1.6,2.05):
++     d1,_=ray(T,p+Vector((0,0,h)),(1,0,0),3.);d2,_=ray(T,p+Vector((0,0,h)),(-1,0,0),3.)
++     if d1 is not None and d2 is not None:min_rear=min(min_rear,d1+d2)
++   if r['kind']=='alley' and 21<abs(p.x)<30.7:
++    for h in (.1,.8,1.6,2.05):
++     d1,_=ray(T,p+Vector((0,0,h)),lat,3.);d2,_=ray(T,p+Vector((0,0,h)),-lat,3.)
++     if d1 is not None and d2 is not None:
++      g=d1+d2;min_gap=min(min_gap,g)
++      if g<1.4-1e-4:failures.append([r['id'],'net_width',i,h,g])
++   if quick and failures:return dict(PASS=False,fail=failures[:30],samples=count)
++ for g in guard_boxes(P):
++  name='AlleyGuard_'+g['id'];x0,x1,y0,y1=g['bounds'];long_y=y1-y0>x1-x0;length=(y1-y0 if long_y else x1-x0)
++  for i in range(math.ceil(length/.25)+1):
++   t=i/math.ceil(length/.25);x=(x0+x1)/2 if long_y else x0+(x1-x0)*t;y=y0+(y1-y0)*t if long_y else (y0+y1)/2
++   # Avoid exact mesh corners while preserving end coverage.
++   x=min(x1-.002,max(x0+.002,x));y=min(y1-.002,max(y0+.002,y))
++   for h in (.15,.55,1.0):
++    origin=(x-.5,y,P['site']['plaza_z']+h) if long_y else (x,y-.5,P['site']['plaza_z']+h)
++    direction=Vector((1,0,0) if long_y else (0,1,0));travel=0.;found=False;hitname=None
++    # At sealed wall/guard overlaps the house face can be the nearest hit.
++    # Search all intersections; require the named solid guard itself, not a proxy wall.
++    for _ in range(12):
++     dist,hitname=ray(T,Vector(origin)+direction*travel,direction,1.-travel)
++     if dist is None:break
++     if hitname.startswith(name+'_'):found=True;break
++     travel+=dist+.0001
++     if travel>=1.:break
++    if not found:failures.append([g['id'],'missing_guard',i,h,hitname])
++ return dict(PASS=not failures,fail=failures[:100],failure_count=len(failures),samples=count,min_alley_structural_width_m=round(min_gap,6),min_rear_structural_width_m=round(min_rear,6),min_headroom_lower_bound_m=round(min_head,4),routes=[r['id'] for r in routes],existing_north_join_test_width_m=.6,new_platform_and_alley_test_width_m=1.4)
++
++T=tree();main=inspect(T)
++ids=set(S['spaces']);missing=[r['id'] for r in routes if r['id'] not in ids]
++if missing:main['PASS']=False;main['fail'].append(['missing_route_spaces',missing])
++wrong=[o.name for o in bpy.context.scene.objects if o.name.startswith('AlleyGuard_') and o.get('role')!='solid']
++if wrong:main['PASS']=False;main['fail'].append(['noncolliding_guard',wrong])
++negative={}
++if main['PASS']:
++ del T
++ r=routes[0];a,b=map(Vector,(r['path'][0],r['path'][-1]));T=tree(block=(a+b)/2);v=inspect(T,True);negative['blocked_alley']={'caught':not v['PASS'],'evidence':v['fail'][:2]};del T
++ T=tree(omit=lambda o:o.name=='Plaza_cobble');v=inspect(T,True);negative['missing_floor']={'caught':not v['PASS'],'evidence':v['fail'][:2]};del T
++ T=tree(omit=lambda o:o.name.startswith('AlleyGuard_W_outer'));v=inspect(T);negative['missing_guard']={'caught':not v['PASS'],'evidence':v['fail'][:2]};del T
++report=dict(main=main,negative=negative,PASS=main['PASS'] and len(negative)==3 and all(v['caught'] for v in negative.values()))
++OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2));assert report['PASS'],'t24u saved-asset audit failed'
+--- a/check/test_t24_materials.py
++++ b/check/test_t24_materials.py
+@@ -0,0 +1,52 @@
++"""Compare saved material recipes and isolated geometry against backed-up Blend."""
++import bpy,json,sys,hashlib
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
++import face_materials
++baseline=Path(sys.argv[sys.argv.index('--')+1]);current=Path(bpy.data.filepath)
++def snapshot():
++ mats={}
++ for m in bpy.data.materials:
++  nodes=[]
++  if m.use_nodes:
++   for n in m.node_tree.nodes:
++    inputs={}
++    for i in n.inputs:
++     if not hasattr(i,'default_value'):continue
++     v=i.default_value
++     if isinstance(v,(str,int,float,bool)):inputs[i.name]=v
++     elif hasattr(v,'__len__'):inputs[i.name]=list(v)
++    nodes.append(dict(name=n.name,type=n.type,inputs=inputs,image=n.image.name if n.type=='TEX_IMAGE' and n.image else None))
++  mats[m.name]=dict(nodes=nodes,surface=m.surface_render_method)
++ geo={}
++ for o in bpy.context.scene.objects:
++  if o.type=='MESH' and (o.name.startswith(('Cathedral_','CathRoof_','CathInterior_','Tracery_','Finials_','House_NW_','House_NE_'))):
++   data=[[[round(float(c),6) for c in v.co] for v in o.data.vertices],[list(f.vertices) for f in o.data.polygons]]
++   geo[o.name]=hashlib.sha256(json.dumps(data).encode()).hexdigest()
++ return mats,geo
++newmat,newgeo=snapshot();P=json.loads((ROOT/'params.json').read_text());C=P['houses']['face_material_overrides'];counts={k:0 for k in C['faces']};errors=[]
++for ob in bpy.context.scene.objects:
++ if ob.type!='MESH':continue
++ for f in ob.data.polygons:
++  name=ob.data.materials[f.material_index].name
++  key=next((k for k,s in C['faces'].items() if s['material_name']==name),None)
++  if key is None and face_materials.select(ob.name,name,ob.matrix_world@f.center,(ob.matrix_world.to_3x3()@f.normal).normalized(),C):
++   errors.append([ob.name,f.index,'eligible face missing M13 binding'])
++  if key:
++   spec=C['faces'][key];c=ob.matrix_world@f.center;n=(ob.matrix_world.to_3x3()@f.normal).normalized()
++   if face_materials.select(ob.name,'Brick',c,n,C)!=key:errors.append([ob.name,f.index,'wrong M13 plane'])
++   for li in f.loop_indices:
++    p=ob.matrix_world@ob.data.vertices[ob.data.loops[li].vertex_index].co
++    expected=(p[spec['u_axis']]*spec['u_sign']/spec['tile_m']+spec['phase'][0],p.z/spec['tile_m']+spec['phase'][1])
++    actual=ob.data.uv_layers.active.data[li].uv
++    if max(abs(actual[i]-expected[i]) for i in (0,1))>1e-5:errors.append([ob.name,f.index,'M13 UV phase drift'])
++   counts[key]+=1
++assert all(counts.values()),counts
++bpy.ops.wm.open_mainfile(filepath=str(baseline));oldmat,oldgeo=snapshot()
++changedmat=[k for k,v in oldmat.items() if newmat.get(k)!=v];changedgeo=[k for k,v in oldgeo.items() if newgeo.get(k)!=v]
++oldP=json.loads((baseline.parent/'params.json').read_text());preserved={k:P['houses'][k]==oldP['houses'][k] for k in ['windows','plaster','face_material_overrides'] if k in P['houses']}
++# M12 coat values live in plaster_layer, preserve every untouched configuration key too.
++for k in P['houses']:
++ if k not in ('list','alleys','window_damage'):preserved[k]=P['houses'][k]==oldP['houses'][k]
++report=dict(PASS=not errors and not changedmat and not changedgeo and all(preserved.values()),M13_face_counts=counts,M13_errors=errors,changed_material_recipes=changedmat,changed_isolated_meshes=changedgeo,isolated_mesh_count=len(oldgeo),preserved_house_settings=preserved)
++(ROOT/'t24u-evidence/material_preservation.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2));assert report['PASS'],report
+--- a/check/audit_alley_glb.cjs
++++ b/check/audit_alley_glb.cjs
+@@ -0,0 +1,42 @@
++// Offline decode: colliding guards and safe deck geometry survived raw/optimized export.
++const fs=require('fs'),path=require('path');
++const mods=path.resolve(__dirname,'../tools/gltf/node_modules');
++const {NodeIO}=require(path.join(mods,'@gltf-transform/core'));
++const {ALL_EXTENSIONS}=require(path.join(mods,'@gltf-transform/extensions'));
++const {MeshoptDecoder}=require(path.join(mods,'meshoptimizer'));
++(async()=>{await MeshoptDecoder.ready;const io=new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.decoder':MeshoptDecoder});
++const root=process.argv[2],expected=JSON.parse(fs.readFileSync(process.argv[3])),out={};
++for(const file of ['building.glb','web/building_opt.glb']){
++ const doc=await io.read(path.join(root,file));const rows=[];const allpoints=[];
++ for(const n of doc.getRoot().listNodes()){
++  if(!n.getMesh())continue;const m=n.getWorldMatrix();
++  for(const p of n.getMesh().listPrimitives()){
++   const pos=p.getAttribute('POSITION');
++   for(let i=0;i<pos.getCount();i++){const [x,y,z]=pos.getElement(i,[]);const X=m[0]*x+m[4]*y+m[8]*z+m[12],Y=m[1]*x+m[5]*y+m[9]*z+m[13],Z=m[2]*x+m[6]*y+m[10]*z+m[14];if(Y>=4.199&&Y<=6.301&&Math.abs(X)>=20.5&&Math.abs(X)<=31.1)allpoints.push([X,-Z,Y]);}
++  }
++ }
++ const lanes=JSON.parse(fs.readFileSync(process.argv[5]));const net=[];
++ for(const lane of lanes){let south=Infinity,north=Infinity;
++  for(const p of allpoints){if(Math.sign(p[0])!==lane.sign)continue;const dy=p[1]-lane.y;if(dy>0&&dy<.8)north=Math.min(north,dy);if(dy<0&&dy>-.8)south=Math.min(south,-dy);}
++  const width=south+north;if(!Number.isFinite(width)||width<1.4-.0001)throw new Error(file+' as-exported net alley under1.4m '+lane.id+' '+width);
++  net.push({id:lane.id,width_including_visual_decor_m:width});
++ }
++
++ for(const g of expected){
++  const node=doc.getRoot().listNodes().find(n=>n.getName().startsWith('AlleyGuard_'+g.id+'_'));
++  if(!node)throw new Error(file+' missing colliding guard '+g.id);
++  if(node.getExtras().role!=='solid')throw new Error('guard role is not solid');
++  const m=node.getWorldMatrix(),pts=[];
++  for(const p of node.getMesh().listPrimitives()){
++   const pos=p.getAttribute('POSITION');if(p.getIndices().getCount()<30)throw new Error('incomplete guard triangles');
++   for(let i=0;i<pos.getCount();i++){const [x,y,z]=pos.getElement(i,[]);const X=m[0]*x+m[4]*y+m[8]*z+m[12],Y=m[1]*x+m[5]*y+m[9]*z+m[13],Z=m[2]*x+m[6]*y+m[10]*z+m[14];pts.push([X,-Z,Y]);}
++  }
++  const lo=[0,1,2].map(k=>Math.min(...pts.map(p=>p[k]))),hi=[0,1,2].map(k=>Math.max(...pts.map(p=>p[k])));
++  const [x0,x1,y0,y1]=g.bounds;const wantLo=[x0,y0,4.2],wantHi=[x1,y1,4.2+g.height];
++  if(lo.some((v,k)=>Math.abs(v-wantLo[k])>.006)||hi.some((v,k)=>Math.abs(v-wantHi[k])>.006))throw new Error(file+' guard bounds changed '+g.id);
++  rows.push({id:g.id,role:node.getExtras().role,min:lo,max:hi});
++ }
++ out[file]={PASS:true,guards:rows,net_clearances:net};
++}
++fs.writeFileSync(process.argv[4],JSON.stringify(out,null,2));console.log('ALLEY GLB PASS',JSON.stringify(Object.keys(out)));
++})().catch(e=>{console.error(e.message);process.exit(1)});

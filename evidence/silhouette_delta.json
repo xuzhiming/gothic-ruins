@@ -1,0 +1,92 @@
+{
+  "south": {
+    "iou": {
+      "before": 0.8076,
+      "after": 0.8002,
+      "delta": -0.0074
+    },
+    "skyline_mae_m": {
+      "before": 4.58,
+      "after": 4.546,
+      "delta": -0.034
+    },
+    "model_area_m2": {
+      "before": 1376.7,
+      "after": 1404.3,
+      "delta": 27.6
+    }
+  },
+  "north": {
+    "iou": {
+      "before": 0.8116,
+      "after": 0.7967,
+      "delta": -0.0149
+    },
+    "skyline_mae_m": {
+      "before": 4.215,
+      "after": 4.379,
+      "delta": 0.164
+    },
+    "model_area_m2": {
+      "before": 1377.7,
+      "after": 1405.2,
+      "delta": 27.5
+    }
+  },
+  "west": {
+    "iou": {
+      "before": 0.7404,
+      "after": 0.7356,
+      "delta": -0.0048
+    },
+    "skyline_mae_m": {
+      "before": 6.316,
+      "after": 6.408,
+      "delta": 0.092
+    },
+    "model_area_m2": {
+      "before": 2098.9,
+      "after": 2086.3,
+      "delta": -12.6
+    }
+  },
+  "east": {
+    "iou": {
+      "before": 0.7477,
+      "after": 0.7434,
+      "delta": -0.0043
+    },
+    "skyline_mae_m": {
+      "before": 6.168,
+      "after": 6.252,
+      "delta": 0.084
+    },
+    "model_area_m2": {
+      "before": 2099.8,
+      "after": 2088.4,
+      "delta": -11.4
+    }
+  },
+  "top": {
+    "iou": {
+      "before": 0.942,
+      "after": 0.9136,
+      "delta": -0.0284
+    },
+    "outline_dist_m": {
+      "before": 1.186,
+      "after": 1.723,
+      "delta": 0.537
+    },
+    "footprint_iou": {
+      "before": 0.8521,
+      "after": 0.824,
+      "delta": -0.0281
+    },
+    "model_area_m2": {
+      "before": 6000.4,
+      "after": 6195.9,
+      "delta": 195.5
+    }
+  }
+}

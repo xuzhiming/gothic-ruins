@@ -1,0 +1,36 @@
+{
+  "PASS": true,
+  "M13_face_counts": {
+    "south": 55,
+    "street": 426
+  },
+  "M13_errors": [],
+  "changed_material_recipes": [],
+  "changed_isolated_meshes": [],
+  "isolated_mesh_count": 29,
+  "preserved_house_settings": {
+    "windows": true,
+    "face_material_overrides": true,
+    "storey_h": true,
+    "slab_t": true,
+    "wall_t": true,
+    "part_t": true,
+    "row_x": true,
+    "row_y": true,
+    "floors_row": true,
+    "overhang": true,
+    "corner": true,
+    "door_w": true,
+    "door_h": true,
+    "door_v": true,
+    "stair": true,
+    "partition_u": true,
+    "partition_door_v": true,
+    "chimney": true,
+    "roof_hole_seed": true,
+    "roof_hole_frac": true,
+    "eave_extra": true,
+    "_list_doc": true,
+    "plaster_layer": true
+  }
+}

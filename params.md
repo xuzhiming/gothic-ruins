@@ -36,17 +36,8 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 
 | parameter | value | src | note |
 |---|---|---|---|
-| `ref_scale.plan_mpp` | 0.11 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.plan_center_px` | [345, 480.5] | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.site_W` | 62.7 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.site_D` | 101.97 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.H_anchor` | 41.5 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.storey_h` | 3.2 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.storey_px_front` | 31.7 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.storey_px_west` | 30.0 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
-| `ref_scale.storey_px_north` | 35.0 | I | alignment of the drawing panels to metres, fixed (see Scale below) |
 | `site.plaza_z` | 4.2 | M | south elevation: plinth top above ground line (2 x 13 risers ~ 0.16 m) |
-| `site.main` | [-31.35, 31.35, -32.9, 30.3] | M | plan: plinth/plaza outer edge, px bbox x 0.11 m/px |
+| `site.main` | [-33.15, 33.15, -32.9, 30.3] | M | plan: plinth/plaza outer edge, px bbox x 0.11 m/px |
 | `site.north_band` | [-29.0, 29.0, 30.3, 50.98] | M | plan: narrower band behind the choir |
 | `site.tongue` | [-13.2, 13.2, -36.8, -32.9] | M | plan: plaza tongue above the upper stair |
 | `site.terrace` | [-29.35, 29.35, -41.2, -32.9] | M | plan: intermediate terrace |
@@ -58,6 +49,7 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 | `site.post_w` | 1.1 | M | iso: stair cheek posts, ~1 m square |
 | `site.post_h` | 2.1 | M | iso: stair cheek posts, ~1 m square |
 | `site.plinth_course` | 0.35 | I | base course on house fronts |
+| `site.base_x` | [-33.6, 33.6] | I |  |
 | `stairs_south.upper.x` | [-6.8, 6.8] | M | plan: stair widths/lengths; riser count read from the south elevation (13 + 13) |
 | `stairs_south.upper.y_top` | -36.8 | M | plan: stair widths/lengths; riser count read from the south elevation (13 + 13) |
 | `stairs_south.upper.y_bot` | -41.2 | M | plan: stair widths/lengths; riser count read from the south elevation (13 + 13) |
@@ -88,7 +80,7 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 | `cathedral.bays` | 5 | M | plan/side elevation: 5 nave bays |
 | `cathedral.wall_t` | 1.0 | I | masonry thickness |
 | `cathedral.aisle_wall_top` | 15.5 | M | side elevations |
-| `cathedral.nave_wall_top` | 24.0 (was 22.5) | M | side/front elevations: clerestory windows ~18.6-22.8 m, nave eave ~24 m (gap #1 fix; locked) |
+| `cathedral.nave_wall_top` | 24.0 | M | side/front elevations: clerestory windows ~18.6-22.8 m, nave eave ~24 m (gap #1 fix; locked) |
 | `cathedral.nave_ridge` | 29.5 | M | side elevations |
 | `cathedral.aisle_roof_top` | 18.6 | M | front elevation |
 | `cathedral.facade_apex` | 31.6 | M | front elevation: gable apex |
@@ -102,16 +94,16 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 | `cathedral.pier_w` | 1.4 | I |  |
 | `cathedral.buttress_out` | 1.6 | M | plan/front elevation |
 | `cathedral.buttress_w` | 1.2 | M | plan/front elevation |
-| `cathedral.buttress_top` | 17.5 (was 16.5) | M | plan/front elevation |
+| `cathedral.buttress_top` | 17.5 | M | plan/front elevation |
 | `cathedral.pinnacle_h` | 6.5 | M | iso/elevations: tall slender buttress pinnacles (gap #1 fix, was 3.94 tuned; locked) |
-| `cathedral.flyer_z_out` | 15.2 (was 14.5) | M | side elevations: flying-buttress springing heights |
-| `cathedral.flyer_z_in` | 20.5 (was 19.0) | M | side elevations: flying-buttress springing heights |
+| `cathedral.flyer_z_out` | 15.2 | M | side elevations: flying-buttress springing heights |
+| `cathedral.flyer_z_in` | 20.5 | M | side elevations: flying-buttress springing heights |
 | `cathedral.tower_sw.x` | [-12.5, -6.0] | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
 | `cathedral.tower_sw.y` | [3.9, 10.18] | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
-| `cathedral.tower_sw.top` | 31.0 (was 30.0) | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
+| `cathedral.tower_sw.top` | 31.0 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
 | `cathedral.tower_sw.spire_tip` | 40.4 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
 | `cathedral.tower_sw.cross` | 1.1 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
-| `cathedral.tower_sw.spire_r` | 1.45 (was 1.9) | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
+| `cathedral.tower_sw.spire_r` | 1.45 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
 | `cathedral.tower_sw.belfry_z0` | 20.7 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
 | `cathedral.tower_sw.belfry_w` | 3.9 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
 | `cathedral.tower_sw.belfry_tiers` | 2 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
@@ -120,8 +112,8 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 | `cathedral.tower_sw.stage_tiers` | 1 | M | plan footprint; front elevation: lower stage to 20.7, set-back belfry (2 tiers of paired lancets) to 31, corner pinnacles 33.2, slender spire to 40.4 + cross 1.1 = 41.5 m anchor (locked) |
 | `cathedral.tower_se.x` | [6.0, 12.5] | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
 | `cathedral.tower_se.y` | [3.9, 10.18] | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
-| `cathedral.tower_se.top` | 23.5 (was 21.5) | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
-| `cathedral.tower_se.spire_tip` | 28.5 (was 26.5) | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
+| `cathedral.tower_se.top` | 23.5 | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
+| `cathedral.tower_se.spire_tip` | 28.5 | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
 | `cathedral.tower_se.spire_r` | 1.2 | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
 | `cathedral.tower_se.belfry_z0` | 18.2 | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
 | `cathedral.tower_se.belfry_w` | 3.6 | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
@@ -130,12 +122,12 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 | `cathedral.tower_se.stage_pinnacle_top` | 21.0 | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
 | `cathedral.tower_se.stage_tiers` | 1 | M | plan footprint; front elevation: shorter belfry to 23.5 + octagonal spirelet 28.5 (locked) |
 | `cathedral.choir_y` | 39.0 | M | plan |
-| `cathedral.apse.cy` | 38.0 (was 41.0) | M | DELIBERATE COMPROMISE (gap #6, locked): plan apse disc centre ~43.5 / tip 50.3, side elevations put the apse block ~3-4 m further south; 38.0 = 3 m south of the previous 41.0 (plan value pulled 2 m south for the plinth). West/east IoU +0.020 (0.721/0.728 -> 0.741/0.748), south/north/plan site/footprint unchanged; plan apse tip left ~3 m uncovered (footprint panel). See compare_log.md M5/M6 |
+| `cathedral.apse.cy` | 38.0 | M | DELIBERATE COMPROMISE (gap #6, locked): plan apse disc centre ~43.5 / tip 50.3, side elevations put the apse block ~3-4 m further south; 38.0 = 3 m south of the previous 41.0 (plan value pulled 2 m south for the plinth). West/east IoU +0.020 (0.721/0.728 -> 0.741/0.748), south/north/plan site/footprint unchanged; plan apse tip left ~3 m uncovered (footprint panel). See compare_log.md M5/M6 |
 | `cathedral.apse.r_in` | 5.5 | M | plan: apse / ambulatory / buttress-pier radii |
 | `cathedral.apse.r_amb` | 8.0 | M | plan: apse / ambulatory / buttress-pier radii |
 | `cathedral.apse.r_pier` | 8.9 | M | plan: apse / ambulatory / buttress-pier radii |
 | `cathedral.apse.sides` | 12 | I | polygonal chevet, 12-gon (half used) |
-| `cathedral.apse.wall_top` | 24.0 (was 22.5) | M | continuous clerestory round the apse = nave eave (gap #1 fix; locked) |
+| `cathedral.apse.wall_top` | 24.0 | M | continuous clerestory round the apse = nave eave (gap #1 fix; locked) |
 | `cathedral.apse.roof_apex` | 30.0 | M | plan: apse / ambulatory / buttress-pier radii |
 | `cathedral.apse.finial` | 2.0 | M | side elevations |
 | `cathedral.apse.amb_top` | 15.5 | M | side elevations |
@@ -255,9 +247,89 @@ shortening the nave keeps the hole pattern of the remaining columns. Hole maps o
 | `houses.face_material_overrides.faces.street.u_axis` | 1 | I |  |
 | `houses.face_material_overrides.faces.street.u_sign` | 1 | I |  |
 | `houses.face_material_overrides.faces.street.phase` | [0.20962888665997995, 0.8072653884964682] | I |  |
+| `houses.alleys.enabled` | true | I |  |
+| `houses.alleys.net_width` | 1.4 | I |  |
+| `houses.alleys.finish_allowance` | 0.025 | I |  |
+| `houses.alleys.south_datums.W` | -32.9 | I |  |
+| `houses.alleys.south_datums.E` | -32.901 | I |  |
+| `houses.alleys.rear_extension` | 1.8 | I |  |
+| `houses.alleys.guard_thickness` | 0.25 | I |  |
+| `houses.alleys.guard_height` | 1.1 | I |  |
+| `houses.alleys.north_platform_depth` | 2.0 | I |  |
+| `houses.window_damage.W0/street/F0/E` | [false, false, false] | I |  |
+| `houses.window_damage.W0/rear/F0/W` | [true, false, true] | I |  |
+| `houses.window_damage.W0/end/F0/N` | [false, false] | I |  |
+| `houses.window_damage.W0/street/F1/E` | [false, false, false, false] | I |  |
+| `houses.window_damage.W0/rear/F1/W` | [true, false, false, true] | I |  |
+| `houses.window_damage.W0/end/F1/N` | [true, false] | I |  |
+| `houses.window_damage.W0/street/F2/E` | [false, false, true, false] | I |  |
+| `houses.window_damage.W0/rear/F2/W` | [false, true, false, false] | I |  |
+| `houses.window_damage.W0/end/F2/N` | [false, true] | I |  |
+| `houses.window_damage.W1/street/F0/E` | [true, false] | I |  |
+| `houses.window_damage.W1/rear/F0/W` | [true, false] | I |  |
+| `houses.window_damage.W1/street/F1/E` | [true, false, false] | I |  |
+| `houses.window_damage.W1/rear/F1/W` | [false, false, true] | I |  |
+| `houses.window_damage.W1/street/F2/E` | [false, false, false] | I |  |
+| `houses.window_damage.W1/rear/F2/W` | [true, true, false] | I |  |
+| `houses.window_damage.W2/street/F0/E` | [false, false] | I |  |
+| `houses.window_damage.W2/rear/F0/W` | [false, false] | I |  |
+| `houses.window_damage.W2/street/F1/E` | [false, false, false] | I |  |
+| `houses.window_damage.W2/rear/F1/W` | [true, false, true] | I |  |
+| `houses.window_damage.W2/street/F2/E` | [false, false, false] | I |  |
+| `houses.window_damage.W2/rear/F2/W` | [false, false, true] | I |  |
+| `houses.window_damage.W3/street/F0/E` | [false, false] | I |  |
+| `houses.window_damage.W3/rear/F0/W` | [true, true, false] | I |  |
+| `houses.window_damage.W3/street/F1/E` | [false, false, true, true] | I |  |
+| `houses.window_damage.W3/rear/F1/W` | [false, true, false, true] | I |  |
+| `houses.window_damage.W3/street/F2/E` | [true, true, false, false] | I |  |
+| `houses.window_damage.W3/rear/F2/W` | [true, false, false, true] | I |  |
+| `houses.window_damage.W4/street/F0/E` | [false, true] | I |  |
+| `houses.window_damage.W4/rear/F0/W` | [false, true, false] | I |  |
+| `houses.window_damage.W4/end/F0/S` | [false, true] | I |  |
+| `houses.window_damage.W4/street/F1/E` | [false, true, true, false] | I |  |
+| `houses.window_damage.W4/rear/F1/W` | [false, true, false, false] | I |  |
+| `houses.window_damage.W4/end/F1/S` | [true, true] | I |  |
+| `houses.window_damage.W4/street/F2/E` | [false, false, false, true] | I |  |
+| `houses.window_damage.W4/rear/F2/W` | [true, false, true, true] | I |  |
+| `houses.window_damage.W4/end/F2/S` | [true, false] | I |  |
+| `houses.window_damage.E0/street/F0/W` | [false, false] | I |  |
+| `houses.window_damage.E0/rear/F0/E` | [false, false] | I |  |
+| `houses.window_damage.E0/end/F0/N` | [false, true] | I |  |
+| `houses.window_damage.E0/street/F1/W` | [false, false, false] | I |  |
+| `houses.window_damage.E0/rear/F1/E` | [true, false, false] | I |  |
+| `houses.window_damage.E0/end/F1/N` | [true, false] | I |  |
+| `houses.window_damage.E0/street/F2/W` | [false, false, true] | I |  |
+| `houses.window_damage.E0/rear/F2/E` | [false, false, false] | I |  |
+| `houses.window_damage.E0/end/F2/N` | [true, false] | I |  |
+| `houses.window_damage.E1/street/F0/W` | [false, false] | I |  |
+| `houses.window_damage.E1/rear/F0/E` | [false, false] | I |  |
+| `houses.window_damage.E1/street/F1/W` | [false, false, false] | I |  |
+| `houses.window_damage.E1/rear/F1/E` | [false, false, false] | I |  |
+| `houses.window_damage.E1/street/F2/W` | [false, false, false] | I |  |
+| `houses.window_damage.E1/rear/F2/E` | [true, true, false] | I |  |
+| `houses.window_damage.E2/street/F0/W` | [false] | I |  |
+| `houses.window_damage.E2/rear/F0/E` | [false] | I |  |
+| `houses.window_damage.E2/street/F1/W` | [true, false] | I |  |
+| `houses.window_damage.E2/rear/F1/E` | [false, false] | I |  |
+| `houses.window_damage.E2/street/F2/W` | [true, false, true] | I |  |
+| `houses.window_damage.E2/rear/F2/E` | [false, true] | I |  |
+| `houses.window_damage.E3/street/F0/W` | [false, false] | I |  |
+| `houses.window_damage.E3/rear/F0/E` | [false, false] | I |  |
+| `houses.window_damage.E3/street/F1/W` | [true, true, true] | I |  |
+| `houses.window_damage.E3/rear/F1/E` | [true, false, false] | I |  |
+| `houses.window_damage.E3/street/F2/W` | [false, true, false] | I |  |
+| `houses.window_damage.E3/rear/F2/E` | [false, true, false] | I |  |
+| `houses.window_damage.E4/street/F0/W` | [false, false] | I |  |
+| `houses.window_damage.E4/rear/F0/E` | [false, true, false] | I |  |
+| `houses.window_damage.E4/end/F0/S` | [true, true] | I |  |
+| `houses.window_damage.E4/street/F1/W` | [false, false, false, false] | I |  |
+| `houses.window_damage.E4/rear/F1/E` | [true, true, true, true] | I |  |
+| `houses.window_damage.E4/end/F1/S` | [true, false] | I |  |
+| `houses.window_damage.E4/street/F2/W` | [true, true, false, false] | I |  |
+| `houses.window_damage.E4/rear/F2/E` | [true, false, false, false] | I |  |
+| `houses.window_damage.E4/end/F2/S` | [false, false] | I |  |
 | `walk.eye` | 1.6 | I | walk-mode eye height and capsule radius |
 | `walk.radius` | 0.3 | I | walk-mode eye height and capsule radius |
-| `compare_lock` | ["cathedral.pinnacle_h", "cathedral.apse.wall_top", "cathedral.nave_wall_top", "cathedral.tower_sw", "cathedral.tower_se", "cathedral.clerestory_pinnacles", "cathedral.facade_pinnacle_top", "cathedral.aisle_front_lancet", "houses.list", "ruin", "cathedral.apse.cy"] | I | params the compare loop may not change (design intent / visual fidelity) |
 | `ruin.enabled` | true | I | switch: false rebuilds the intact model |
 | `ruin.seed` | 404 | I | seed of the ruin rng streams (separate from the older layouts) |
 | `ruin.moss_tops` | true | M | iso: green-grey growth on ledges, wall tops, treads -> up-facing stone/rubble faces use the *_moss texture |

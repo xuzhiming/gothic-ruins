@@ -13,6 +13,7 @@ import bpy, json, math, os, sys, random, time
 ROOT = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(ROOT, "src"))
 import importlib, geom; importlib.reload(geom)
 import window_apertures as WA; WA.RECORDS.clear()
+from alley_layout import row_layout, partition_v, alley_routes, guard_boxes, ground_window_centers, preserve_window_damage
 from geom import *
 from mathutils import Vector
 T0 = time.time()
@@ -91,7 +92,18 @@ for sg in (-1, 1):
 box(rub, -ux, ux, ty0, P["stairs_south"]["upper"]["y_top"], 0, TZ)        # under the upper flight
 ap = ST["approach"]; box(SC.B("Approach", "rubble"), ap[0], ap[1], ap[2], ap[3], -0.3, 0.0, top=SC.B("Approach", "cobble"))
 base = SC.B("Base", "soil")
-box(base, -31.8, 31.8, -51.4, 51.4, -3.2, 0.0, skip=(5,))
+bx0, bx1 = ST.get("base_x", [-31.8, 31.8])
+box(base, bx0, bx1, -51.4, 51.4, -3.2, 0.0, skip=(5,))
+AC = P["houses"].get("alleys", {})
+if AC.get("enabled"):
+    # Solid cobbled return decks bridge the narrower north band (±29) safely.
+    for side,sg in (("W",-1),("E",1)):
+        xa,xb=sorted((sg*ST["north_band"][1],sg*ST["main"][1]))
+        box(SC.B("RearPlatform_"+side,"rubble"), xa,xb,ST["main"][3],ST["main"][3]+AC["north_platform_depth"],0,PZ,top=SC.B("RearPlatform_"+side,"cobble"))
+    for gd in guard_boxes(P):
+        xa,xb,ya,yb=gd["bounds"]
+        # Continuous weather-textured stone, deliberately NOT ruined/open balustrade.
+        box(SC.B("AlleyGuard_"+gd["id"],"stone"),xa,xb,ya,yb,PZ,PZ+gd["height"])
 # monumental stairs (south): lower flight ground -> landing strip (TZ), upper flight -> plaza (PZ)
 SS = P["stairs_south"]; stp = SC.B("Stairs", "stair_riser")   # gap #9: treads "stair", risers "stair_riser", stringers "stair_side"
 STK = dict(top=SC.B("Stairs", "stair"), sides=SC.B("Stairs", "stair_side"))
@@ -156,7 +168,19 @@ for sg in (-1, 1):
                       (lo["x"][1] + 0.25, lo["y_bot"] + 0.3, 0.0)):
         post(sg*x, y, z)
     nb_ = ST["north_band"]
-    balustrade((sg*(nb_[1] - 0.25), nb_[2]), (sg*(nb_[1] - 0.25), nb_[3]), PZ, h=ST["parapet_h"], bk=rub)
+    if AC.get("enabled"):
+        # Replay the ORIGINAL rail's draws without retaining its obstructing 2m
+        # segment. This preserves later unpinned cathedral finials/tracery exactly.
+        marks={k:(len(b.v),len(b.f),len(b.uv)) for k,b in SC.b.items()}
+        balustrade((sg*(nb_[1]-.25),nb_[2]),(sg*(nb_[1]-.25),nb_[3]),PZ,h=ST["parapet_h"],bk=rub)
+        original_after=RR.getstate()
+        for k,b in list(SC.b.items()):
+            nv,nf,nu=marks.get(k,(0,0,0));del b.v[nv:];del b.f[nf:];del b.uv[nu:]
+        RR.seed(f"t24u:north-rail:{sg}")
+        balustrade((sg*(nb_[1]-.25),nb_[2]+AC["north_platform_depth"]),(sg*(nb_[1]-.25),nb_[3]),PZ,h=ST["parapet_h"],bk=rub)
+        RR.setstate(original_after)
+    else:
+        balustrade((sg*(nb_[1]-.25),nb_[2]),(sg*(nb_[1]-.25),nb_[3]),PZ,h=ST["parapet_h"],bk=rub)
     balustrade((sg*10.2, nb_[3] - 0.25), (sg*(nb_[1]), nb_[3] - 0.25), PZ, h=ST["parapet_h"], bk=rub)
 
 # bollards + chains (U: semicircle to the south + straight legs to y_end)
@@ -722,7 +746,7 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
     zf = [PZ + f*SH for f in range(floors)]
     ze = PZ + floors*SH + 0.3 + h["eave_dz"] + (HS["eave_extra"] if floors == HS["floors_row"] else HS["corner"]["eave_extra"])
     st = HS["stair"]; n = st["riser_n"]; rz = SH/n; tr = st["tread"]; v0 = st["v0"]
-    pu = HS["partition_u"]; dv = min(max(h["door"]*W, 1.4), W - 1.4); pdv = HS["partition_door_v"]
+    pu = HS["partition_u"]; dv = min(max(h["door"]*W, 1.4), W - 1.4); pdv = partition_v(HS, W) if AC.get("enabled") else HS["partition_door_v"]
     timber = h["timber"]
     # ---- plan: spaces first
     for f in range(floors):
@@ -735,6 +759,10 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
         if f == 0:
             gk = "round" if h["gf_arch"] else "flat"
             wins = windows_row(W, h["win"][0], skip=dv, sill=1.0, w=h["win_w"], kind=gk, skip_d=1.5)
+            if AC.get("enabled") and h["row"] in ("W", "E"):
+                # Preserve every original GF slot after proportional narrowing.
+                template = windows_row(W, 1, sill=1.0, w=h["win_w"], kind=gk)[0]
+                wins = [dict(template, s=x) for x in ground_window_centers(HS, h)]
             if h["shop"] and wins:   # one wide shop window (3 lights) instead of the window furthest from the door
                 k = max(range(len(wins)), key=lambda i: abs(wins[i]["s"] - dv)); wins[k].update({"w": 2.1, "mull": 2, "sill": 0.8})
                 if any(abs(wins[k]["s"] - o["s"]) < 1.7 for o in wins if o is not wins[k]) or abs(wins[k]["s"] - dv) < 2.0 or wins[k]["s"] < 1.3 or wins[k]["s"] > W - 1.3:
@@ -770,6 +798,8 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
             isl = lime_islands(W, z1 - z0, ops, random.Random(PLY["residue"]["seed"] + 101*seed + f), f"{hid}_{f}_r")
         dav = (skins["street"][1] if sk_("street") else []) + (isl[1] if isl else [])
         geom.DAVOID = [(c[0] - 0.03, c[1] + 0.03, c[2] - 0.03, c[3] + 0.03) for c in dav]
+        if AC.get("enabled") and h["row"] in ("W","E"):
+            preserve_window_damage(HS,hid,"street",f,"E" if h["row"]=="W" else "W",ops)
         wall(mat, fr.p2(u0 + HT/2, 0), fr.p2(u0 + HT/2, W), z0, z1, HT, ops, hgl, tim, wx=wxh(fr.dir(-1, 0)), outdir=fr.dir(-1, 0),
              flush=bool(timber and MATS[h["gf"] if f == 0 else h["upper"]] == "plaster"), skin=sk_("street"))   # street face (half-timbered storey: frame lining in the reveal, posts frame it)
         geom.DAVOID = []
@@ -777,12 +807,23 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
             o_ = fr.p2(u0, 0); o3 = Vector((o_[0], o_[1], z0)); S_ = fr.dir(0, 1); S3 = Vector((S_[0], S_[1], 0)).normalized(); N_ = fr.dir(-1, 0)
             for back, front, th in isl[0]: raised_island(plas, o3, S3, Vector((0, 0, 1)), Vector((N_[0], N_[1], 0)).normalized(), back, front, th, SC.B(G, "plaster_edge"))
         rops = windows_row(W, h["rear_win"] - (1 if f == 0 else 0), w=h["win_w"])
+        if AC.get("enabled") and h["row"] in ("W","E"):
+            preserve_window_damage(HS,hid,"rear",f,"W" if h["row"]=="W" else "E",rops)
         wall(mat, fr.p2(D - HT/2, W), fr.p2(D - HT/2, 0), z0, z1, HT, rops, hgl, tim, wx=wxh(fr.dir(1, 0)), outdir=fr.dir(1, 0), flush=True)      # rear face (outer silhouette: flush cross windows)
         for vv, ext in ((0.15, ext_v0), (W - 0.15, ext_v1)):
             kv = 0.0 if vv < 1 else W
             geom.DAVOID = [(c[0] - 0.03, c[1] + 0.03, c[2] - 0.03, c[3] + 0.03) for c in (skins[kv][1] if sk_(kv) else [])]
-            wall(mat, fr.p2(u0 + HT, vv), fr.p2(D - HT, vv), z0, z1, 0.3, windows_row(D - HT - u0 - HT, 2) if ext else [], hgl, tim,
-                 wx=wxh(fr.dir(0, -1 if vv < 1 else 1)) if ext else None, outdir=fr.dir(0, -1 if vv < 1 else 1), flush=True, skin=sk_(kv) if ext else None)
+            alley_side = AC.get("enabled") and h["row"] in ("W", "E") and not ext
+            # New side weather must not consume RR or house-rng draws used by existing ruin.
+            old_rr = geom.RR
+            if alley_side: geom.RR = random.Random(f"t24u:{hid}:{f}:{int(vv > 1)}")
+            try:
+                sideops=windows_row(D - HT - u0 - HT,2) if ext else []
+                if AC.get("enabled") and h["row"] in ("W","E"):
+                    preserve_window_damage(HS,hid,"end",f,"N" if vv<1 else "S",sideops)
+                wall(mat, fr.p2(u0 + HT, vv), fr.p2(D - HT, vv), z0, z1, 0.3, sideops, hgl, tim,
+                     wx=wxh(fr.dir(0, -1 if vv < 1 else 1)) if (ext or alley_side) else None, outdir=fr.dir(0, -1 if vv < 1 else 1), flush=True, skin=sk_(kv) if ext else None)
+            finally: geom.RR = old_rr
             geom.DAVOID = []
         if f >= 1:   # floor slab (reaching out under the jetty) with the stair hole of the flight arriving from below
             lane = st["u1"] if (f - 1) % 2 == 0 else st["u2"]
@@ -939,9 +980,9 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
 hx0, hx1 = HS["row_x"]; ry0, ry1 = HS["row_y"]; Dh = hx1 - hx0
 HL = {h["id"]: h for h in HS["list"]}
 for side in ("W", "E"):
-    street = "street_W" if side == "W" else "street_E"; hs = [h for h in HS["list"] if h["row"] == side]; vs = 0.0
+    street = "street_W" if side == "W" else "street_E"; hs = row_layout(HS, side); vs = 0.0
     for i, h in enumerate(hs):
-        fr = Frame(side, hx0 + h["setback"], ry1 - vs)
+        fr = Frame(side, hx0 + h["setback"], h["north"])
         house(h, fr, Dh - h["setback"], street, ext_v0=(i == 0), ext_v1=(i == len(hs) - 1), seed=i + (10 if side == "E" else 0))
         vs += h["w"]
 cn = HS["corner"]
@@ -954,7 +995,25 @@ sx_ = (hx0 + ahw + wt/2 + C["buttress_out"])/2
 for sg, nm in ((-1, "W"), (1, "E")):
     space(f"street_{nm}", (sg*sx_, 10.0, PZ), "outdoor"); space(f"north_{nm}", (sg*12.5, 44.0, PZ), "outdoor")
     open_link("plaza", f"street_{nm}", [(0, -12, PZ), (0, -4.5, PZ), (sg*sx_, -4.5, PZ), (sg*sx_, 10.0, PZ)])
-    open_link(f"street_{nm}", f"north_{nm}", [(sg*sx_, 10.0, PZ), (sg*sx_, yB + 0.9, PZ), (sg*12.5, yB + 1.1, PZ), (sg*12.5, 44.0, PZ)])
+    if AC.get("enabled"):
+        north_route=next(rt for rt in alley_routes(P) if rt["id"]=="turn_"+nm)
+        open_link(f"street_{nm}", f"north_{nm}", [(sg*sx_,10.,PZ)]+north_route["path"][1:])
+    else:
+        open_link(f"street_{nm}", f"north_{nm}", [(sg*sx_, 10.0, PZ), (sg*sx_, yB + 0.9, PZ), (sg*12.5, yB + 1.1, PZ), (sg*12.5, 44.0, PZ)])
+
+# Explicit connected circulation for every transverse alley, longitudinal rear lane and north return.
+ALLEY_ROUTES = alley_routes(P)
+for rt in ALLEY_ROUTES:
+    path=rt["path"];a,b=Vector(path[0]),Vector(path[-1]);mid=Vector(path[1]) if rt["kind"]=="north_turn" else (a+b)/2
+    space(rt["id"],mid,"outdoor",net_width=rt["net_width"])
+for rt in ALLEY_ROUTES:
+    side=rt["side"];path=rt["path"];mid=R2((Vector(path[0])+Vector(path[-1]))/2)
+    if rt["kind"]=="alley":
+        open_link("street_"+side,rt["id"],[path[0],mid]);open_link(rt["id"],"rear_"+side,[mid,path[-1]])
+    elif rt["kind"]=="rear":open_link(rt["id"],"turn_"+side,path)
+    else:
+        sg=-1 if side=="W" else 1
+        open_link(rt["id"],"north_"+side,path)
 
 # =====================================================================================
 # 3b. ruin: rubble piles + fallen rafters (colliding, only where the circulation keep-out test allows), debris (decor)
@@ -1045,7 +1104,7 @@ if RU:
     D_ = RU["debris"]; pin("debris")
     chips(D_["nave"], -5.0, 5.0, 8.0, 37.0, ZC, [DEB_st, DEB_sl, DEB_sl, DEB_sl, DEB_tb, DEB_rb], size=(0.05, 0.3))
     chips(D_["wall_base"]//2, -15.2, 15.2, 4.0, 36.0, ZC, [DEB_st, DEB_rb], pred=lambda x, y: 13.6 < abs(x) < 15.3)
-    chips(D_["wall_base"]//2, -hx0, hx0, ry0, ry1, PZ, [DEB_br, DEB_sl, DEB_rb, DEB_tb], pred=lambda x, y: hx0 - 1.1 < abs(x) < hx0 - 0.1)
+    chips(D_["wall_base"]//2, -hx0, hx0, ry0, ry1, PZ, [DEB_br, DEB_sl, DEB_rb, DEB_tb], pred=lambda x, y: hx0 - 1.1 < abs(x) < hx0 - 0.1 and not any(rt["kind"]=="alley" and _sd((x,y),rt["path"][0],rt["path"][-1]) < AC["net_width"]/2 + .4 for rt in ALLEY_ROUTES))
     chips(D_["plaza"], -16.0, 16.0, -33.0, -6.0, PZ, [DEB_st, DEB_sl, DEB_rb])
     pin("debris_stairs")
     for st_id in ("cathedral_steps", "stairs_south_upper", "stairs_south_lower"):   # chips + cracked / spalled treads near the step ends
