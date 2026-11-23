@@ -1,0 +1,24 @@
+{
+  "PASS": true,
+  "inputs": "stripped package params + source + baked PNGs; no private ref/calibration or Blend input",
+  "assets": {
+    "building.glb": {
+      "bytes": 37620744,
+      "sha256": "4b1b12b20806f863e86652616435a4af54b1ef86161b3269824b98d0f96768e0",
+      "repro_sha256": "4b1b12b20806f863e86652616435a4af54b1ef86161b3269824b98d0f96768e0",
+      "byte_identical": true
+    },
+    "web/building_opt.glb": {
+      "bytes": 4885908,
+      "sha256": "25cae1f4b468c6999f29b5397609092d0d867cb07222b81bcadc8e9162d77319",
+      "repro_sha256": "25cae1f4b468c6999f29b5397609092d0d867cb07222b81bcadc8e9162d77319",
+      "byte_identical": true
+    },
+    "spaces.json": {
+      "bytes": 50395,
+      "sha256": "78984baf9b80b1c19f532a60f658018892e70c067946710f33f280bf6470f78d",
+      "repro_sha256": "78984baf9b80b1c19f532a60f658018892e70c067946710f33f280bf6470f78d",
+      "byte_identical": true
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "total_windows": 365,
+  "true_windows": 360,
+  "blind_windows": 5,
+  "missing_original_ruin_panes": 125,
+  "probe_count": 22682,
+  "glb_ray_mismatches": 0,
+  "original_damage_deltas": [],
+  "coverage": {
+    "expected_generated_faces": 4214,
+    "matched_unique_hashes": 4204,
+    "missing_generated_face_occurrences": 0,
+    "unknown_glass_faces": [],
+    "unmatched_window_slots": [],
+    "source_sha256": "2ee9ef0c56b1d63e2760558f337af6b734365e722da62b8c9eed5f4d5f678b94",
+    "blend_sha256": "e18b85871ff41b2421819e15fc845748420a35c4bb9e55b988094b8274089eaf"
+  }
+}

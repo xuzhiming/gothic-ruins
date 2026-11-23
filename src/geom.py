@@ -392,6 +392,7 @@ def wall(bk, p0, p1, z0, z1, t, openings=(), glass=None, frame=None, off=0.0, wx
             poly = ([(a, spring), (b, spring), (b, H), (a, H)] if kind == "flat" else [curve[-1], (b, H), (a, H)] + curve[:-1])
             extrude(bk, poly, o, S, T, tb, ob, **BX)
         lost = RUIN is not None and RR.random() < RUIN["glass"]["missing_cathedral" if frame is not None and frame.group == "Tracery" else "missing_house"]
+        lost = q.get("pane_missing", lost)   # explicit semantic ruin state; ordinary draw above still consumed
         if q.get("glass") and glass is not None:
             outline = [(a, sill)] + [(b, sill)] + ([(b, spring), (a, spring)] if kind == "flat" else list(reversed(arch_curve(a, b, spring, kind, k))))
             cross = q.get("cross") and WIN is not None and WIN.get("cross") and WFRAME is not None and outdir is not None

@@ -1,0 +1,89 @@
+{
+  "main": {
+    "PASS": true,
+    "fail": [],
+    "failure_count": 0,
+    "samples": 1538,
+    "min_alley_structural_width_m": 1.45,
+    "min_rear_structural_width_m": 1.485002,
+    "min_headroom_lower_bound_m": 3.0,
+    "routes": [
+      "alley_W01",
+      "alley_W12",
+      "alley_W23",
+      "alley_W34",
+      "rear_W",
+      "turn_W",
+      "alley_E01",
+      "alley_E12",
+      "alley_E23",
+      "alley_E34",
+      "rear_E",
+      "turn_E"
+    ],
+    "existing_north_join_test_width_m": 0.6,
+    "new_platform_and_alley_test_width_m": 1.4
+  },
+  "negative": {
+    "blocked_alley": {
+      "caught": true,
+      "evidence": [
+        [
+          "alley_W01",
+          "capsule_nearest",
+          30,
+          -0.39999999999999997,
+          0,
+          "NEGATIVE_BLOCK",
+          0.24932
+        ],
+        [
+          "alley_W01",
+          "capsule_nearest",
+          30,
+          -0.39999999999999997,
+          1,
+          "NEGATIVE_BLOCK",
+          0.24932
+        ]
+      ]
+    },
+    "missing_floor": {
+      "caught": true,
+      "evidence": [
+        [
+          "alley_W01",
+          "missing_floor",
+          0,
+          -0.695
+        ],
+        [
+          "alley_W01",
+          "missing_floor",
+          0,
+          0.0
+        ]
+      ]
+    },
+    "missing_guard": {
+      "caught": true,
+      "evidence": [
+        [
+          "W_outer",
+          "missing_guard",
+          0,
+          0.15,
+          null
+        ],
+        [
+          "W_outer",
+          "missing_guard",
+          0,
+          0.55,
+          null
+        ]
+      ]
+    }
+  },
+  "PASS": true
+}

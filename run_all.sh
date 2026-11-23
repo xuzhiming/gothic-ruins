@@ -8,6 +8,7 @@ cd "$(dirname "$0")"; R=$(pwd)
 BL=${BLENDER:-/home/box/.local/bin/blender}
 GT=${GLTF_TRANSFORM:-$( [ -x tools/gltf/node_modules/.bin/gltf-transform ] && echo tools/gltf/node_modules/.bin/gltf-transform || echo /workspace/tools/gltf/node_modules/.bin/gltf-transform)}   # project-local copy first (shared /workspace/tools may be reset by other jobs)
 PORT=${PORT:-8766}
+BL_ARGS=(-t "${BLENDER_THREADS:-4}" --python-exit-code 1)
 mkdir -p logs renders compare/out
 step(){ echo; echo "=== [$(date +%H:%M:%S)] $*"; }
 
@@ -22,22 +23,25 @@ ROUNDS=${COMPARE_ROUNDS:-0} COMPARE_LOG=$R/$( [ "${COMPARE_ROUNDS:-0}" -gt 0 ] &
 python3 src/params_md.py
 
 step "3/8 build (Blender background, procedural)"
-$BL -b -P build.py > logs/build.log 2>&1 || { tail -30 logs/build.log; exit 1; }
+$BL "${BL_ARGS[@]}" -b -P build.py > logs/build.log 2>&1 || { tail -30 logs/build.log; exit 1; }
 grep -E "BUILD OK|spaces" logs/build.log | tail -3
 
 # Glass regression: actual saved Blend, through-hole rays and supported material API.
-$BL -b -P check/test_aperture_geometry.py > logs/glass_geometry.log 2>&1
-$BL -b building.blend -P check/test_glass_assets.py -- --report check/glass_report.json > logs/glass_assets.log 2>&1
+$BL "${BL_ARGS[@]}" -b -P check/test_aperture_geometry.py > logs/glass_geometry.log 2>&1
+$BL "${BL_ARGS[@]}" -b building.blend -P check/test_glass_assets.py -- --report check/glass_report.json > logs/glass_assets.log 2>&1
 python3 -c "import json; r=json.load(open('check/glass_report.json')); assert r['PASS'],r; print('glass apertures:',r['apertures'],'| unobstructed:',r['unobstructed_apertures'],'| retained occlusions:',r['retained_occlusions'])"
 python3 check/test_m13_faces.py
 
 step "4/8 orthographic renders + silhouette compare + side-by-side"
-$BL -b building.blend -P src/render_sil.py -- renders 0.1 --shaded > logs/render_sil.log 2>&1
+$BL "${BL_ARGS[@]}" -b building.blend -P src/render_sil.py -- renders 0.1 --shaded > logs/render_sil.log 2>&1
 python3 compare/compare.py renders compare/out --sbs | tee logs/compare.log | tail -8
 python3 compare/diag_side.py renders compare/diag current | tee logs/diag_side.log | grep IoU
 
 step "5/8 circulation check (+ negative tests)"
-$BL -b building.blend -P check/circulation_check.py > logs/check.log 2>&1 || true
+if python3 -c 'import json,sys;sys.exit(0 if json.load(open("params.json"))["houses"].get("alleys",{}).get("enabled") else 1)'; then
+  $BL "${BL_ARGS[@]}" -b building.blend -P check/test_alley_assets.py > logs/alleys.log 2>&1
+fi
+$BL "${BL_ARGS[@]}" -b building.blend -P check/circulation_check.py > logs/check.log 2>&1 || true
 python3 - <<'PY'
 import json, sys
 main, neg, neg2 = json.load(open("check/circulation_report.json"))
@@ -53,6 +57,9 @@ python3 check/audit_glass_glb.py building.glb web/building_opt.glb > logs/glass_
 cp spaces.json web/spaces.json
 ls -l building.glb web/building_opt.glb | awk '{print $5, $9}'
 
+if [ "${SKIP_WEB_TEST:-0}" = "1" ]; then
+  step "7/8 web test NOT EXECUTED (asset-only, cloud validation required)"
+else
 step "7/8 preview server + headless-Chrome walk test"
 if ! curl -sf -o /dev/null "http://localhost:$PORT/index.html"; then
   nohup python3 -m http.server "$PORT" --directory "$R/web" > logs/http.log 2>&1 &
@@ -61,9 +68,11 @@ fi
 python3 walk/walk_test.py --url "http://localhost:$PORT/index.html" | tee logs/walk.log | tail -4
 python3 -c "import json,sys; r=json.load(open('walk/walk_result.json')); print('walk:', 'PASS' if r['PASS'] else 'FAIL'); sys.exit(0 if r['PASS'] else 1)"
 
+fi
+
 if [ "${FAST:-0}" != "1" ]; then
   step "8/8 beauty render (Cycles, isometric reference angle)"
-  $BL -b building.blend -P src/render_beauty.py -- renders/beauty_iso.png ${BEAUTY_SAMPLES:-96} ${BEAUTY_RES:-1600} --az 22 --el 50 --warm --fog $(python3 -c "import json;print(json.load(open('compare/mat/warm_light.json'))['fog'])") > logs/beauty.log 2>&1
+  $BL "${BL_ARGS[@]}" -b building.blend -P src/render_beauty.py -- renders/beauty_iso.png ${BEAUTY_SAMPLES:-96} ${BEAUTY_RES:-1600} --az 22 --el 50 --warm --fog $(python3 -c "import json;print(json.load(open('compare/mat/warm_light.json'))['fog'])") > logs/beauty.log 2>&1
   ls -l renders/beauty_iso.png | awk '{print $5, $9}'
 fi
 step "done - preview: http://localhost:$PORT/index.html"

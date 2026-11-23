@@ -49,7 +49,24 @@ for r in records:
             d={'v':[list(v.co) for v in o.data.vertices],'f':[list(p.vertices) for p in o.data.polygons],'uv':[list(u.uv) for u in o.data.uv_layers.active.data] if o.data.uv_layers.active else [],'m':[m.name for m in o.data.materials]}
             return hashlib.sha256(json.dumps(d,sort_keys=True).encode()).hexdigest()
         before={'Chimneys_brick_red':'ac42594b2135bfb6f0f1f5321042d36b38182f8256c0f59eba52545f3298b93d'}
-        check(fp(bpy.data.objects['Chimneys_brick_red'])==before['Chimneys_brick_red'],'Original E4 chimney geometry retained exactly')
+        P=json.load(open(os.path.join(ROOT,'params.json')))
+        if not P['houses'].get('alleys',{}).get('enabled'):
+            check(fp(bpy.data.objects['Chimneys_brick_red'])==before['Chimneys_brick_red'],'Original E4 chimney geometry retained exactly')
+        else:
+            # t24u explicitly changes house widths/locations. A world-space hash of
+            # ALL stacks is no longer an invariant; retain the occluding E4 stack
+            # at its approved parametric position, original .9 x1.6m footprint.
+            sys.path.insert(0,os.path.join(ROOT,'src'))
+            from alley_layout import row_layout
+            H=P['houses'];e4=next(h for h in row_layout(H,'E') if h['id']=='E4');ch=H['chimney']
+            vfrac,ufrac=e4['chimneys'][1];D=H['row_x'][1]-H['row_x'][0];uf=-e4['jetty']*(e4['floors']-1)
+            vv=min(max(vfrac*e4['w'],ch['w']/2+.3),e4['w']-ch['w']/2-.3)
+            uc=min(max(uf+ufrac*(D-uf)-ch['d']/2,uf+.4),D-ch['d']-.4)
+            x0=H['row_x'][0]+uc;x1=x0+ch['d'];yc=e4['north']-vv
+            pts=[v.co for v in bpy.data.objects['Chimneys_brick_red'].data.vertices if x0-.001<=v.co.x<=x1+.001 and abs(v.co.y-yc)<=ch['w']/2+.001]
+            extents=([min(v[k] for v in pts) for k in (0,1)],[max(v[k] for v in pts) for k in (0,1)]) if pts else ([],[])
+            expected=([x0,yc-ch['w']/2],[x1,yc+ch['w']/2])
+            check(len(pts)>=8 and all(abs(a-b)<.002 for A,B in zip(extents,expected) for a,b in zip(A,B)),'Approved E4 chimney retained at scaled-row datum with original footprint')
         wall_clear=0
         for dx,dz in ((0,0),(-.22,-.18),(.22,-.18),(-.22,.18),(.22,.18)):
             cc=c+s*dx+Vector((0,0,dz)); hit=t_nochimney.ray_cast(cc-n*half,n,2*half)

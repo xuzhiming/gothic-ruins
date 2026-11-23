@@ -1,25 +1,9 @@
 {
- "_doc": "All geometry in build.py is generated from this file. Units: metres. Blender axes: +X east, +Y north, +Z up. Origin = centre of the plan-panel site bbox, z=0 = ground line under the plinth. See params.md for where each value comes from.",
- "ref_scale": {
-  "_doc": "Alignment of the reference panels to metres (drawings have no dimension lines). plan: isotropic mpp from house-front width/storey; elevations: horizontal anchor = site extent from plan, vertical anchor = ground line + spire-cross tip height. Fixed (never tuned) so the compare loop cannot move the target.",
-  "plan_mpp": 0.11,
-  "plan_center_px": [
-   345,
-   480.5
-  ],
-  "site_W": 62.7,
-  "site_D": 101.97,
-  "H_anchor": 41.5,
-  "storey_h": 3.2,
-  "storey_px_front": 31.7,
-  "storey_px_west": 30.0,
-  "storey_px_north": 35.0
- },
  "site": {
   "plaza_z": 4.2,
   "main": [
-   -31.35,
-   31.35,
+   -33.15,
+   33.15,
    -32.9,
    30.3
   ],
@@ -58,7 +42,11 @@
   "balustrade_h": 1.1,
   "post_w": 1.1,
   "post_h": 2.1,
-  "plinth_course": 0.35
+  "plinth_course": 0.35,
+  "base_x": [
+   -33.6,
+   33.6
+  ]
  },
  "stairs_south": {
   "upper": {
@@ -314,7 +302,7 @@
     "patches": 0,
     "pentice": true,
     "src": "plan 115 px; west elev. house 1: 4 windows/storey, half-timber on all storeys, damaged rear dormer, shop window; 2 chimneys at the N end (plan)",
-    "w": 12.773,
+    "w": 11.601054,
     "row": "W",
     "floors": 3
    },
@@ -360,7 +348,7 @@
     "patches": 0,
     "pentice": false,
     "src": "plan 104 px; west elev. house 2: eave ~0.8 m lower, highest ridge rise (5.1 m), 3 windows, round-arched door, chimney at S end; iso: big street gable",
-    "w": 11.551,
+    "w": 10.491388,
     "row": "W",
     "floors": 3
    },
@@ -407,7 +395,7 @@
     "patches": 0,
     "pentice": true,
     "src": "plan 92 px, big chimney at the N party wall; west elev. house 3: X-braced half-timber, 2 rear dormers; iso: deep jetty",
-    "w": 10.219,
+    "w": 9.280844,
     "row": "W",
     "floors": 3
    },
@@ -449,7 +437,7 @@
     "patches": 4,
     "pentice": false,
     "src": "plan 108 px, large roof hole; west elev. house 4 (hole with rafters): brick-patched ground floor, 4 windows; no street gable -> 2 dormers",
-    "w": 11.996,
+    "w": 10.894903,
     "row": "W",
     "floors": 3
    },
@@ -501,7 +489,7 @@
     "patches": 14,
     "pentice": false,
     "src": "plan 150 px incl. the south gable; front elev.: south gable plaster with large brick patches, 3 storeys + attic (gable reads ~50 deg at the front elevation's narrower depth = 40 deg on the 11 m plan depth)",
-    "w": 16.661,
+    "w": 15.131811,
     "row": "W",
     "floors": 3
    },
@@ -547,7 +535,7 @@
     "patches": 0,
     "pentice": true,
     "src": "plan 119 px, chimney at the N end (rear); east elev. house 5 (north): half-timber, 3 windows, dormer",
-    "w": 13.218,
+    "w": 12.004779,
     "row": "E",
     "floors": 3
    },
@@ -590,7 +578,7 @@
     "patches": 0,
     "pentice": false,
     "src": "plan 96 px; east elev. house 4: big roof hole, brick infill, lower eave",
-    "w": 10.663,
+    "w": 9.684527,
     "row": "E",
     "floors": 3
    },
@@ -636,7 +624,7 @@
     "patches": 0,
     "pentice": true,
     "src": "plan 92 px; east elev. house 3: X-braced half-timber, arched ground-floor windows, tallest ridge",
-    "w": 10.219,
+    "w": 9.281005,
     "row": "E",
     "floors": 3
    },
@@ -681,7 +669,7 @@
     "patches": 0,
     "pentice": false,
     "src": "plan 97 px, 2 chimneys at the N party wall (street + rear side); east elev. house 2: brick infill, rear roof hole",
-    "w": 10.774,
+    "w": 9.785408,
     "row": "E",
     "floors": 3
    },
@@ -734,7 +722,7 @@
     "pentice": false,
     "gable_timber": true,
     "src": "plan 165 px incl. south gable, 2 rear chimneys; front elev.: brick lower storeys, half-timbered gable, round-arched ground floor",
-    "w": 18.327,
+    "w": 16.645281,
     "row": "E",
     "floors": 3
    },
@@ -949,25 +937,371 @@
      ]
     }
    }
+  },
+  "alleys": {
+   "enabled": true,
+   "net_width": 1.4,
+   "finish_allowance": 0.025,
+   "south_datums": {
+    "W": -32.9,
+    "E": -32.901
+   },
+   "rear_extension": 1.8,
+   "guard_thickness": 0.25,
+   "guard_height": 1.1,
+   "north_platform_depth": 2.0
+  },
+  "window_damage": {
+   "W0/street/F0/E": [
+    false,
+    false,
+    false
+   ],
+   "W0/rear/F0/W": [
+    true,
+    false,
+    true
+   ],
+   "W0/end/F0/N": [
+    false,
+    false
+   ],
+   "W0/street/F1/E": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "W0/rear/F1/W": [
+    true,
+    false,
+    false,
+    true
+   ],
+   "W0/end/F1/N": [
+    true,
+    false
+   ],
+   "W0/street/F2/E": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "W0/rear/F2/W": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "W0/end/F2/N": [
+    false,
+    true
+   ],
+   "W1/street/F0/E": [
+    true,
+    false
+   ],
+   "W1/rear/F0/W": [
+    true,
+    false
+   ],
+   "W1/street/F1/E": [
+    true,
+    false,
+    false
+   ],
+   "W1/rear/F1/W": [
+    false,
+    false,
+    true
+   ],
+   "W1/street/F2/E": [
+    false,
+    false,
+    false
+   ],
+   "W1/rear/F2/W": [
+    true,
+    true,
+    false
+   ],
+   "W2/street/F0/E": [
+    false,
+    false
+   ],
+   "W2/rear/F0/W": [
+    false,
+    false
+   ],
+   "W2/street/F1/E": [
+    false,
+    false,
+    false
+   ],
+   "W2/rear/F1/W": [
+    true,
+    false,
+    true
+   ],
+   "W2/street/F2/E": [
+    false,
+    false,
+    false
+   ],
+   "W2/rear/F2/W": [
+    false,
+    false,
+    true
+   ],
+   "W3/street/F0/E": [
+    false,
+    false
+   ],
+   "W3/rear/F0/W": [
+    true,
+    true,
+    false
+   ],
+   "W3/street/F1/E": [
+    false,
+    false,
+    true,
+    true
+   ],
+   "W3/rear/F1/W": [
+    false,
+    true,
+    false,
+    true
+   ],
+   "W3/street/F2/E": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "W3/rear/F2/W": [
+    true,
+    false,
+    false,
+    true
+   ],
+   "W4/street/F0/E": [
+    false,
+    true
+   ],
+   "W4/rear/F0/W": [
+    false,
+    true,
+    false
+   ],
+   "W4/end/F0/S": [
+    false,
+    true
+   ],
+   "W4/street/F1/E": [
+    false,
+    true,
+    true,
+    false
+   ],
+   "W4/rear/F1/W": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "W4/end/F1/S": [
+    true,
+    true
+   ],
+   "W4/street/F2/E": [
+    false,
+    false,
+    false,
+    true
+   ],
+   "W4/rear/F2/W": [
+    true,
+    false,
+    true,
+    true
+   ],
+   "W4/end/F2/S": [
+    true,
+    false
+   ],
+   "E0/street/F0/W": [
+    false,
+    false
+   ],
+   "E0/rear/F0/E": [
+    false,
+    false
+   ],
+   "E0/end/F0/N": [
+    false,
+    true
+   ],
+   "E0/street/F1/W": [
+    false,
+    false,
+    false
+   ],
+   "E0/rear/F1/E": [
+    true,
+    false,
+    false
+   ],
+   "E0/end/F1/N": [
+    true,
+    false
+   ],
+   "E0/street/F2/W": [
+    false,
+    false,
+    true
+   ],
+   "E0/rear/F2/E": [
+    false,
+    false,
+    false
+   ],
+   "E0/end/F2/N": [
+    true,
+    false
+   ],
+   "E1/street/F0/W": [
+    false,
+    false
+   ],
+   "E1/rear/F0/E": [
+    false,
+    false
+   ],
+   "E1/street/F1/W": [
+    false,
+    false,
+    false
+   ],
+   "E1/rear/F1/E": [
+    false,
+    false,
+    false
+   ],
+   "E1/street/F2/W": [
+    false,
+    false,
+    false
+   ],
+   "E1/rear/F2/E": [
+    true,
+    true,
+    false
+   ],
+   "E2/street/F0/W": [
+    false
+   ],
+   "E2/rear/F0/E": [
+    false
+   ],
+   "E2/street/F1/W": [
+    true,
+    false
+   ],
+   "E2/rear/F1/E": [
+    false,
+    false
+   ],
+   "E2/street/F2/W": [
+    true,
+    false,
+    true
+   ],
+   "E2/rear/F2/E": [
+    false,
+    true
+   ],
+   "E3/street/F0/W": [
+    false,
+    false
+   ],
+   "E3/rear/F0/E": [
+    false,
+    false
+   ],
+   "E3/street/F1/W": [
+    true,
+    true,
+    true
+   ],
+   "E3/rear/F1/E": [
+    true,
+    false,
+    false
+   ],
+   "E3/street/F2/W": [
+    false,
+    true,
+    false
+   ],
+   "E3/rear/F2/E": [
+    false,
+    true,
+    false
+   ],
+   "E4/street/F0/W": [
+    false,
+    false
+   ],
+   "E4/rear/F0/E": [
+    false,
+    true,
+    false
+   ],
+   "E4/end/F0/S": [
+    true,
+    true
+   ],
+   "E4/street/F1/W": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "E4/rear/F1/E": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "E4/end/F1/S": [
+    true,
+    false
+   ],
+   "E4/street/F2/W": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "E4/rear/F2/E": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "E4/end/F2/S": [
+    false,
+    false
+   ]
   }
  },
  "walk": {
   "eye": 1.6,
   "radius": 0.3
  },
- "compare_lock": [
-  "cathedral.pinnacle_h",
-  "cathedral.apse.wall_top",
-  "cathedral.nave_wall_top",
-  "cathedral.tower_sw",
-  "cathedral.tower_se",
-  "cathedral.clerestory_pinnacles",
-  "cathedral.facade_pinnacle_top",
-  "cathedral.aisle_front_lancet",
-  "houses.list",
-  "ruin",
-  "cathedral.apse.cy"
- ],
  "ruin": {
   "enabled": true,
   "seed": 404,
