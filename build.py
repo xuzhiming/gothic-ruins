@@ -210,11 +210,16 @@ def lancet(s, w, sill, apex, k=0.9, mull=1):
 NWT = C["nave_wall_top"]; AWT = C["aisle_wall_top"]
 # --- facade (nave front wall) with portal (flat lintel + tympanum) and gable
 fx = nhw + wt/2
+_facade_decal_start = {k: len(b.f) for k,b in (geom.DECAL or {}).items()}
 fr = wall(Bucket("Cathedral", "stone"), (-fx, yF), (fx, yF), ZC, NWT, wt, [{"s": fx, "w": C["portal_w"], "h": C["portal_h"] - 1.0, "kind": "flat"}], wx=WXC(side=1, top=False, ground=True))
 # The existing portal notch plus a real rose opening; blind lancets stay backed by stone.
 _portal_top = ZC + C["portal_h"] - 1.0
 WA.panel(cs, [(-fx,ZC),(-C["portal_w"]/2,ZC),(-C["portal_w"]/2,_portal_top),(C["portal_w"]/2,_portal_top),(C["portal_w"]/2,ZC),(fx,ZC),(fx,NWT),(-fx,NWT)],
          [ngon(0,C["rose_z"],C["rose_r"],96)], (0,yF,0),(1,0,0),(0,0,1),wt)
+# Wall weather must stop at the new opening; keep every outside decal fragment/UV.
+for _k,_bk in (geom.DECAL or {}).items():
+    WA.clip_new_roof(_bk,_facade_decal_start[_k],
+                     [WA.convex_prism(ngon(0,C["rose_z"],C["rose_r"],96),(0,yF,0),(1,0,0),(0,0,1))])
 WA.record("cathedral_rose", (1.15,yF,C["rose_z"]+.65),(0,1,0),(1,0,0),wt/2,"rose")
 gable(cs, (-fx, yF), (fx, yF), NWT, C["facade_apex"], wt)
 pw = C["portal_w"]
@@ -845,6 +850,14 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
             vc_=min(max(fraction*W,1.3),W-1.3); ud_=uf+.9 if ff is fr else .9
             ub_=ud_+1.6/tp+.2
             roof_cuts.append(WA.roof_footprint(ff,ud_+.12,ub_,vc_-.73,vc_+.73))
+            # Clear only the glass-sized throat in front of the hollow dormer.
+            # A jettied corner can place the original main-roof lip above the sill.
+            # Full-scene audit confirms this defect only on NW's front dormer.
+            # Do not retessellate already-clear roofs elsewhere.
+            if hid == "NW" and ff is fr:
+                _zs=ze+ud_*tp
+                roof_cuts.append(WA.roof_footprint(ff,ud_-.38,ud_+.12,vc_-.5,vc_+.5)+
+                                 [(Vector((0,0,-1)),-(_zs+.15)),(Vector((0,0,1)),_zs+1.25)])
     for ue in (uf - ov_, D + ov_):
         E0, E1 = fr.M(ue, -0.15, zeo_), fr.M(ue, W + 0.15, zeo_); R0, R1 = fr.M(ur, -0.15, zr_), fr.M(ur, W + 0.15, zr_)
         ex_ = None

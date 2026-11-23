@@ -1,0 +1,37 @@
+
+=== [06:53:37] 1/8 textures + reference silhouettes
+
+=== [06:54:14] 2/8 compare loop (rounds=0)
+LOOP DONE J=0.7367 {"south": 0.8105, "north": 0.8123, "west": 0.7374, "east": 0.7461} footprint 0.8433
+params.md: 284 rows
+
+=== [06:54:19] 3/8 build (Blender background, procedural)
+objects: 233  faces: 93935  leaves: 52  spaces: 86  doors: 71  stairs: 25  t=1.2s
+BUILD OK t=2.4s
+glass apertures: 38 | unobstructed: 37 | retained occlusions: [{'id': 'House_E4_dormer_29', 'object': 'Chimneys_brick_red', 'fully_visible': False}]
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+
+=== [06:54:23] 4/8 orthographic renders + silhouette compare + side-by-side
+SCORES south:IoU=0.808,sky=4.58m north:IoU=0.812,sky=4.21m west:IoU=0.740,sky=6.32m east:IoU=0.748,sky=6.17m top:IoU=0.942,outline=1.19m,footprint=0.852
+west: IoU 0.7404  FP 213.0 FN 448.3 union 2547.2  (without plaza-zone conflict: 0.868)
+east: IoU 0.7477  FP 201.0 FN 439.7 union 2539.5  (without plaza-zone conflict: 0.8763)
+
+=== [06:54:53] 5/8 circulation check (+ negative tests)
+circulation: PASS | reachable 86 | negative test (blocked door) caught: True | negative test 2 (bad riser) caught: True
+
+=== [06:54:54] 6/8 GLB -> gltf-transform (WebP textures, Meshopt geometry)
+37782588 building.glb
+4917968 web/building_opt.glb
+
+=== [06:54:56] 7/8 NOT RUN: browser/WASD belongs to parent/cloud under explicit no-browser scope
+
+=== [06:54:56] 8/8 beauty render (Cycles, isometric reference angle)
+969783 renders/beauty_iso.png
+
+=== [06:55:05] done - preview: http://localhost:8766/index.html
+
+T22_LOCAL_ASSET_PIPELINE_EXIT=0

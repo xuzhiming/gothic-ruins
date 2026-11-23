@@ -1,0 +1,234 @@
+{
+  "params.json": {
+    "bytes": 21238,
+    "sha256": "8c287424c3ce94f621343eafa91ddf07cd0d3ba3ce4b93584d960d7dbf9a3ba3"
+  },
+  "params.md": {
+    "bytes": 34036,
+    "sha256": "88ca0659e884c3b6383b34e845b7eeac802709b232069681df043b4537efab20"
+  },
+  "ruin_streams.json": {
+    "bytes": 956264,
+    "sha256": "ee2949fdf4d1874a9ef5559eaadb329a30e9f9d2ca5718035ae72e4b3e8cf78c"
+  },
+  "build.py": {
+    "bytes": 89331,
+    "sha256": "234b8c7222d9b243a5c711f52eaf12234e44e46d7fa92d904b2bca3726e23ab8"
+  },
+  "spaces.json": {
+    "bytes": 46285,
+    "sha256": "8ee9ca16c8326bf15d8d289abb07b7a807dc707b49bd156d022d31f59384396e"
+  },
+  "HANDOFF.md": {
+    "bytes": 2933,
+    "sha256": "5664688efff90028ac5f295d4814677a6990cf634f3b600dec883d9b57b22e1b"
+  },
+  "run_all.sh": {
+    "bytes": 4471,
+    "sha256": "8175d04f17ee30bb8f367e1b96b259a178b2218156abc2a9165cb8dc3b0173dc"
+  },
+  "houses_table.md": {
+    "bytes": 4990,
+    "sha256": "6b7ab8f34b1e2c9cf5adb143924e490f2fc882c1183e3cca9ba00d51b11735e8"
+  },
+  "params_initial.json": {
+    "bytes": 4040,
+    "sha256": "6eefc1c3e4c5178f86ac5dffc14da6be22ec18ed3b74832d71605286a374e167"
+  },
+  "logs/glass_assets.log": {
+    "bytes": 4055,
+    "sha256": "919b78888e1cd2fa779c2b6004526d48087969947e3f2e548cac43c1e6d3d19e"
+  },
+  "logs/glass_glb.json": {
+    "bytes": 1532,
+    "sha256": "1a5ca213c728833dd466dbd12118171edfe183cc7f060df4da2c86c8ed755db9"
+  },
+  "logs/glass_geometry.log": {
+    "bytes": 688,
+    "sha256": "cbd15e6ce6b50032b12319c838f26b19f8ae6b6784c0c910aad74c3e3abaea30"
+  },
+  "logs/run_all_t22_local.log": {
+    "bytes": 1632,
+    "sha256": "bf18c84ca587ffbce2951a557b392673a7367a86873fda003486b2acc686311b"
+  },
+  "src/face_materials.py": {
+    "bytes": 2450,
+    "sha256": "969e04f333c0a7fe881f15b8198006f1178a500d01d05703f539df45dfd0d3aa"
+  },
+  "src/render_sil.py": {
+    "bytes": 3484,
+    "sha256": "b3fe32a65765a02bb425563335038477d387550ad5fb759ba8798437f04fbc62"
+  },
+  "src/window_apertures.py": {
+    "bytes": 4475,
+    "sha256": "8ec39ce91f92c93ed6b3a529ae7db1aa865bbf1793afb8c8b262b8bacc1ba940"
+  },
+  "src/render_beauty.py": {
+    "bytes": 5752,
+    "sha256": "26fb1084fb2ee2e8e47a07edc1703632dd948c51291129820310e999d2d50fc4"
+  },
+  "src/house_table.py": {
+    "bytes": 10572,
+    "sha256": "16f65525acc23b100aaaf66f556880a370bc0a3faed56d82895357a8efd07df5"
+  },
+  "src/final_scene.py": {
+    "bytes": 4101,
+    "sha256": "cc85ca50443dae3e21f31fe3034fa17bd7cdfdd0e478a7606c7bf82eb797fd09"
+  },
+  "src/params_md.py": {
+    "bytes": 13383,
+    "sha256": "edc7d3f030696b794385fe2421ec4c84ea1b148959ddfefa307a77e851f51ee1"
+  },
+  "src/geom.py": {
+    "bytes": 34272,
+    "sha256": "a9195f644fa9d6c7a8e84dc08e43fd5b7236f09a3b2dd013c838fecd6424db02"
+  },
+  "src/make_textures.py": {
+    "bytes": 31839,
+    "sha256": "bedb5fa94c4235d511795e3589b00f377a2fb2ca199c28cad0a9b04e37857eef"
+  },
+  "docs/window-audit-t22.md": {
+    "bytes": 7544,
+    "sha256": "1040d3a5e08a8f3b6350b855c7a0a932156abb42cd255a880493c36b2cc9fe92"
+  },
+  "docs/glass-web-contract.md": {
+    "bytes": 2376,
+    "sha256": "e3b208f748a54bd464ceba93157559e522cb0a65f484b1189da61909eecbb0ab"
+  },
+  "check/test_m13_faces.py": {
+    "bytes": 772,
+    "sha256": "3ef3332b270cddc204e13ac75aa2133acbb90d4e65f79571b4d76d0ce7720dd5"
+  },
+  "check/summarize_all_windows.py": {
+    "bytes": 4680,
+    "sha256": "321ede7d8263d93c23b1a36eadfb9e34e8f17cf4d74ab73f99612d0b38411bf6"
+  },
+  "check/circulation_report.json": {
+    "bytes": 86935,
+    "sha256": "7d121b8d0e08e711a07e8de46950c31c3bc17532b9c26092ab6e4ed582f84bb9"
+  },
+  "check/trace_all_windows.py": {
+    "bytes": 7176,
+    "sha256": "2135ddea3891d64acb1d1d78e27be586c518e0ced23b287021a9ee6541a4ecdd"
+  },
+  "check/test_glass_assets.py": {
+    "bytes": 5047,
+    "sha256": "858474ffe99b086e3b26b5121f619225c7de8ad36d5302e7517188f89d912259"
+  },
+  "check/test_all_windows.py": {
+    "bytes": 2388,
+    "sha256": "d2e5e6130385b3bb1ba75aec81a1f365db08271d581aed10078ffb7fa109df9f"
+  },
+  "check/decode_window_glb.cjs": {
+    "bytes": 1656,
+    "sha256": "6f172dc352dcad67a30956d447fce1db8ba901b693a6a988268af6107d716258"
+  },
+  "check/audit_all_windows.py": {
+    "bytes": 11008,
+    "sha256": "27618e320ede169abaf27c621a896a8a415e581b76ef465f79d329efd7c4a8ca"
+  },
+  "check/circulation_check.py": {
+    "bytes": 13009,
+    "sha256": "39d57332cd3a4da2e3d66bd43145d951776dd24ea35c492ac60469edbcbfaaa3"
+  },
+  "check/test_aperture_geometry.py": {
+    "bytes": 2261,
+    "sha256": "0ad8128c8d7192c8a06a638765545083a16e82150de300c2462970e47a7baac8"
+  },
+  "check/audit_glass_glb.py": {
+    "bytes": 984,
+    "sha256": "a8c0578caf121dd67781534c22d0cd08f242bad576fdb557f056b9071ed7396f"
+  },
+  "check/test_window_change_scope.py": {
+    "bytes": 339,
+    "sha256": "7ba38819d30a5b48d3ea4a11fa2a695b9c4d879bca4a16e27a5a04f32518686d"
+  },
+  "window-audit/scope_green.log": {
+    "bytes": 205,
+    "sha256": "dfeff4b59d36c6fa75413873e866d73f62a77afc9884ba5e07caae6edc0d358a"
+  },
+  "window-audit/windows_all.json.gz": {
+    "bytes": 1553061,
+    "sha256": "679eed15536a24a09533347d0ff26f055c74981d669f07e6e3f60affd4e8746c"
+  },
+  "window-audit/browser_status.txt": {
+    "bytes": 81,
+    "sha256": "b2172f55bb946fca14e3f2f24104786ff1f47c34aa614506013df284bbc5ae40"
+  },
+  "window-audit/reproducibility.json": {
+    "bytes": 1208,
+    "sha256": "7eaab2991a695b358a0159d7abb69defa530893b851af33a43559ddcd9f23f5c"
+  },
+  "window-audit/scope_red.log": {
+    "bytes": 1016,
+    "sha256": "563af093e505036e82e909da3d9b5e3063e6db8168c78b6b035d6c83df8ae68d"
+  },
+  "window-audit/decorative_ornaments.json": {
+    "bytes": 2062,
+    "sha256": "dd4f91b3c109ebe9177a50e2b744ae80a22b60f1500a9246cc20d1e39a443d17"
+  },
+  "window-audit/inventory_after.json": {
+    "bytes": 899153,
+    "sha256": "2b7cabf2b659807d729e521693ca1172e5c29ec6667ba8cc84a1d814ceed23ca"
+  },
+  "window-audit/identity.json": {
+    "bytes": 699,
+    "sha256": "f1f1c59504dcb1235bdfec5428e2743f9b712008fa9141fe8a87522c9eb1bd76"
+  },
+  "window-audit/run_all_local.sh": {
+    "bytes": 4219,
+    "sha256": "31af58b27185059e6fe65bb4f82ffa30ca7abde598ccba66125e7c016f9aed4b"
+  },
+  "window-audit/regression_red_final.log": {
+    "bytes": 5650,
+    "sha256": "5a058a6d6a9defaea328b7c137c23b768effb054022f4e3728f73ee72cd95654"
+  },
+  "window-audit/dense_roof_red.log": {
+    "bytes": 3345,
+    "sha256": "6496b327059916cdf288b7cfe52c725c4555f7bfdb20a136eb3c245fe8b5ddec"
+  },
+  "window-audit/verify_identity.py": {
+    "bytes": 1097,
+    "sha256": "8208b72d803222d4374f599dbd660fa134ca8f021c3c0a6c6d2892320a89993c"
+  },
+  "window-audit/summary.json": {
+    "bytes": 27498,
+    "sha256": "af5d569ff48f2094987ab9938ee10a07fde90c2b463320dc0d1cb25daef64e86"
+  },
+  "window-audit/render_windows.py": {
+    "bytes": 1473,
+    "sha256": "64712a6be3272de383148cb94d069d97ee19b31fd5da6db86bef5f99b7e14e05"
+  },
+  "window-audit/windows_all.csv": {
+    "bytes": 63535,
+    "sha256": "a7ad402b0f7c1e8af818a49d5feaa3973ddbdc50a61d46dbade66722f2b9ed56"
+  },
+  "window-audit/validation_summary.json": {
+    "bytes": 122023,
+    "sha256": "3e25bf670c1b06d3df64d7ce5abc6e5a7bb7c1e462a1ba34b330afc71a6a8390"
+  },
+  "window-audit/plan.md": {
+    "bytes": 2550,
+    "sha256": "c57841a55834f6dfb95fefc841ce8623f457588d82a034f47033c21200d87fb1"
+  },
+  "window-audit/regression_green.log": {
+    "bytes": 996,
+    "sha256": "5e70b8084878988155e0b3b330388b97755a047eb681a1ca61589442a818b023"
+  },
+  "web/building_opt.glb": {
+    "bytes": 4917968,
+    "sha256": "abb11f6ac7d264f973390fcab03f9ae5b7ab67a9f5ef4d6f298385b008ba2eaa"
+  },
+  "compare/mat/warm_light.json": {
+    "bytes": 516,
+    "sha256": "5c4c78426f32bf260021b8083b0ef1206e307e36a3d005e84a696980484632bf"
+  },
+  "compare/mat/grade.json": {
+    "bytes": 1110,
+    "sha256": "bda15fa76d3dc932e35b7763e6eb67d040f3a4604daa0ad628a30297780168fa"
+  },
+  "compare/wall/wall_gain.json": {
+    "bytes": 591,
+    "sha256": "610ff74beba843028bf957e33873e34bb81b4afcf16e5fa6dd62e813a43d29d3"
+  }
+}

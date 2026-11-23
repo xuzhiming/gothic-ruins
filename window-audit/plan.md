@@ -1,0 +1,12 @@
+# Full-window audit and conditional repair
+
+Inventory EVERY generator window slot, not only surviving glass or the 38 prior new holes. Trace the unchanged generator in an isolated output directory; correlate every generated pane face with the latest saved Blend and raw/optimized GLB. Enumerate 12 house IDs plus Cathedral components by floor, cardinal direction and opening type. Missing ruin panes and decorative blind panels are separate categories.
+
+For each slot, sample interior/exterior near-wall rays and glazing intersections, retain precise object/material hits, separately classify frames, intentional timbers, interior partitions, roofs, lime/brick walls and original chimneys/rubble. Inventory counts include missing panes so absence is never silently omitted. Compare full generated pane-face multiset against saved Blend to prove coverage.
+
+Only an actual true-glass alpha/material error or accidental blocked wall/skin/roof authorizes a minimal repair. First write a failing regression against the frozen before asset. Do not modify blind walls, chimney/furniture/layout or M13 textures/15mm lime. No web edits, no publishing repo, no push; no browser control. If the audit finds no repairable defect, do not manufacture changes. Production/browser differences after 8bca20e remain for parent coordination.
+
+## Evidence-based minimal repair (t22u)
+Full 365-slot trace matches all 4214 generated pane/blind face occurrences. No opaque true glazing. Two genuine omissions found: NW south/front dormer has 4/36 aperture samples cut by an original roof lip (the previous footprint starts at ud+.12, behind the glass plane ud-.02; a jettied corner lowers the dormer relative to the main roof). Rose has two aperture samples crossed by an obsolete wall-crack decal generated before the real hole.
+Repair only the window-sized roof throat, bounded by sill/head in Z, leaving roof outside the aperture intact; clip only facade weather decals inside the 96-sided rose opening, preserving all outside UVs/seeded geometry. Do not open nave/tower shared masonry, cut buttresses, move chimneys, remove timber frames/rubble or sagged original W1 eaves. Those are separately documented legitimate/structural obstructions.
+Run failed actual saved-asset report tests first; render genuine Cycles before; minimal source repair; serial local pipeline stages1–6 and8 (stage7 headless browser explicitly NOT RUN under no-browser instruction); full actual-scene audit and GLB validation; Cycles after + visual Read; no web runtime or release-repo edits.

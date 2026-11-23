@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-11-23T06:59:24.303417-05:00",
+  "source": "Only window-handoff-t22 copied; no private refs, original Blend, baked textures or repository",
+  "isolated_root": "/workspace/gothic/window-repro-t22",
+  "commands": [
+    "python3 src/make_textures.py",
+    "Blender5.3 -b -P build.py",
+    "gltf-transform4.5.1 optimize building.glb web/building_opt.glb --compress meshopt --texture-compress webp --simplify false --join-named false --flatten false --instance false"
+  ],
+  "bytes": 4917968,
+  "final_sha256": "abb11f6ac7d264f973390fcab03f9ae5b7ab67a9f5ef4d6f298385b008ba2eaa",
+  "independent_rebuild_sha256": "abb11f6ac7d264f973390fcab03f9ae5b7ab67a9f5ef4d6f298385b008ba2eaa",
+  "cmp_identical": true,
+  "calibrations": {
+    "compare/wall/wall_gain.json": "610ff74beba843028bf957e33873e34bb81b4afcf16e5fa6dd62e813a43d29d3",
+    "compare/mat/grade.json": "bda15fa76d3dc932e35b7763e6eb67d040f3a4604daa0ad628a30297780168fa",
+    "compare/mat/warm_light.json": "5c4c78426f32bf260021b8083b0ef1206e307e36a3d005e84a696980484632bf"
+  },
+  "build_log": "/workspace/gothic/window-repro-t22/logs/repro_build.log",
+  "optimization_log": "/workspace/gothic/window-repro-t22/logs/repro_optimize.log"
+}

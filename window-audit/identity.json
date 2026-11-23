@@ -1,0 +1,27 @@
+{
+  "changed": {
+    "Decal_decal_crack": {
+      "before": {
+        "sha256": "62d2a9475ffaa8b76f2372f80487fc31499bde3cbecc67708ec417cd0ec7ca1d",
+        "polygons": 116
+      },
+      "after": {
+        "sha256": "1e8b19b6db8205d7df7273e812493c9042e3272a65cd605a40ae3f4a5ef4a1a6",
+        "polygons": 131
+      }
+    },
+    "House_NW_slate": {
+      "before": {
+        "sha256": "993045c6b237c8010c3b0e0b18c143abb8aed56be8932e39fb34188bcf98fdb3",
+        "polygons": 439
+      },
+      "after": {
+        "sha256": "8016221f9eb4d433721da75dfb83b225f9e91a9c9b769af7136b65da5cd3a292",
+        "polygons": 444
+      }
+    }
+  },
+  "unchanged": 179,
+  "before_objects": 181,
+  "after_objects": 181
+}

@@ -1183,7 +1183,7 @@
    {
     "name": "W0_F2_back",
     "floor": true,
-    "headroom_m": 3.68,
+    "headroom_m": 5.79,
     "ok": true
    },
    {
@@ -1219,7 +1219,7 @@
    {
     "name": "W1_F2_back",
     "floor": true,
-    "headroom_m": 3.11,
+    "headroom_m": 5.63,
     "ok": true
    },
    {
@@ -1363,7 +1363,7 @@
    {
     "name": "E0_F2_back",
     "floor": true,
-    "headroom_m": 3.64,
+    "headroom_m": 6.16,
     "ok": true
    },
    {
@@ -1393,13 +1393,13 @@
    {
     "name": "E1_F2_front",
     "floor": true,
-    "headroom_m": 2.6,
+    "headroom_m": 5.12,
     "ok": true
    },
    {
     "name": "E1_F2_back",
     "floor": true,
-    "headroom_m": 3.12,
+    "headroom_m": 5.64,
     "ok": true
    },
    {
@@ -1435,7 +1435,7 @@
    {
     "name": "E2_F2_back",
     "floor": true,
-    "headroom_m": 4.01,
+    "headroom_m": 6.53,
     "ok": true
    },
    {
@@ -1465,7 +1465,7 @@
    {
     "name": "E3_F2_front",
     "floor": true,
-    "headroom_m": 3.6,
+    "headroom_m": 6.12,
     "ok": true
    },
    {
@@ -1507,7 +1507,7 @@
    {
     "name": "E4_F2_back",
     "floor": true,
-    "headroom_m": 3.93,
+    "headroom_m": 6.45,
     "ok": true
    },
    {
@@ -1531,7 +1531,7 @@
    {
     "name": "NW_F1_back",
     "floor": true,
-    "headroom_m": 3.86,
+    "headroom_m": 5.99,
     "ok": true
    },
    {
@@ -1555,7 +1555,7 @@
    {
     "name": "NE_F1_back",
     "floor": true,
-    "headroom_m": 3.86,
+    "headroom_m": 5.99,
     "ok": true
    },
    {
@@ -2858,7 +2858,7 @@
    {
     "name": "W0_F2_back",
     "floor": true,
-    "headroom_m": 3.68,
+    "headroom_m": 5.79,
     "ok": true
    },
    {
@@ -2894,7 +2894,7 @@
    {
     "name": "W1_F2_back",
     "floor": true,
-    "headroom_m": 3.11,
+    "headroom_m": 5.63,
     "ok": true
    },
    {
@@ -3038,7 +3038,7 @@
    {
     "name": "E0_F2_back",
     "floor": true,
-    "headroom_m": 3.64,
+    "headroom_m": 6.16,
     "ok": true
    },
    {
@@ -3068,13 +3068,13 @@
    {
     "name": "E1_F2_front",
     "floor": true,
-    "headroom_m": 2.6,
+    "headroom_m": 5.12,
     "ok": true
    },
    {
     "name": "E1_F2_back",
     "floor": true,
-    "headroom_m": 3.12,
+    "headroom_m": 5.64,
     "ok": true
    },
    {
@@ -3110,7 +3110,7 @@
    {
     "name": "E2_F2_back",
     "floor": true,
-    "headroom_m": 4.01,
+    "headroom_m": 6.53,
     "ok": true
    },
    {
@@ -3140,7 +3140,7 @@
    {
     "name": "E3_F2_front",
     "floor": true,
-    "headroom_m": 3.6,
+    "headroom_m": 6.12,
     "ok": true
    },
    {
@@ -3182,7 +3182,7 @@
    {
     "name": "E4_F2_back",
     "floor": true,
-    "headroom_m": 3.93,
+    "headroom_m": 6.45,
     "ok": true
    },
    {
@@ -3206,7 +3206,7 @@
    {
     "name": "NW_F1_back",
     "floor": true,
-    "headroom_m": 3.86,
+    "headroom_m": 5.99,
     "ok": true
    },
    {
@@ -3230,7 +3230,7 @@
    {
     "name": "NE_F1_back",
     "floor": true,
-    "headroom_m": 3.86,
+    "headroom_m": 5.99,
     "ok": true
    },
    {
@@ -4544,7 +4544,7 @@
    {
     "name": "W0_F2_back",
     "floor": true,
-    "headroom_m": 3.68,
+    "headroom_m": 5.79,
     "ok": true
    },
    {
@@ -4580,7 +4580,7 @@
    {
     "name": "W1_F2_back",
     "floor": true,
-    "headroom_m": 3.11,
+    "headroom_m": 5.63,
     "ok": true
    },
    {
@@ -4724,7 +4724,7 @@
    {
     "name": "E0_F2_back",
     "floor": true,
-    "headroom_m": 3.64,
+    "headroom_m": 6.16,
     "ok": true
    },
    {
@@ -4754,13 +4754,13 @@
    {
     "name": "E1_F2_front",
     "floor": true,
-    "headroom_m": 2.6,
+    "headroom_m": 5.12,
     "ok": true
    },
    {
     "name": "E1_F2_back",
     "floor": true,
-    "headroom_m": 3.12,
+    "headroom_m": 5.64,
     "ok": true
    },
    {
@@ -4796,7 +4796,7 @@
    {
     "name": "E2_F2_back",
     "floor": true,
-    "headroom_m": 4.01,
+    "headroom_m": 6.53,
     "ok": true
    },
    {
@@ -4826,7 +4826,7 @@
    {
     "name": "E3_F2_front",
     "floor": true,
-    "headroom_m": 3.6,
+    "headroom_m": 6.12,
     "ok": true
    },
    {
@@ -4868,7 +4868,7 @@
    {
     "name": "E4_F2_back",
     "floor": true,
-    "headroom_m": 3.93,
+    "headroom_m": 6.45,
     "ok": true
    },
    {
@@ -4892,7 +4892,7 @@
    {
     "name": "NW_F1_back",
     "floor": true,
-    "headroom_m": 3.86,
+    "headroom_m": 5.99,
     "ok": true
    },
    {
@@ -4916,7 +4916,7 @@
    {
     "name": "NE_F1_back",
     "floor": true,
-    "headroom_m": 3.86,
+    "headroom_m": 5.99,
     "ok": true
    },
    {

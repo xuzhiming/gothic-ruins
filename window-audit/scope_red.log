@@ -1,0 +1,17 @@
+test_only_confirmed_defect_meshes_changed (__main__.Scope.test_only_confirmed_defect_meshes_changed) ... FAIL
+
+======================================================================
+FAIL: test_only_confirmed_defect_meshes_changed (__main__.Scope.test_only_confirmed_defect_meshes_changed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/gothic/check/test_window_change_scope.py", line 5, in test_only_confirmed_defect_meshes_changed
+    self.assertEqual(set(x['changed']),{'House_NW_slate','Decal_decal_crack'},'No roof edits on already-clear E1/W3 windows')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'House_W3_slate'
+'House_E1_slate' : No roof edits on already-clear E1/W3 windows
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)

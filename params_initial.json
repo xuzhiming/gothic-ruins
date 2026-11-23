@@ -1,0 +1,260 @@
+{
+ "_doc": "All geometry in build.py is generated from this file. Units: metres. Blender axes: +X east, +Y north, +Z up. Origin = centre of the plan-panel site bbox, z=0 = ground line under the plinth. See params.md for where each value comes from.",
+ "ref_scale": {
+  "_doc": "Alignment of the reference panels to metres (drawings have no dimension lines). plan: isotropic mpp from house-front width/storey; elevations: horizontal anchor = site extent from plan, vertical anchor = ground line + spire-cross tip height. Fixed (never tuned) so the compare loop cannot move the target.",
+  "plan_mpp": 0.11,
+  "plan_center_px": [
+   345,
+   480.5
+  ],
+  "site_W": 62.7,
+  "site_D": 101.97,
+  "H_anchor": 41.5,
+  "storey_h": 3.2,
+  "storey_px_front": 31.7,
+  "storey_px_west": 30.0,
+  "storey_px_north": 35.0
+ },
+ "site": {
+  "plaza_z": 4.2,
+  "main": [
+   -31.35,
+   31.35,
+   -32.9,
+   30.3
+  ],
+  "north_band": [
+   -29.0,
+   29.0,
+   30.3,
+   50.98
+  ],
+  "tongue": [
+   -13.2,
+   13.2,
+   -36.8,
+   -32.9
+  ],
+  "terrace": [
+   -29.35,
+   29.35,
+   -41.2,
+   -32.9
+  ],
+  "terrace_z": 2.1,
+  "strip": [
+   -20.2,
+   20.2,
+   -46.1,
+   -41.2
+  ],
+  "approach": [
+   -12.0,
+   12.0,
+   -57.0,
+   -50.98
+  ],
+  "parapet_h": 1.0,
+  "balustrade_h": 1.1,
+  "post_w": 1.1,
+  "post_h": 2.1,
+  "plinth_course": 0.35
+ },
+ "stairs_south": {
+  "upper": {
+   "x": [
+    -6.8,
+    6.8
+   ],
+   "y_top": -36.8,
+   "y_bot": -41.2,
+   "n": 13
+  },
+  "lower": {
+   "x": [
+    -8.25,
+    8.25
+   ],
+   "y_top": -46.1,
+   "y_bot": -50.98,
+   "n": 13
+  }
+ },
+ "bollards": {
+  "cx": 0.0,
+  "cy": -15.9,
+  "r": 13.75,
+  "y_end": -6.0,
+  "pitch": 3.4,
+  "h": 0.95,
+  "d": 0.28,
+  "chain_z": 0.6,
+  "sag": 0.18
+ },
+ "cathedral": {
+  "podium_h": 2.4,
+  "podium_margin": 0.8,
+  "steps": {
+   "x": [
+    -5.2,
+    5.2
+   ],
+   "y0": -2.2,
+   "n": 15,
+   "tread": 0.3
+  },
+  "nave_hw": 5.5,
+  "aisle_hw": 13.0,
+  "y_front": 3.9,
+  "y_back": 35.3,
+  "bays": 5,
+  "wall_t": 1.0,
+  "aisle_wall_top": 15.5,
+  "nave_wall_top": 22.5,
+  "nave_ridge": 29.5,
+  "aisle_roof_top": 18.6,
+  "facade_apex": 31.6,
+  "facade_finial": 2.0,
+  "rose_z": 21.1,
+  "rose_r": 2.7,
+  "portal_w": 2.8,
+  "portal_h": 5.0,
+  "portal_gable_top": 17.3,
+  "arcade_open_h": 9.0,
+  "pier_w": 1.4,
+  "buttress_out": 1.6,
+  "buttress_w": 1.2,
+  "buttress_top": 16.5,
+  "pinnacle_h": 6.5,
+  "flyer_z_out": 14.5,
+  "flyer_z_in": 19.0,
+  "tower_sw": {
+   "x": [
+    -12.5,
+    -6.0
+   ],
+   "y": [
+    3.9,
+    10.18
+   ],
+   "top": 30.0,
+   "spire_tip": 40.4,
+   "cross": 1.1,
+   "spire_r": 1.9
+  },
+  "tower_se": {
+   "x": [
+    6.0,
+    12.5
+   ],
+   "y": [
+    3.9,
+    10.18
+   ],
+   "top": 21.5,
+   "spire_tip": 26.5
+  },
+  "choir_y": 39.0,
+  "apse": {
+   "cy": 41.0,
+   "r_in": 5.5,
+   "r_amb": 8.0,
+   "r_pier": 8.9,
+   "sides": 12,
+   "wall_top": 22.5,
+   "roof_apex": 30.0,
+   "finial": 2.0,
+   "amb_top": 15.5
+  },
+  "roof_holes": {
+   "nave_east_exposed": [
+    9.0,
+    30.0
+   ],
+   "seed": 7,
+   "hole_frac": 0.1
+  },
+  "gate": {
+   "y": -2.2,
+   "x_posts": [
+    5.2,
+    14.0
+   ],
+   "h": 2.6,
+   "post_w": 1.0,
+   "post_h": 3.2,
+   "gate_w": 3.2
+  }
+ },
+ "houses": {
+  "storey_h": 3.2,
+  "slab_t": 0.25,
+  "wall_t": 0.35,
+  "part_t": 0.15,
+  "row_x": [
+   20.35,
+   31.35
+  ],
+  "row_y": [
+   -32.9,
+   30.3
+  ],
+  "n_row": 6,
+  "floors_row": 3,
+  "roof_pitch_deg": 50.0,
+  "eave_var": [
+   0.0,
+   0.8,
+   -0.4,
+   1.0,
+   0.3,
+   -0.5
+  ],
+  "overhang": 0.45,
+  "corner": {
+   "x": [
+    16.0,
+    28.0
+   ],
+   "y": [
+    36.9,
+    47.9
+   ],
+   "floors": 2,
+   "roof_pitch_deg": 35.0,
+   "eave_extra": 0.0
+  },
+  "door_w": 1.2,
+  "door_h": 2.4,
+  "door_v": 5.2,
+  "stair": {
+   "riser_n": 20,
+   "tread": 0.27,
+   "lane_w": 1.15,
+   "v0": 2.0,
+   "u1": [
+    4.2,
+    5.35
+   ],
+   "u2": [
+    2.95,
+    4.1
+   ]
+  },
+  "partition_u": 5.5,
+  "partition_door_v": 9.0,
+  "chimney": {
+   "w": 0.9,
+   "d": 1.6,
+   "above_ridge": 2.2
+  },
+  "roof_hole_seed": 3,
+  "roof_hole_frac": 0.07,
+  "eave_extra": 0.0,
+  "cross_gable_frac": 0.55
+ },
+ "walk": {
+  "eye": 1.6,
+  "radius": 0.3
+ }
+}

@@ -1,0 +1,13 @@
+test_decorative_blinds_remain_opaque (__main__.AllWindows.test_decorative_blinds_remain_opaque) ... ok
+test_each_exported_glb_window_matches_scene_ray_presence (__main__.AllWindows.test_each_exported_glb_window_matches_scene_ray_presence) ... ok
+test_each_window_has_bidirectional_evidence (__main__.AllWindows.test_each_window_has_bidirectional_evidence) ... ok
+test_exhaustive_geometry_mapping (__main__.AllWindows.test_exhaustive_geometry_mapping) ... ok
+test_glb_preserves_alpha_and_geometry (__main__.AllWindows.test_glb_preserves_alpha_and_geometry) ... ok
+test_nw_dormer_has_no_uncut_roof_lip (__main__.AllWindows.test_nw_dormer_has_no_uncut_roof_lip) ... ok
+test_rose_has_no_wall_weather_decal_across_opening (__main__.AllWindows.test_rose_has_no_wall_weather_decal_across_opening) ... ok
+test_true_glass_material_not_opaque (__main__.AllWindows.test_true_glass_material_not_opaque) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.020s
+
+OK
