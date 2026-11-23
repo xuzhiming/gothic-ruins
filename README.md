@@ -40,7 +40,8 @@ Cycles 暖光预设渲染（`./render_final.sh` 重渲；仓库里是 JPG，PNG 
 
 - **动线检查**：86 个空间全部可从入口到达；71 处门洞/开口射线全部打穿，其中 69 处侧向射线确认打穿了真实墙体；25 段楼梯踏步高 150–180 mm、踏面至少 260 mm、净空至少 2.1 m，全部合格。反向测试：故意堵住 `W3_door`、把 `W3_stair_01` 一级踏步抬高 60 mm，两项都被检查抓出。详见 `check/circulation_report.md`。
 - **实走测试**：无头 Chrome 按 WASD 走完约 287 m（广场、大殿、后殿、钟楼、西排一栋房子的三层），0 次穿墙、0 次卡住，途经 4 扇自动门在通过时均为全开。详见 `walk/walk_result.json`。
-- **导出**：玻璃集成后的网页 GLB 为 168,099 个三角面、4,917,564 字节（SHA256 `b5d06c807228c60a0a748ade3861ea2fc6b07730ac4a771292023565bb936f42`）。此前 M13 为 161,143 面、4,810,236 字节。资产侧说明见 `docs/glass-validation.md`。
+- **导出**：玻璃集成后的网页 GLB 为 168,099 个三角面、4,917,564 字节（SHA256 `b5d06c807228c60a0a748ade3861ea2fc6b07730ac4a771292023565bb936f42`）。此前 M13 为 161,143 面、4,810,236 字节。
+- **玻璃验证范围**：本机资产流水线已经完整跑过 `./run_all.sh`（Blender 建模、窗洞、两项动线负测、WASD），记录在 `docs/glass-validation.md`。仓库里的 `check/test_aperture_geometry.py`、`check/test_glass_assets.py`、`check/audit_glass_glb.py` 是这条流水线要用的脚本。`run_all.sh` 新增步骤依赖的源文件现已齐全；`building.blend` 与未压缩的 `building.glb` 仍由流水线当场生成，不入库。
 
 并排对照图：
 
