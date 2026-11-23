@@ -12,6 +12,7 @@
 import bpy, json, math, os, sys, random, time
 ROOT = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(ROOT, "src"))
 import importlib, geom; importlib.reload(geom)
+import window_apertures as WA; WA.RECORDS.clear()
 from geom import *
 from mathutils import Vector
 T0 = time.time()
@@ -184,7 +185,7 @@ C = P["cathedral"]; ZC = PZ + C["podium_h"]; A = C["apse"]; cy = A["cy"]
 geom.PINNACLE_SPIKES = bool(C.get("pinnacle_spikes", False))
 nhw, ahw, wt = C["nave_hw"], C["aisle_hw"], C["wall_t"]; yF, yB, NB = C["y_front"], C["y_back"], C["bays"]
 bay = (yB - yF)/NB; bayY = [yF + i*bay for i in range(NB + 1)]
-cs = SC.B("Cathedral", "stone"); crub = SC.B("Cathedral", "rubble"); glass = SC.B("Glass", "glass"); cfr = SC.B("Tracery", "stone")
+cs = SC.B("Cathedral", "stone"); crub = SC.B("Cathedral", "rubble"); glass = SC.B("Glass", "glass"); blindglass = SC.B("GlassBlind", "glass_blind"); cfr = SC.B("Tracery", "stone")
 slate = SC.B("CathRoof", "slate"); ctim = SC.B("CathRoof", "timber"); fin = SC.B("Finials", "iron")
 stc = C["steps"]; y_pod = stc["y0"] + (stc["n"] - 1)*stc["tread"]
 # --- podium (raised base) + steps
@@ -209,12 +210,17 @@ def lancet(s, w, sill, apex, k=0.9, mull=1):
 NWT = C["nave_wall_top"]; AWT = C["aisle_wall_top"]
 # --- facade (nave front wall) with portal (flat lintel + tympanum) and gable
 fx = nhw + wt/2
-fr = wall(cs, (-fx, yF), (fx, yF), ZC, NWT, wt, [{"s": fx, "w": C["portal_w"], "h": C["portal_h"] - 1.0, "kind": "flat"}], wx=WXC(side=1, top=False, ground=True))
+fr = wall(Bucket("Cathedral", "stone"), (-fx, yF), (fx, yF), ZC, NWT, wt, [{"s": fx, "w": C["portal_w"], "h": C["portal_h"] - 1.0, "kind": "flat"}], wx=WXC(side=1, top=False, ground=True))
+# The existing portal notch plus a real rose opening; blind lancets stay backed by stone.
+_portal_top = ZC + C["portal_h"] - 1.0
+WA.panel(cs, [(-fx,ZC),(-C["portal_w"]/2,ZC),(-C["portal_w"]/2,_portal_top),(C["portal_w"]/2,_portal_top),(C["portal_w"]/2,ZC),(fx,ZC),(fx,NWT),(-fx,NWT)],
+         [ngon(0,C["rose_z"],C["rose_r"],96)], (0,yF,0),(1,0,0),(0,0,1),wt)
+WA.record("cathedral_rose", (1.15,yF,C["rose_z"]+.65),(0,1,0),(1,0,0),wt/2,"rose")
 gable(cs, (-fx, yF), (fx, yF), NWT, C["facade_apex"], wt)
 pw = C["portal_w"]
 for i, ex in enumerate((0.35, 0.75, 1.15)):      # archivolts (pointed rings) around the portal, stepping out
     relief_arch(cfr, (-fx, yF), (fx, yF), fx, pw + 2*ex, ZC, ZC + C["portal_h"] + 1.6 + ex*1.2, 0.0, -wt/2 - 0.05 - 0.12*i, k=0.85, ring=cfr)
-relief_arch(glass, (-fx, yF), (fx, yF), fx, pw - 0.1, ZC + C["portal_h"] - 1.0, ZC + C["portal_h"] + 1.55, 0.06, -wt/2 - 0.03, k=0.85)   # tympanum
+relief_arch(blindglass, (-fx, yF), (fx, yF), fx, pw - 0.1, ZC + C["portal_h"] - 1.0, ZC + C["portal_h"] + 1.55, 0.06, -wt/2 - 0.03, k=0.85)   # tympanum
 # wimperg (portal gable) frame
 wg_b = ZC + C["portal_h"] + 0.8; wg_t = C["portal_gable_top"]
 for sx in (-1, 1):
@@ -223,8 +229,8 @@ pinnacle(cfr, 0, yF - wt/2 - 0.35, wg_t - 0.3, 0.35, 0.6, 1.4, fin)
 for sx in (-1, 1): pinnacle(cfr, sx*(pw/2 + 1.6), yF - wt/2 - 0.4, ZC, 0.55, wg_b - ZC + 0.4, 2.0, fin)
 # blind lancets either side of the portal, string course, rose window
 for sx in (-1, 1):
-    relief_arch(glass, (-fx, yF), (fx, yF), fx + sx*4.0, 1.3, ZC + 2.5, ZC + 9.5, 0.06, -wt/2 - 0.03, ring=cfr)
-    relief_arch(glass, (-fx, yF), (fx, yF), fx + sx*4.0, 1.3, C["rose_z"] - 6.4, C["rose_z"] - 2.2, 0.06, -wt/2 - 0.03, ring=cfr)
+    relief_arch(blindglass, (-fx, yF), (fx, yF), fx + sx*4.0, 1.3, ZC + 2.5, ZC + 9.5, 0.06, -wt/2 - 0.03, ring=cfr)
+    relief_arch(blindglass, (-fx, yF), (fx, yF), fx + sx*4.0, 1.3, C["rose_z"] - 6.4, C["rose_z"] - 2.2, 0.06, -wt/2 - 0.03, ring=cfr)
 beam(cfr, (-fx, yF - wt/2 - 0.12, C["rose_z"] - C["rose_r"] - 0.6), (fx, yF - wt/2 - 0.12, C["rose_z"] - C["rose_r"] - 0.6), 0.3, 0.3)
 rz, rr = C["rose_z"], C["rose_r"]
 for side, yy in ((-1, yF - wt/2 - 0.03), (1, yF + wt/2 + 0.03)):
@@ -676,7 +682,15 @@ def timber_face(tim, fr, uu, W, z0, z1, pattern, rng, ops, out=-1):
 MATS = {"plaster": "plaster", "brick": "brick", "stone": "stone"}
 def dormer(G, fr, ud, vd, ze, tp, hsl, hgl, tim, rng, timber, PL="plaster"):
     zs = ze + ud*tp; hd = 1.6; ub = ud + hd/tp + 0.2; wd = 0.85
-    fr.box(SC.B(G, PL), ud, ub, vd - wd, vd + wd, zs - 0.4, zs + hd)
+    # Hollow dormer: same exterior bounds, opening through the front, no solid box behind glass.
+    bk = SC.B(G, PL); p0=fr.M(ud+.06,vd-wd,0); p1=fr.M(ud+.06,vd+wd,0)
+    Sd=(p1-p0).normalized()
+    WA.panel(bk,[(0,zs-.4),(2*wd,zs-.4),(2*wd,zs+hd),(0,zs+hd)],
+             [[(wd-.5,zs+.15),(wd+.5,zs+.15),(wd+.5,zs+1.25),(wd-.5,zs+1.25)]],p0,Sd,(0,0,1),.12)
+    fr.box(bk,ud+.12,ub,vd-wd,vd-wd+.12,zs-.4,zs+hd)
+    fr.box(bk,ud+.12,ub,vd+wd-.12,vd+wd,zs-.4,zs+hd)
+    # Back and base remain open to the existing attic (no new room or fittings).
+    WA.record(G+"_dormer_"+str(len(WA.RECORDS)),fr.M(ud+.06,vd,zs+.7),fr.dir(-1,0),fr.dir(0,1),.06,"dormer")
     a = fr.M(ud - 0.02, vd - 0.5, 0); b = fr.M(ud - 0.02, vd + 0.5, 0)
     if geom.WIN and geom.WIN.get("cross"): geom.cross_panel(geom.WFRAME, hgl, a, b - a, fr.dir(-1, 0), zs + 0.15, zs + 1.25, 1.0)   # gap #11
     else: extrude(hgl, [(0, zs + 0.15), (1.0, zs + 0.15), (1.0, zs + 1.25), (0, zs + 1.25)], Vector((a.x, a.y, 0)), Vector((b.x - a.x, b.y - a.y, 0)).normalized(), (0, 0, 1), 0.06)
@@ -824,15 +838,26 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
     tp = math.tan(math.radians(h["pitch"])); ov_ = HS["overhang"]; hd_ = (D - uf)/2; ur = uf + hd_
     zr_ = ze + hd_*tp; zeo_ = ze - ov_*tp
     HR = (RU["houses"].get(hid, {}) if RU else {})
+    # Cut only existing roof surfaces concealed inside each dormer; preserve RNG/ruin layout.
+    roof_cuts=[]
+    for ff, fractions in ((fr,h["dormers"]),(Mirror(fr,D),h["rear_dormers"])):
+        for fraction in fractions:
+            vc_=min(max(fraction*W,1.3),W-1.3); ud_=uf+.9 if ff is fr else .9
+            ub_=ud_+1.6/tp+.2
+            roof_cuts.append(WA.roof_footprint(ff,ud_+.12,ub_,vc_-.73,vc_+.73))
     for ue in (uf - ov_, D + ov_):
         E0, E1 = fr.M(ue, -0.15, zeo_), fr.M(ue, W + 0.15, zeo_); R0, R1 = fr.M(ur, -0.15, zr_), fr.M(ur, W + 0.15, zr_)
         ex_ = None
         if "collapse" in HR and ue < ur:   # ruin: collapsed street-slope section (rafters / purlins exposed, partly broken)
             ex_ = ragged(HR["collapse"][0]*W, HR["collapse"][1]*W, 100 + seed, fr.v_of)
+        _sl0,_ti0=len(hsl.f),len(tim.f)
         roof_slope(hsl, tim, E0, E1, R0, R1, rng, h["holes"], cell=1.1, thick=0.16, exposed=ex_, sag=HR.get("sag", 0.0))
+        WA.clip_new_roof(hsl,_sl0,roof_cuts); WA.clip_new_roof(tim,_ti0,roof_cuts)
     for vv, ext in ((0.15, ext_v0), (W - 0.15, ext_v1)):
         gm = upm if (ext and not h.get("gable_timber")) else plas
-        gable(gm, fr.p2(uf, vv), fr.p2(D, vv), ze, zr_ - 0.12, 0.3)
+        if ext:
+            WA.gable(gm,fr.p2(uf,vv),fr.p2(D,vv),ze,zr_-.12,.3,[(ur-.5-uf,ur+.5-uf,ze+1.,ze+2.1)])
+        else: gable(gm, fr.p2(uf, vv), fr.p2(D, vv), ze, zr_ - 0.12, 0.3)
         if ext:   # attic window in the exposed end gable (+ timber framing on a half-timbered gable)
             a = fr.M(ur - 0.5, vv + (-0.17 if vv < 1 else 0.17), 0); b = fr.M(ur + 0.5, vv + (-0.17 if vv < 1 else 0.17), 0)
             if geom.WIN and geom.WIN.get("cross"): geom.cross_panel(geom.WFRAME, hgl, a, b - a, fr.dir(0, -1 if vv < 1 else 1), ze + 1.0, ze + 2.1, 1.0)   # gap #11
@@ -852,8 +877,9 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
             R0, R1 = fr.M(uf - ov_, vc, za), fr.M(uf + hw + 0.6, vc, za)
             if sgn > 0: E0, E1, R0, R1 = E1, E0, R1, R0
             roof_slope(hsl, tim, E0, E1, R0, R1, rng, h["holes"]*0.8, cell=1.1, thick=0.14)
-        gable(upm if MATS[h["upper"]] != "plaster" else plas, fr.p2(uf + HT/2, vc - hw), fr.p2(uf + HT/2, vc + hw), ze, za - 0.1, HT)
         nwin = 2 if hw > 3.5 else 1
+        wh=[(hw+(0 if nwin==1 else (-.8 if k==0 else .8))-.5,hw+(0 if nwin==1 else (-.8 if k==0 else .8))+.5,ze+.4,ze+1.6) for k in range(nwin)]
+        WA.gable(upm if MATS[h["upper"]] != "plaster" else plas,fr.p2(uf+HT/2,vc-hw),fr.p2(uf+HT/2,vc+hw),ze,za-.1,HT,wh)
         for k in range(nwin):
             vw = vc + (0 if nwin == 1 else (-0.8 if k == 0 else 0.8))
             a = fr.M(uf - 0.02, vw - 0.5, 0); b = fr.M(uf - 0.02, vw + 0.5, 0)
@@ -1030,7 +1056,7 @@ for o in list(bpy.data.objects): bpy.data.objects.remove(o, do_unlink=True)
 for m in list(bpy.data.meshes): bpy.data.meshes.remove(m)
 MATS = {}
 MPROPS = {"brick_red": (0.9, 0.0), "brick_bare": (0.9, 0.0), "plaster_edge": (0.92, 0.0), "stair": (0.9, 0.0), "stair_riser": (0.92, 0.0), "stair_side": (0.9, 0.0), "stone": (0.85, 0.0), "rubble": (0.95, 0.0), "slate": (0.6, 0.0), "brick": (0.9, 0.0), "plaster": (0.92, 0.0), "plaster_b": (0.92, 0.0), "plaster_c": (0.92, 0.0), "plaster_d": (0.92, 0.0), "timber": (0.8, 0.0), "wframe": (0.75, 0.0),
-          "cobble": (0.9, 0.0), "iron": (0.62, 0.55), "glass": (0.3, 0.2), "soil": (1.0, 0.0), "stone_moss": (0.92, 0.0), "rubble_moss": (0.97, 0.0),
+          "cobble": (0.9, 0.0), "iron": (0.62, 0.55), "glass": (0.09, 0.0), "glass_blind": (0.3, 0.2), "soil": (1.0, 0.0), "stone_moss": (0.92, 0.0), "rubble_moss": (0.97, 0.0),
           "decal_streak": (0.95, 0.0), "decal_grime": (0.97, 0.0), "decal_crack": (0.95, 0.0), "decal_lath": (0.9, 0.0)}
 NMAP = {"stone": "stone_n", "stone_moss": "stone_n", "slate": "slate_n", "brick": "brick_n", "brick_red": "brick_clean_n", "brick_bare": "brick_clean_n", "cobble": "cobble_n",
         "stair": "stair_n", "stair_riser": "stair_riser_n", "stair_side": "stair_side_n", "rubble": "rubble_n", "rubble_moss": "rubble_n", "soil": "soil_n",
@@ -1040,9 +1066,18 @@ def material(name):
     if name in MATS: return MATS[name]
     m = bpy.data.materials.new(name.capitalize()); m.use_nodes = True
     nt = m.node_tree; bsdf = nt.nodes["Principled BSDF"]
-    img = bpy.data.images.load(os.path.join(ROOT, "tex", name + ".png")); tex = nt.nodes.new("ShaderNodeTexImage"); tex.image = img
+    image_name = "glass_clear" if name == "glass" else ("glass" if name == "glass_blind" else name)
+    img = bpy.data.images.load(os.path.join(ROOT, "tex", image_name + ".png")); tex = nt.nodes.new("ShaderNodeTexImage"); tex.image = img
     nt.links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
     bsdf.inputs["Roughness"].default_value, bsdf.inputs["Metallic"].default_value = MPROPS[name]
+    if name == "glass":
+        modes={x.identifier for x in m.bl_rna.properties["surface_render_method"].enum_items}
+        assert "BLENDED" in modes, modes
+        m.surface_render_method = "BLENDED"
+        bsdf.inputs["Alpha"].default_value = .24
+        bsdf.inputs["IOR"].default_value = 1.5
+        bsdf.inputs["Transmission Weight"].default_value = 0.0
+        m.use_transparent_shadow = True
     nm = NMAP.get(name)   # tangent-space normal map (gap #7) from the texture's own height field -> glTF normalTexture
     if nm and os.path.exists(os.path.join(ROOT, "tex", nm + ".png")):
         ni = bpy.data.images.load(os.path.join(ROOT, "tex", nm + ".png")); ni.colorspace_settings.name = "Non-Color"
@@ -1078,6 +1113,8 @@ print(f"objects: {len(bpy.data.objects)}  faces: {nf}  leaves: {len(LEAVES)}  sp
 # M13: face-local copies only; geometry and shared material recipes stay unchanged.
 import face_materials
 face_materials.apply(P["houses"].get("face_material_overrides"), ROOT)
+bpy.context.scene["window_apertures"] = json.dumps(WA.RECORDS)
+json.dump(WA.RECORDS,open(os.path.join(ROOT,"check","window_apertures.json"),"w"),indent=2)
 SP["meta"] = {"plaza_z": PZ, "cathedral_floor_z": ZC, "params": os.path.basename(os.environ.get("PARAMS", "params.json"))}
 json.dump(SP, open(os.path.join(OUT, "spaces.json"), "w"), indent=0)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "building.blend"))

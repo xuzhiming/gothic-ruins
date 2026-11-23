@@ -25,6 +25,12 @@ step "3/8 build (Blender background, procedural)"
 $BL -b -P build.py > logs/build.log 2>&1 || { tail -30 logs/build.log; exit 1; }
 grep -E "BUILD OK|spaces" logs/build.log | tail -3
 
+# Glass regression: actual saved Blend, through-hole rays and supported material API.
+$BL -b -P check/test_aperture_geometry.py > logs/glass_geometry.log 2>&1
+$BL -b building.blend -P check/test_glass_assets.py -- --report check/glass_report.json > logs/glass_assets.log 2>&1
+python3 -c "import json; r=json.load(open('check/glass_report.json')); assert r['PASS'],r; print('glass apertures:',r['apertures'],'| unobstructed:',r['unobstructed_apertures'],'| retained occlusions:',r['retained_occlusions'])"
+python3 check/test_m13_faces.py
+
 step "4/8 orthographic renders + silhouette compare + side-by-side"
 $BL -b building.blend -P src/render_sil.py -- renders 0.1 --shaded > logs/render_sil.log 2>&1
 python3 compare/compare.py renders compare/out --sbs | tee logs/compare.log | tail -8
@@ -43,6 +49,7 @@ PY
 step "6/8 GLB -> gltf-transform (WebP textures, Meshopt geometry)"
 $GT optimize building.glb web/building_opt.glb --compress meshopt --texture-compress webp \
     --simplify false --join-named false --flatten false --instance false > logs/gltf.log 2>&1 || { tail -20 logs/gltf.log; exit 1; }
+python3 check/audit_glass_glb.py building.glb web/building_opt.glb > logs/glass_glb.json
 cp spaces.json web/spaces.json
 ls -l building.glb web/building_opt.glb | awk '{print $5, $9}'
 
