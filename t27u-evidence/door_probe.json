@@ -1,0 +1,4059 @@
+{
+  "capsule_R": 0.3,
+  "heights": [
+    0.15,
+    0.3,
+    0.8,
+    1.3,
+    1.6,
+    2.1
+  ],
+  "doors": [
+    {
+      "id": "W0_door",
+      "center": [
+        -20.525,
+        26.24,
+        4.2
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 444,
+      "unexpected": 60,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_W0_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 204
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 180
+        },
+        {
+          "kind": "timber",
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "n": 60
+        }
+      ],
+      "unexpected_kinds": [
+        [
+          "timber",
+          "House_W0_timber"
+        ]
+      ],
+      "unexpected_samples": [
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2953,
+          "point": [
+            -20.285,
+            26.52,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -20.285,
+            26.5202,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.2953,
+          "point": [
+            -20.285,
+            26.24,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -20.285,
+            26.24,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.2953,
+          "point": [
+            -20.285,
+            25.96,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -20.285,
+            25.9597,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -20.285,
+            26.52,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -20.285,
+            26.5202,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -20.285,
+            26.24,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -20.285,
+            26.24,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -20.285,
+            25.96,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -20.285,
+            25.9597,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_W0_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W0_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W0_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W0_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 8,
+          "sample": [
+            [
+              -20.332,
+              27.165,
+              5.17
+            ],
+            [
+              -20.332,
+              27.165,
+              4.2
+            ],
+            [
+              -20.334,
+              27.165,
+              5.72
+            ],
+            [
+              -20.334,
+              26.84,
+              5.72
+            ],
+            [
+              -20.334,
+              26.84,
+              4.2
+            ],
+            [
+              -20.334,
+              27.165,
+              4.2
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "Decal_decal_streak",
+          "role": "decor",
+          "verts_in_corridor": 2,
+          "sample": [
+            [
+              -20.337,
+              27.07,
+              5.2
+            ],
+            [
+              -20.337,
+              27.07,
+              4.22
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "Glass_glass",
+          "role": "glass",
+          "verts_in_corridor": 14,
+          "sample": [
+            [
+              -20.49,
+              27.165,
+              5.2
+            ],
+            [
+              -20.45,
+              27.165,
+              5.2
+            ],
+            [
+              -20.49,
+              27.165,
+              5.2
+            ],
+            [
+              -20.49,
+              27.165,
+              6.45
+            ],
+            [
+              -20.45,
+              27.165,
+              6.45
+            ],
+            [
+              -20.45,
+              27.165,
+              5.2
+            ]
+          ],
+          "kind": "glass"
+        },
+        {
+          "object": "House_W0_plaster_b",
+          "role": "solid",
+          "verts_in_corridor": 56,
+          "sample": [
+            [
+              -20.7,
+              27.165,
+              4.2
+            ],
+            [
+              -20.35,
+              27.165,
+              4.2
+            ],
+            [
+              -20.7,
+              27.165,
+              4.2
+            ],
+            [
+              -20.7,
+              27.165,
+              5.2
+            ],
+            [
+              -20.35,
+              27.165,
+              5.2
+            ],
+            [
+              -20.35,
+              27.165,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W0_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              -20.7,
+              26.84,
+              4.2
+            ],
+            [
+              -20.7,
+              26.84,
+              4.55
+            ],
+            [
+              -20.27,
+              26.84,
+              4.2
+            ],
+            [
+              -20.27,
+              26.84,
+              4.55
+            ],
+            [
+              -20.7,
+              26.84,
+              4.2
+            ],
+            [
+              -20.27,
+              26.84,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W0_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.7,
+              26.84,
+              4.55
+            ],
+            [
+              -20.27,
+              26.84,
+              4.55
+            ],
+            [
+              -20.27,
+              25.64,
+              4.55
+            ],
+            [
+              -20.7,
+              25.64,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W0_timber",
+          "role": "solid",
+          "verts_in_corridor": 48,
+          "sample": [
+            [
+              -20.285,
+              27.0,
+              4.2
+            ],
+            [
+              -20.355,
+              27.0,
+              4.2
+            ],
+            [
+              -20.355,
+              27.15,
+              4.2
+            ],
+            [
+              -20.285,
+              27.15,
+              4.2
+            ],
+            [
+              -20.285,
+              27.0,
+              4.2
+            ],
+            [
+              -20.355,
+              27.0,
+              4.2
+            ]
+          ],
+          "kind": "timber"
+        },
+        {
+          "object": "WinFrame_wframe",
+          "role": "solid",
+          "verts_in_corridor": 12,
+          "sample": [
+            [
+              -20.356,
+              27.165,
+              5.2
+            ],
+            [
+              -20.356,
+              27.165,
+              6.45
+            ],
+            [
+              -20.45,
+              27.165,
+              6.45
+            ],
+            [
+              -20.45,
+              27.165,
+              5.2
+            ],
+            [
+              -20.356,
+              27.165,
+              5.2
+            ],
+            [
+              -20.45,
+              27.165,
+              5.2
+            ]
+          ],
+          "kind": "window_frame"
+        },
+        {
+          "object": "DoorLeaf_W0_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              -20.48,
+              26.83,
+              6.58
+            ],
+            [
+              -20.48,
+              26.83,
+              4.22
+            ],
+            [
+              -20.57,
+              26.83,
+              4.22
+            ],
+            [
+              -20.57,
+              26.83,
+              6.58
+            ],
+            [
+              -20.48,
+              25.65,
+              6.58
+            ],
+            [
+              -20.57,
+              25.65,
+              6.58
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "W1_door",
+      "center": [
+        -20.875,
+        12.528,
+        4.2
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 420,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_W1_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 192
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_W1_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W1_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W1_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W1_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.681,
+              13.128,
+              5.606
+            ],
+            [
+              -20.681,
+              13.128,
+              4.2
+            ],
+            [
+              -20.682,
+              11.928,
+              5.606
+            ],
+            [
+              -20.682,
+              11.928,
+              4.2
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_W1_brick",
+          "role": "solid",
+          "verts_in_corridor": 42,
+          "sample": [
+            [
+              -21.05,
+              13.128,
+              4.2
+            ],
+            [
+              -20.7,
+              13.128,
+              4.2
+            ],
+            [
+              -21.05,
+              13.128,
+              4.2
+            ],
+            [
+              -20.7,
+              13.128,
+              4.2
+            ],
+            [
+              -20.7,
+              13.128,
+              4.2
+            ],
+            [
+              -21.05,
+              13.128,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W1_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              -21.05,
+              13.128,
+              4.2
+            ],
+            [
+              -21.05,
+              13.128,
+              4.55
+            ],
+            [
+              -20.62,
+              13.128,
+              4.2
+            ],
+            [
+              -20.62,
+              13.128,
+              4.55
+            ],
+            [
+              -21.05,
+              13.128,
+              4.2
+            ],
+            [
+              -20.62,
+              13.128,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W1_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -21.05,
+              13.128,
+              4.55
+            ],
+            [
+              -20.62,
+              13.128,
+              4.55
+            ],
+            [
+              -20.62,
+              11.928,
+              4.55
+            ],
+            [
+              -21.05,
+              11.928,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "DoorLeaf_W1_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              -20.83,
+              13.118,
+              6.58
+            ],
+            [
+              -20.83,
+              13.118,
+              4.22
+            ],
+            [
+              -20.92,
+              13.118,
+              4.22
+            ],
+            [
+              -20.92,
+              13.118,
+              6.58
+            ],
+            [
+              -20.83,
+              11.938,
+              6.58
+            ],
+            [
+              -20.92,
+              11.938,
+              6.58
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "W2_door",
+      "center": [
+        -20.525,
+        0.667,
+        4.2
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 420,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_W2_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 192
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_W2_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W2_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W2_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W2_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.331,
+              1.267,
+              5.233
+            ],
+            [
+              -20.331,
+              1.267,
+              4.2
+            ],
+            [
+              -20.333,
+              0.067,
+              5.233
+            ],
+            [
+              -20.333,
+              0.067,
+              4.2
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_W2_stone",
+          "role": "solid",
+          "verts_in_corridor": 62,
+          "sample": [
+            [
+              -20.7,
+              1.267,
+              4.2
+            ],
+            [
+              -20.35,
+              1.267,
+              4.2
+            ],
+            [
+              -20.7,
+              1.267,
+              4.2
+            ],
+            [
+              -20.35,
+              1.267,
+              4.2
+            ],
+            [
+              -20.35,
+              1.267,
+              4.2
+            ],
+            [
+              -20.7,
+              1.267,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W2_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.7,
+              1.267,
+              4.55
+            ],
+            [
+              -20.27,
+              1.267,
+              4.55
+            ],
+            [
+              -20.27,
+              0.067,
+              4.55
+            ],
+            [
+              -20.7,
+              0.067,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W2_timber",
+          "role": "solid",
+          "verts_in_corridor": 12,
+          "sample": [
+            [
+              -20.322,
+              1.567,
+              6.409
+            ],
+            [
+              -20.378,
+              1.567,
+              6.491
+            ],
+            [
+              -20.322,
+              1.567,
+              6.409
+            ],
+            [
+              -20.378,
+              1.567,
+              6.491
+            ],
+            [
+              -20.322,
+              1.567,
+              6.409
+            ],
+            [
+              -20.378,
+              1.567,
+              6.491
+            ]
+          ],
+          "kind": "timber"
+        },
+        {
+          "object": "DoorLeaf_W2_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              -20.48,
+              1.257,
+              6.58
+            ],
+            [
+              -20.48,
+              1.257,
+              4.22
+            ],
+            [
+              -20.57,
+              1.257,
+              4.22
+            ],
+            [
+              -20.57,
+              1.257,
+              6.58
+            ],
+            [
+              -20.48,
+              0.077,
+              6.58
+            ],
+            [
+              -20.57,
+              0.077,
+              6.58
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "W3_door",
+      "center": [
+        -20.725,
+        -10.108,
+        4.2
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 442,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_W3_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 226
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 172
+        },
+        {
+          "kind": "decor_or_debris",
+          "object": "Debris_rubble_moss",
+          "role": "decor",
+          "material": "Rubble_moss",
+          "n": 26
+        },
+        {
+          "kind": "decor_or_debris",
+          "object": "Debris_rubble",
+          "role": "decor",
+          "material": "Rubble",
+          "n": 18
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_W3_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W3_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W3_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W3_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Debris_rubble",
+          "role": "decor",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              -20.247,
+              -10.115,
+              4.185
+            ],
+            [
+              -20.247,
+              -10.115,
+              4.305
+            ],
+            [
+              -20.047,
+              -10.156,
+              4.305
+            ],
+            [
+              -20.047,
+              -10.156,
+              4.185
+            ],
+            [
+              -20.302,
+              -10.388,
+              4.191
+            ],
+            [
+              -20.102,
+              -10.428,
+              4.191
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "Debris_rubble_moss",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.247,
+              -10.115,
+              4.305
+            ],
+            [
+              -20.302,
+              -10.388,
+              4.311
+            ],
+            [
+              -20.102,
+              -10.428,
+              4.311
+            ],
+            [
+              -20.047,
+              -10.156,
+              4.305
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.531,
+              -9.508,
+              5.279
+            ],
+            [
+              -20.531,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.532,
+              -10.708,
+              5.279
+            ],
+            [
+              -20.532,
+              -10.708,
+              4.2
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_W3_brick",
+          "role": "solid",
+          "verts_in_corridor": 28,
+          "sample": [
+            [
+              -20.9,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.55,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.9,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.55,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.55,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.9,
+              -9.508,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W3_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              -20.9,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.9,
+              -9.508,
+              4.55
+            ],
+            [
+              -20.47,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.47,
+              -9.508,
+              4.55
+            ],
+            [
+              -20.9,
+              -9.508,
+              4.2
+            ],
+            [
+              -20.47,
+              -9.508,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W3_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.9,
+              -9.508,
+              4.55
+            ],
+            [
+              -20.47,
+              -9.508,
+              4.55
+            ],
+            [
+              -20.47,
+              -10.708,
+              4.55
+            ],
+            [
+              -20.9,
+              -10.708,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "DoorLeaf_W3_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              -20.68,
+              -9.518,
+              6.58
+            ],
+            [
+              -20.68,
+              -9.518,
+              4.22
+            ],
+            [
+              -20.77,
+              -9.518,
+              4.22
+            ],
+            [
+              -20.77,
+              -9.518,
+              6.58
+            ],
+            [
+              -20.68,
+              -10.698,
+              6.58
+            ],
+            [
+              -20.77,
+              -10.698,
+              6.58
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "W4_door",
+      "center": [
+        -20.525,
+        -26.091,
+        4.2
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 420,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_W4_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 192
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_W4_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W4_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W4_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_W4_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.333,
+              -25.491,
+              5.285
+            ],
+            [
+              -20.333,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.334,
+              -26.691,
+              5.285
+            ],
+            [
+              -20.334,
+              -26.691,
+              4.2
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_W4_brick_bare",
+          "role": "solid",
+          "verts_in_corridor": 9,
+          "sample": [
+            [
+              -20.365,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.365,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.365,
+              -25.52,
+              6.535
+            ],
+            [
+              -20.365,
+              -25.491,
+              6.35
+            ],
+            [
+              -20.365,
+              -26.661,
+              6.535
+            ],
+            [
+              -20.365,
+              -26.691,
+              6.35
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W4_plaster_d",
+          "role": "solid",
+          "verts_in_corridor": 92,
+          "sample": [
+            [
+              -20.7,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.7,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.365,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.7,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.365,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.7,
+              -25.491,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W4_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              -20.7,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.7,
+              -25.491,
+              4.55
+            ],
+            [
+              -20.27,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.27,
+              -25.491,
+              4.55
+            ],
+            [
+              -20.7,
+              -25.491,
+              4.2
+            ],
+            [
+              -20.27,
+              -25.491,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_W4_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -20.7,
+              -25.491,
+              4.55
+            ],
+            [
+              -20.27,
+              -25.491,
+              4.55
+            ],
+            [
+              -20.27,
+              -26.691,
+              4.55
+            ],
+            [
+              -20.7,
+              -26.691,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "DoorLeaf_W4_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              -20.48,
+              -25.501,
+              6.58
+            ],
+            [
+              -20.48,
+              -25.501,
+              4.22
+            ],
+            [
+              -20.57,
+              -25.501,
+              4.22
+            ],
+            [
+              -20.57,
+              -25.501,
+              6.58
+            ],
+            [
+              -20.48,
+              -26.681,
+              6.58
+            ],
+            [
+              -20.57,
+              -26.681,
+              6.58
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "E0_door",
+      "center": [
+        20.525,
+        25.498,
+        4.2
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 420,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_E0_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 192
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_E0_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E0_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E0_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E0_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.333,
+              26.098,
+              4.2
+            ],
+            [
+              20.333,
+              26.098,
+              5.615
+            ],
+            [
+              20.333,
+              24.898,
+              4.2
+            ],
+            [
+              20.333,
+              24.898,
+              5.615
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_E0_brick",
+          "role": "solid",
+          "verts_in_corridor": 28,
+          "sample": [
+            [
+              20.35,
+              26.098,
+              4.2
+            ],
+            [
+              20.7,
+              26.098,
+              4.2
+            ],
+            [
+              20.35,
+              26.098,
+              4.2
+            ],
+            [
+              20.7,
+              26.098,
+              4.2
+            ],
+            [
+              20.7,
+              26.098,
+              4.2
+            ],
+            [
+              20.35,
+              26.098,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E0_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              20.27,
+              26.098,
+              4.2
+            ],
+            [
+              20.27,
+              26.098,
+              4.55
+            ],
+            [
+              20.7,
+              26.098,
+              4.2
+            ],
+            [
+              20.7,
+              26.098,
+              4.55
+            ],
+            [
+              20.27,
+              26.098,
+              4.2
+            ],
+            [
+              20.7,
+              26.098,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E0_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.27,
+              26.098,
+              4.55
+            ],
+            [
+              20.7,
+              26.098,
+              4.55
+            ],
+            [
+              20.7,
+              24.898,
+              4.55
+            ],
+            [
+              20.27,
+              24.898,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E0_timber",
+          "role": "solid",
+          "verts_in_corridor": 12,
+          "sample": [
+            [
+              20.378,
+              26.398,
+              6.491
+            ],
+            [
+              20.322,
+              26.398,
+              6.409
+            ],
+            [
+              20.322,
+              26.398,
+              6.409
+            ],
+            [
+              20.378,
+              26.398,
+              6.491
+            ],
+            [
+              20.322,
+              26.398,
+              6.409
+            ],
+            [
+              20.378,
+              26.398,
+              6.491
+            ]
+          ],
+          "kind": "timber"
+        },
+        {
+          "object": "DoorLeaf_E0_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              20.48,
+              26.088,
+              4.22
+            ],
+            [
+              20.48,
+              26.088,
+              6.58
+            ],
+            [
+              20.57,
+              26.088,
+              6.58
+            ],
+            [
+              20.57,
+              26.088,
+              4.22
+            ],
+            [
+              20.48,
+              24.908,
+              4.22
+            ],
+            [
+              20.57,
+              24.908,
+              4.22
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "E1_door",
+      "center": [
+        20.825,
+        12.003,
+        4.2
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 440,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_E1_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 182
+        },
+        {
+          "kind": "decor_or_debris",
+          "object": "Debris_timber",
+          "role": "decor",
+          "material": "Timber",
+          "n": 30
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_E1_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E1_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E1_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E1_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Debris_timber",
+          "role": "decor",
+          "verts_in_corridor": 24,
+          "sample": [
+            [
+              19.482,
+              11.835,
+              4.182
+            ],
+            [
+              19.482,
+              11.835,
+              4.302
+            ],
+            [
+              19.655,
+              11.742,
+              4.302
+            ],
+            [
+              19.655,
+              11.742,
+              4.182
+            ],
+            [
+              19.372,
+              11.633,
+              4.194
+            ],
+            [
+              19.546,
+              11.539,
+              4.194
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.631,
+              12.603,
+              4.2
+            ],
+            [
+              20.631,
+              12.603,
+              5.445
+            ],
+            [
+              20.633,
+              11.403,
+              4.2
+            ],
+            [
+              20.633,
+              11.403,
+              5.445
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_E1_stone",
+          "role": "solid",
+          "verts_in_corridor": 62,
+          "sample": [
+            [
+              20.65,
+              12.603,
+              4.2
+            ],
+            [
+              21.0,
+              12.603,
+              4.2
+            ],
+            [
+              20.65,
+              12.603,
+              4.2
+            ],
+            [
+              21.0,
+              12.603,
+              4.2
+            ],
+            [
+              21.0,
+              12.603,
+              4.2
+            ],
+            [
+              20.65,
+              12.603,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E1_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.57,
+              12.603,
+              4.55
+            ],
+            [
+              21.0,
+              12.603,
+              4.55
+            ],
+            [
+              21.0,
+              11.403,
+              4.55
+            ],
+            [
+              20.57,
+              11.403,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "DoorLeaf_E1_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              20.78,
+              12.593,
+              4.22
+            ],
+            [
+              20.78,
+              12.593,
+              6.58
+            ],
+            [
+              20.87,
+              12.593,
+              6.58
+            ],
+            [
+              20.87,
+              12.593,
+              4.22
+            ],
+            [
+              20.78,
+              11.413,
+              4.22
+            ],
+            [
+              20.87,
+              11.413,
+              4.22
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "E2_door",
+      "center": [
+        20.525,
+        0.142,
+        4.2
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 420,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_E2_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 192
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_E2_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E2_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E2_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E2_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_crack",
+          "role": "decor",
+          "verts_in_corridor": 1,
+          "sample": [
+            [
+              20.328,
+              -0.636,
+              4.91
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.332,
+              0.742,
+              4.2
+            ],
+            [
+              20.332,
+              0.742,
+              5.338
+            ],
+            [
+              20.334,
+              -0.458,
+              4.2
+            ],
+            [
+              20.334,
+              -0.458,
+              5.338
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_E2_brick",
+          "role": "solid",
+          "verts_in_corridor": 42,
+          "sample": [
+            [
+              20.35,
+              0.742,
+              4.2
+            ],
+            [
+              20.7,
+              0.742,
+              4.2
+            ],
+            [
+              20.35,
+              0.742,
+              4.2
+            ],
+            [
+              20.7,
+              0.742,
+              4.2
+            ],
+            [
+              20.7,
+              0.742,
+              4.2
+            ],
+            [
+              20.35,
+              0.742,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E2_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              20.27,
+              0.742,
+              4.2
+            ],
+            [
+              20.27,
+              0.742,
+              4.55
+            ],
+            [
+              20.7,
+              0.742,
+              4.2
+            ],
+            [
+              20.7,
+              0.742,
+              4.55
+            ],
+            [
+              20.27,
+              0.742,
+              4.2
+            ],
+            [
+              20.7,
+              0.742,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E2_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.27,
+              0.742,
+              4.55
+            ],
+            [
+              20.7,
+              0.742,
+              4.55
+            ],
+            [
+              20.7,
+              -0.458,
+              4.55
+            ],
+            [
+              20.27,
+              -0.458,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E2_timber",
+          "role": "solid",
+          "verts_in_corridor": 12,
+          "sample": [
+            [
+              20.378,
+              1.042,
+              6.491
+            ],
+            [
+              20.322,
+              1.042,
+              6.409
+            ],
+            [
+              20.322,
+              1.042,
+              6.409
+            ],
+            [
+              20.378,
+              1.042,
+              6.491
+            ],
+            [
+              20.322,
+              1.042,
+              6.409
+            ],
+            [
+              20.378,
+              1.042,
+              6.491
+            ]
+          ],
+          "kind": "timber"
+        },
+        {
+          "object": "DoorLeaf_E2_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              20.48,
+              0.732,
+              4.22
+            ],
+            [
+              20.48,
+              0.732,
+              6.58
+            ],
+            [
+              20.57,
+              0.732,
+              6.58
+            ],
+            [
+              20.57,
+              0.732,
+              4.22
+            ],
+            [
+              20.48,
+              -0.448,
+              4.22
+            ],
+            [
+              20.57,
+              -0.448,
+              4.22
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "E3_door",
+      "center": [
+        20.675,
+        -9.424,
+        4.2
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 420,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_E3_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 192
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_E3_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E3_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E3_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E3_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.484,
+              -8.824,
+              4.2
+            ],
+            [
+              20.484,
+              -8.824,
+              5.718
+            ],
+            [
+              20.483,
+              -10.024,
+              4.2
+            ],
+            [
+              20.483,
+              -10.024,
+              5.718
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_E3_brick",
+          "role": "solid",
+          "verts_in_corridor": 28,
+          "sample": [
+            [
+              20.5,
+              -8.824,
+              4.2
+            ],
+            [
+              20.85,
+              -8.824,
+              4.2
+            ],
+            [
+              20.5,
+              -8.824,
+              4.2
+            ],
+            [
+              20.85,
+              -8.824,
+              4.2
+            ],
+            [
+              20.85,
+              -8.824,
+              4.2
+            ],
+            [
+              20.5,
+              -8.824,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E3_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              20.42,
+              -8.824,
+              4.2
+            ],
+            [
+              20.42,
+              -8.824,
+              4.55
+            ],
+            [
+              20.85,
+              -8.824,
+              4.2
+            ],
+            [
+              20.85,
+              -8.824,
+              4.55
+            ],
+            [
+              20.42,
+              -8.824,
+              4.2
+            ],
+            [
+              20.85,
+              -8.824,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E3_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.42,
+              -8.824,
+              4.55
+            ],
+            [
+              20.85,
+              -8.824,
+              4.55
+            ],
+            [
+              20.85,
+              -10.024,
+              4.55
+            ],
+            [
+              20.42,
+              -10.024,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "DoorLeaf_E3_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              20.63,
+              -8.834,
+              4.22
+            ],
+            [
+              20.63,
+              -8.834,
+              6.58
+            ],
+            [
+              20.72,
+              -8.834,
+              6.58
+            ],
+            [
+              20.72,
+              -8.834,
+              4.22
+            ],
+            [
+              20.63,
+              -10.014,
+              4.22
+            ],
+            [
+              20.72,
+              -10.014,
+              4.22
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "E4_door",
+      "center": [
+        20.525,
+        -25.411,
+        4.2
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 420,
+      "unexpected": 0,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_E4_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 228
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 192
+        }
+      ],
+      "unexpected_kinds": [],
+      "unexpected_samples": [],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_E4_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E4_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E4_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_E4_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.334,
+              -24.811,
+              4.2
+            ],
+            [
+              20.334,
+              -24.811,
+              5.505
+            ],
+            [
+              20.333,
+              -26.011,
+              4.2
+            ],
+            [
+              20.333,
+              -26.011,
+              5.505
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_E4_brick",
+          "role": "solid",
+          "verts_in_corridor": 42,
+          "sample": [
+            [
+              20.35,
+              -24.811,
+              4.2
+            ],
+            [
+              20.7,
+              -24.811,
+              4.2
+            ],
+            [
+              20.35,
+              -24.811,
+              4.2
+            ],
+            [
+              20.7,
+              -24.811,
+              4.2
+            ],
+            [
+              20.7,
+              -24.811,
+              4.2
+            ],
+            [
+              20.35,
+              -24.811,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E4_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              20.27,
+              -24.811,
+              4.2
+            ],
+            [
+              20.27,
+              -24.811,
+              4.55
+            ],
+            [
+              20.7,
+              -24.811,
+              4.2
+            ],
+            [
+              20.7,
+              -24.811,
+              4.55
+            ],
+            [
+              20.27,
+              -24.811,
+              4.2
+            ],
+            [
+              20.7,
+              -24.811,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_E4_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.27,
+              -24.811,
+              4.55
+            ],
+            [
+              20.7,
+              -24.811,
+              4.55
+            ],
+            [
+              20.7,
+              -26.011,
+              4.55
+            ],
+            [
+              20.27,
+              -26.011,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "DoorLeaf_E4_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              20.48,
+              -24.821,
+              4.22
+            ],
+            [
+              20.48,
+              -24.821,
+              6.58
+            ],
+            [
+              20.57,
+              -24.821,
+              6.58
+            ],
+            [
+              20.57,
+              -24.821,
+              4.22
+            ],
+            [
+              20.48,
+              -26.001,
+              4.22
+            ],
+            [
+              20.57,
+              -26.001,
+              4.22
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "NW_door",
+      "center": [
+        -22.6,
+        37.075,
+        4.2
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 444,
+      "unexpected": 60,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_NW_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 204
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 180
+        },
+        {
+          "kind": "timber",
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "n": 60
+        }
+      ],
+      "unexpected_kinds": [
+        [
+          "timber",
+          "House_NW_timber"
+        ]
+      ],
+      "unexpected_samples": [
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            -22.32,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -22.32,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            -22.6,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -22.6,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            -22.88,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -22.88,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -22.32,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -22.32,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -22.6,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -22.6,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -22.88,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -22.88,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_NW_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_NW_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_NW_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_NW_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -23.2,
+              36.882,
+              4.2
+            ],
+            [
+              -23.2,
+              36.882,
+              5.364
+            ],
+            [
+              -22.0,
+              36.881,
+              4.2
+            ],
+            [
+              -22.0,
+              36.881,
+              5.364
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_NW_brick_bare",
+          "role": "solid",
+          "verts_in_corridor": 6,
+          "sample": [
+            [
+              -23.2,
+              36.915,
+              4.2
+            ],
+            [
+              -23.2,
+              36.915,
+              4.2
+            ],
+            [
+              -23.2,
+              36.915,
+              6.6
+            ],
+            [
+              -22.0,
+              36.915,
+              6.6
+            ],
+            [
+              -22.0,
+              36.915,
+              6.6
+            ],
+            [
+              -22.0,
+              36.915,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NW_plaster_d",
+          "role": "solid",
+          "verts_in_corridor": 68,
+          "sample": [
+            [
+              -23.2,
+              37.25,
+              4.2
+            ],
+            [
+              -23.2,
+              37.25,
+              4.2
+            ],
+            [
+              -23.2,
+              37.25,
+              4.2
+            ],
+            [
+              -23.2,
+              36.915,
+              4.2
+            ],
+            [
+              -23.2,
+              37.25,
+              4.2
+            ],
+            [
+              -23.2,
+              36.915,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NW_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              -23.2,
+              36.82,
+              4.2
+            ],
+            [
+              -23.2,
+              37.25,
+              4.2
+            ],
+            [
+              -23.2,
+              37.25,
+              4.55
+            ],
+            [
+              -23.2,
+              36.82,
+              4.55
+            ],
+            [
+              -23.2,
+              36.82,
+              4.2
+            ],
+            [
+              -23.2,
+              36.82,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NW_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              -23.2,
+              36.82,
+              4.55
+            ],
+            [
+              -23.2,
+              37.25,
+              4.55
+            ],
+            [
+              -22.0,
+              36.82,
+              4.55
+            ],
+            [
+              -22.0,
+              37.25,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NW_timber",
+          "role": "solid",
+          "verts_in_corridor": 48,
+          "sample": [
+            [
+              -23.365,
+              36.835,
+              4.2
+            ],
+            [
+              -23.365,
+              36.905,
+              4.2
+            ],
+            [
+              -23.215,
+              36.905,
+              4.2
+            ],
+            [
+              -23.215,
+              36.835,
+              4.2
+            ],
+            [
+              -23.365,
+              36.835,
+              4.2
+            ],
+            [
+              -23.365,
+              36.905,
+              4.2
+            ]
+          ],
+          "kind": "timber"
+        },
+        {
+          "object": "DoorLeaf_NW_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              -23.19,
+              37.03,
+              4.22
+            ],
+            [
+              -23.19,
+              37.03,
+              6.58
+            ],
+            [
+              -23.19,
+              37.12,
+              6.58
+            ],
+            [
+              -23.19,
+              37.12,
+              4.22
+            ],
+            [
+              -22.01,
+              37.03,
+              4.22
+            ],
+            [
+              -22.01,
+              37.12,
+              4.22
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    },
+    {
+      "id": "NE_door",
+      "center": [
+        21.4,
+        37.075,
+        4.2
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "w": 1.2,
+      "h": 2.4,
+      "capsule_hits": 444,
+      "unexpected": 60,
+      "blocker_counts": [
+        {
+          "kind": "door_leaf",
+          "object": "DoorLeaf_NE_mesh",
+          "role": "door_leaf_mesh",
+          "material": "Timber",
+          "n": 204
+        },
+        {
+          "kind": "floor",
+          "object": "Plaza_cobble",
+          "role": "solid",
+          "material": "Cobble",
+          "n": 180
+        },
+        {
+          "kind": "timber",
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "n": 60
+        }
+      ],
+      "unexpected_kinds": [
+        [
+          "timber",
+          "House_NE_timber"
+        ]
+      ],
+      "unexpected_samples": [
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            21.68,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            21.68,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            21.4,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            21.4,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            21.12,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            21.12,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            21.68,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            21.68,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            21.4,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            21.4,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            21.12,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            21.12,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "ray_hits_kinds": [
+        [
+          "door_leaf",
+          "DoorLeaf_NE_mesh",
+          0.25
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_NE_mesh",
+          1.0
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_NE_mesh",
+          2.15
+        ],
+        [
+          "door_leaf",
+          "DoorLeaf_NE_mesh",
+          2.25
+        ]
+      ],
+      "nearby": [
+        {
+          "object": "Decal_decal_grime",
+          "role": "decor",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.8,
+              36.884,
+              4.2
+            ],
+            [
+              20.8,
+              36.884,
+              5.715
+            ],
+            [
+              22.0,
+              36.882,
+              4.2
+            ],
+            [
+              22.0,
+              36.882,
+              5.715
+            ]
+          ],
+          "kind": "decor_or_debris"
+        },
+        {
+          "object": "House_NE_brick_bare",
+          "role": "solid",
+          "verts_in_corridor": 6,
+          "sample": [
+            [
+              20.8,
+              36.915,
+              4.2
+            ],
+            [
+              20.8,
+              36.915,
+              4.2
+            ],
+            [
+              20.8,
+              36.915,
+              6.6
+            ],
+            [
+              22.0,
+              36.915,
+              6.6
+            ],
+            [
+              22.0,
+              36.915,
+              6.6
+            ],
+            [
+              22.0,
+              36.915,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NE_plaster_b",
+          "role": "solid",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              20.8,
+              37.25,
+              4.2
+            ],
+            [
+              20.8,
+              37.25,
+              4.2
+            ],
+            [
+              20.8,
+              37.25,
+              4.2
+            ],
+            [
+              20.8,
+              36.915,
+              4.2
+            ],
+            [
+              20.8,
+              37.25,
+              4.2
+            ],
+            [
+              20.8,
+              36.915,
+              4.2
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NE_stone",
+          "role": "solid",
+          "verts_in_corridor": 20,
+          "sample": [
+            [
+              20.8,
+              36.82,
+              4.2
+            ],
+            [
+              20.8,
+              37.25,
+              4.2
+            ],
+            [
+              20.8,
+              37.25,
+              4.55
+            ],
+            [
+              20.8,
+              36.82,
+              4.55
+            ],
+            [
+              20.8,
+              36.82,
+              4.2
+            ],
+            [
+              20.8,
+              36.82,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NE_stone_moss",
+          "role": "solid",
+          "verts_in_corridor": 4,
+          "sample": [
+            [
+              20.8,
+              36.82,
+              4.55
+            ],
+            [
+              20.8,
+              37.25,
+              4.55
+            ],
+            [
+              22.0,
+              36.82,
+              4.55
+            ],
+            [
+              22.0,
+              37.25,
+              4.55
+            ]
+          ],
+          "kind": "house_masonry"
+        },
+        {
+          "object": "House_NE_timber",
+          "role": "solid",
+          "verts_in_corridor": 24,
+          "sample": [
+            [
+              20.635,
+              36.835,
+              4.2
+            ],
+            [
+              20.635,
+              36.905,
+              4.2
+            ],
+            [
+              20.785,
+              36.905,
+              4.2
+            ],
+            [
+              20.785,
+              36.835,
+              4.2
+            ],
+            [
+              20.635,
+              36.835,
+              4.2
+            ],
+            [
+              20.635,
+              36.905,
+              4.2
+            ]
+          ],
+          "kind": "timber"
+        },
+        {
+          "object": "DoorLeaf_NE_mesh",
+          "role": "door_leaf_mesh",
+          "verts_in_corridor": 72,
+          "sample": [
+            [
+              20.81,
+              37.03,
+              4.22
+            ],
+            [
+              20.81,
+              37.03,
+              6.58
+            ],
+            [
+              20.81,
+              37.12,
+              6.58
+            ],
+            [
+              20.81,
+              37.12,
+              4.22
+            ],
+            [
+              21.99,
+              37.03,
+              4.22
+            ],
+            [
+              21.99,
+              37.12,
+              4.22
+            ]
+          ],
+          "kind": "door_leaf"
+        }
+      ]
+    }
+  ],
+  "summary": [
+    {
+      "id": "W0_door",
+      "unexpected": 60,
+      "kinds": [
+        [
+          "timber",
+          "House_W0_timber"
+        ]
+      ],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(8)",
+        "Decal_decal_streak:decor_or_debris(2)",
+        "Glass_glass:glass(14)",
+        "House_W0_plaster_b:house_masonry(56)",
+        "House_W0_stone:house_masonry(20)",
+        "House_W0_stone_moss:house_masonry(4)",
+        "House_W0_timber:timber(48)",
+        "WinFrame_wframe:window_frame(12)",
+        "DoorLeaf_W0_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "W1_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_W1_brick:house_masonry(42)",
+        "House_W1_stone:house_masonry(20)",
+        "House_W1_stone_moss:house_masonry(4)",
+        "DoorLeaf_W1_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "W2_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_W2_stone:house_masonry(62)",
+        "House_W2_stone_moss:house_masonry(4)",
+        "House_W2_timber:timber(12)",
+        "DoorLeaf_W2_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "W3_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Debris_rubble:decor_or_debris(20)",
+        "Debris_rubble_moss:decor_or_debris(4)",
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_W3_brick:house_masonry(28)",
+        "House_W3_stone:house_masonry(20)",
+        "House_W3_stone_moss:house_masonry(4)",
+        "DoorLeaf_W3_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "W4_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_W4_brick_bare:house_masonry(9)",
+        "House_W4_plaster_d:house_masonry(92)",
+        "House_W4_stone:house_masonry(20)",
+        "House_W4_stone_moss:house_masonry(4)",
+        "DoorLeaf_W4_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "E0_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_E0_brick:house_masonry(28)",
+        "House_E0_stone:house_masonry(20)",
+        "House_E0_stone_moss:house_masonry(4)",
+        "House_E0_timber:timber(12)",
+        "DoorLeaf_E0_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "E1_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Debris_timber:decor_or_debris(24)",
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_E1_stone:house_masonry(62)",
+        "House_E1_stone_moss:house_masonry(4)",
+        "DoorLeaf_E1_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "E2_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Decal_decal_crack:decor_or_debris(1)",
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_E2_brick:house_masonry(42)",
+        "House_E2_stone:house_masonry(20)",
+        "House_E2_stone_moss:house_masonry(4)",
+        "House_E2_timber:timber(12)",
+        "DoorLeaf_E2_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "E3_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_E3_brick:house_masonry(28)",
+        "House_E3_stone:house_masonry(20)",
+        "House_E3_stone_moss:house_masonry(4)",
+        "DoorLeaf_E3_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "E4_door",
+      "unexpected": 0,
+      "kinds": [],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_E4_brick:house_masonry(42)",
+        "House_E4_stone:house_masonry(20)",
+        "House_E4_stone_moss:house_masonry(4)",
+        "DoorLeaf_E4_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "NW_door",
+      "unexpected": 60,
+      "kinds": [
+        [
+          "timber",
+          "House_NW_timber"
+        ]
+      ],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_NW_brick_bare:house_masonry(6)",
+        "House_NW_plaster_d:house_masonry(68)",
+        "House_NW_stone:house_masonry(20)",
+        "House_NW_stone_moss:house_masonry(4)",
+        "House_NW_timber:timber(48)",
+        "DoorLeaf_NW_mesh:door_leaf(72)"
+      ]
+    },
+    {
+      "id": "NE_door",
+      "unexpected": 60,
+      "kinds": [
+        [
+          "timber",
+          "House_NE_timber"
+        ]
+      ],
+      "nearby": [
+        "Decal_decal_grime:decor_or_debris(4)",
+        "House_NE_brick_bare:house_masonry(6)",
+        "House_NE_plaster_b:house_masonry(72)",
+        "House_NE_stone:house_masonry(20)",
+        "House_NE_stone_moss:house_masonry(4)",
+        "House_NE_timber:timber(24)",
+        "DoorLeaf_NE_mesh:door_leaf(72)"
+      ]
+    }
+  ]
+}

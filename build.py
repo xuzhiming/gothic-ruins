@@ -14,6 +14,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.jo
 import importlib, geom; importlib.reload(geom)
 import window_apertures as WA; WA.RECORDS.clear()
 from alley_layout import row_layout, partition_v, alley_routes, guard_boxes, ground_window_centers, preserve_window_damage
+from timber_rails import timber_rail_segments
 from geom import *
 from mathutils import Vector
 T0 = time.time()
@@ -689,8 +690,12 @@ def timber_face(tim, fr, uu, W, z0, z1, pattern, rng, ops, out=-1):
     """half-timber frame on a street/rear face at depth uu: sole/sill/head rails, posts at the ends and at every window
     jamb, braces in the window-free panels: grid = none, braced = single diagonals (seeded), x = St Andrew's crosses"""
     nv = fr.dir(1, 0)*out
+    # Gap sole/mid rails at door (and any other vertically overlapping) openings so
+    # the facade frame does not bar the threshold. Head rail above the opening stays
+    # continuous. Posts and braces are unchanged (braces already skip opening bays).
     for zz in (z0 + 0.08, z0 + 0.85, z1 - 0.14):
-        beam(tim, fr.M(uu, 0.05, zz), fr.M(uu, W - 0.05, zz), 0.07, 0.16, up=(0, 0, 1))
+        for a, b in timber_rail_segments(W, z0, z1, zz, ops):
+            beam(tim, fr.M(uu, a, zz), fr.M(uu, b, zz), 0.07, 0.16, up=(0, 0, 1))
     xs = {0.15, W - 0.15}
     for o in ops: xs |= {o["s"] - o["w"]/2 - 0.09, o["s"] + o["w"]/2 + 0.09}
     xs = sorted(xs); full = [xs[0]]

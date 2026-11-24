@@ -1,0 +1,678 @@
+[
+  {
+    "id": "W0_door",
+    "center": [
+      -20.525,
+      26.24,
+      4.2
+    ],
+    "normal": [
+      -1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "House_W0_timber",
+        "role": "solid",
+        "material": "Timber",
+        "faces": 8,
+        "world_bbox": [
+          [
+            -20.355,
+            25.4746,
+            4.2
+          ],
+          [
+            -20.285,
+            27.0046,
+            7.4
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.0,
+          3.2
+        ],
+        "along_span": [
+          -0.24,
+          -0.17
+        ],
+        "lat_span": [
+          -0.6896,
+          0.6904
+        ],
+        "kind": "timber"
+      },
+      {
+        "object": "DoorLeaf_W0_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            -20.57,
+            25.6496,
+            4.22
+          ],
+          [
+            -20.456,
+            26.8296,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5896,
+          0.5904
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "W1_door",
+    "center": [
+      -20.875,
+      12.528,
+      4.2
+    ],
+    "normal": [
+      -1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_W1_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            -20.92,
+            11.9378,
+            4.22
+          ],
+          [
+            -20.806,
+            13.1178,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5898,
+          0.5902
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "W2_door",
+    "center": [
+      -20.525,
+      0.667,
+      4.2
+    ],
+    "normal": [
+      -1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_W2_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            -20.57,
+            0.0771,
+            4.22
+          ],
+          [
+            -20.456,
+            1.2571,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5901,
+          0.5899
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "W3_door",
+    "center": [
+      -20.725,
+      -10.108,
+      4.2
+    ],
+    "normal": [
+      -1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_W3_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            -20.77,
+            -10.6981,
+            4.22
+          ],
+          [
+            -20.656,
+            -9.5181,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5899,
+          0.5901
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "W4_door",
+    "center": [
+      -20.525,
+      -26.091,
+      4.2
+    ],
+    "normal": [
+      -1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_W4_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            -20.57,
+            -26.6807,
+            4.22
+          ],
+          [
+            -20.456,
+            -25.5007,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5903,
+          0.5897
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "E0_door",
+    "center": [
+      20.525,
+      25.498,
+      4.2
+    ],
+    "normal": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_E0_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            20.456,
+            24.9081,
+            4.22
+          ],
+          [
+            20.57,
+            26.0881,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5899,
+          0.5901
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "E1_door",
+    "center": [
+      20.825,
+      12.003,
+      4.2
+    ],
+    "normal": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "Debris_timber",
+        "role": "decor",
+        "material": "Timber",
+        "faces": 2,
+        "world_bbox": [
+          [
+            19.4819,
+            11.5389,
+            4.1824
+          ],
+          [
+            19.6554,
+            11.8354,
+            4.3136
+          ]
+        ],
+        "z_span_above_threshold": [
+          -0.0176,
+          0.1136
+        ],
+        "along_span": [
+          -1.2563,
+          -1.2243
+        ],
+        "lat_span": [
+          -0.3626,
+          -0.2144
+        ],
+        "kind": "timber"
+      },
+      {
+        "object": "DoorLeaf_E1_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            20.756,
+            11.413,
+            4.22
+          ],
+          [
+            20.87,
+            12.593,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.59,
+          0.59
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "E2_door",
+    "center": [
+      20.525,
+      0.142,
+      4.2
+    ],
+    "normal": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_E2_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            20.456,
+            -0.4479,
+            4.22
+          ],
+          [
+            20.57,
+            0.7321,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5899,
+          0.5901
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "E3_door",
+    "center": [
+      20.675,
+      -9.424,
+      4.2
+    ],
+    "normal": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_E3_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            20.606,
+            -10.0137,
+            4.22
+          ],
+          [
+            20.72,
+            -8.8337,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5897,
+          0.5903
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "E4_door",
+    "center": [
+      20.525,
+      -25.411,
+      4.2
+    ],
+    "normal": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "DoorLeaf_E4_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            20.456,
+            -26.0006,
+            4.22
+          ],
+          [
+            20.57,
+            -24.8206,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.5896,
+          0.5904
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "NW_door",
+    "center": [
+      -22.6,
+      37.075,
+      4.2
+    ],
+    "normal": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "House_NW_timber",
+        "role": "solid",
+        "material": "Timber",
+        "faces": 18,
+        "world_bbox": [
+          [
+            -27.95,
+            36.835,
+            4.2
+          ],
+          [
+            -16.05,
+            36.905,
+            7.4
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.0,
+          3.2
+        ],
+        "along_span": [
+          -0.24,
+          -0.17
+        ],
+        "lat_span": [
+          -0.69,
+          0.69
+        ],
+        "kind": "timber"
+      },
+      {
+        "object": "DoorLeaf_NW_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            -23.19,
+            37.006,
+            4.22
+          ],
+          [
+            -22.01,
+            37.12,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.59,
+          0.59
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  },
+  {
+    "id": "NE_door",
+    "center": [
+      21.4,
+      37.075,
+      4.2
+    ],
+    "normal": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "pieces": [
+      {
+        "object": "House_NE_timber",
+        "role": "solid",
+        "material": "Timber",
+        "faces": 16,
+        "world_bbox": [
+          [
+            16.05,
+            36.835,
+            4.2
+          ],
+          [
+            27.95,
+            36.905,
+            7.4
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.0,
+          3.2
+        ],
+        "along_span": [
+          -0.24,
+          -0.17
+        ],
+        "lat_span": [
+          -0.69,
+          0.69
+        ],
+        "kind": "timber"
+      },
+      {
+        "object": "DoorLeaf_NE_mesh",
+        "role": "door_leaf_mesh",
+        "material": "Timber",
+        "faces": 17,
+        "world_bbox": [
+          [
+            20.81,
+            37.006,
+            4.22
+          ],
+          [
+            21.99,
+            37.12,
+            6.58
+          ]
+        ],
+        "z_span_above_threshold": [
+          0.02,
+          2.38
+        ],
+        "along_span": [
+          -0.069,
+          0.045
+        ],
+        "lat_span": [
+          -0.59,
+          0.59
+        ],
+        "kind": "door_leaf"
+      }
+    ]
+  }
+]
