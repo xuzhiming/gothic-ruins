@@ -1,0 +1,33 @@
+--- /workspace/gothic-t27u-baseline/build.py	2026-11-23 07:47:48.899356586 -0500
++++ build.py	2026-11-23 22:29:11.564046735 -0500
+@@ -14,6 +14,7 @@
+ import importlib, geom; importlib.reload(geom)
+ import window_apertures as WA; WA.RECORDS.clear()
+ from alley_layout import row_layout, partition_v, alley_routes, guard_boxes, ground_window_centers, preserve_window_damage
++from timber_rails import timber_rail_segments
+ from geom import *
+ from mathutils import Vector
+ T0 = time.time()
+@@ -689,8 +690,12 @@
+     """half-timber frame on a street/rear face at depth uu: sole/sill/head rails, posts at the ends and at every window
+     jamb, braces in the window-free panels: grid = none, braced = single diagonals (seeded), x = St Andrew's crosses"""
+     nv = fr.dir(1, 0)*out
++    # Gap sole/mid rails only at ops marked opening=="door". Windows keep continuous
++    # rails (existing style). Head rail above the door stays continuous. Posts and
++    # braces are unchanged (braces already skip opening bays).
+     for zz in (z0 + 0.08, z0 + 0.85, z1 - 0.14):
+-        beam(tim, fr.M(uu, 0.05, zz), fr.M(uu, W - 0.05, zz), 0.07, 0.16, up=(0, 0, 1))
++        for a, b in timber_rail_segments(W, z0, z1, zz, ops):
++            beam(tim, fr.M(uu, a, zz), fr.M(uu, b, zz), 0.07, 0.16, up=(0, 0, 1))
+     xs = {0.15, W - 0.15}
+     for o in ops: xs |= {o["s"] - o["w"]/2 - 0.09, o["s"] + o["w"]/2 + 0.09}
+     xs = sorted(xs); full = [xs[0]]
+@@ -767,7 +772,7 @@
+                 k = max(range(len(wins)), key=lambda i: abs(wins[i]["s"] - dv)); wins[k].update({"w": 2.1, "mull": 2, "sill": 0.8})
+                 if any(abs(wins[k]["s"] - o["s"]) < 1.7 for o in wins if o is not wins[k]) or abs(wins[k]["s"] - dv) < 2.0 or wins[k]["s"] < 1.3 or wins[k]["s"] > W - 1.3:
+                     wins[k].update({"w": h["win_w"], "mull": 1, "sill": 1.0})
+-            ops = [{"s": dv, "w": HS["door_w"], "h": HS["door_h"] + (0.35 if h["door_kind"] == "round" else 0), "kind": h["door_kind"]}] + wins
++            ops = [{"s": dv, "w": HS["door_w"], "h": HS["door_h"] + (0.35 if h["door_kind"] == "round" else 0), "kind": h["door_kind"], "opening": "door"}] + wins
+         else:
+             ops = windows_row(W, h["win"][f], w=h["win_w"])
+         isp = MATS[h["gf"] if f == 0 else h["upper"]] == "plaster"

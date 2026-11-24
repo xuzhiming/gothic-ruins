@@ -1,0 +1,891 @@
+{
+  "capsule_R": 0.3,
+  "heights": [
+    0.3,
+    0.8,
+    1.2,
+    1.6,
+    1.8
+  ],
+  "headroom_m": 2.1,
+  "doors": [
+    {
+      "id": "W0_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 96,
+      "blockers": [
+        {
+          "kind": "timber",
+          "object": "House_W0_timber",
+          "n": 96
+        }
+      ],
+      "samples": [
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2953,
+          "point": [
+            -20.285,
+            26.52,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -20.285,
+            26.5202,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.2953,
+          "point": [
+            -20.285,
+            26.24,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -20.285,
+            26.24,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.2953,
+          "point": [
+            -20.285,
+            25.96,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -20.285,
+            25.9597,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -20.285,
+            26.52,
+            4.36
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -20.285,
+            26.5202,
+            5.0
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          -20.35,
+          26.24,
+          6.72
+        ],
+        "object": "House_W0_plaster_b",
+        "role": "solid",
+        "material": "Plaster_b",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [
+        {
+          "z": 0.85,
+          "lat": 0.0,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            -20.285,
+            26.24,
+            5.05
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "z": 0.85,
+          "lat": -0.4,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            -20.285,
+            26.64,
+            5.05
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "z": 0.85,
+          "lat": 0.4,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            -20.285,
+            25.84,
+            5.05
+          ],
+          "object": "House_W0_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "mid_timber_hits": 3,
+      "clear": false
+    },
+    {
+      "id": "W1_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          -20.7,
+          12.528,
+          7.02
+        ],
+        "object": "House_W1_brick",
+        "role": "solid",
+        "material": "Brick",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "W2_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.175,
+        "point": [
+          -19.9,
+          0.667,
+          7.02
+        ],
+        "object": "House_W2_timber",
+        "role": "solid",
+        "material": "Timber",
+        "kind": "timber"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "W3_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          -20.55,
+          -10.108,
+          6.72
+        ],
+        "object": "House_W3_brick",
+        "role": "solid",
+        "material": "Brick",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "W4_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          -20.35,
+          -26.091,
+          7.02
+        ],
+        "object": "House_W4_plaster_d",
+        "role": "solid",
+        "material": "Plaster_d",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "E0_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          20.35,
+          25.498,
+          6.72
+        ],
+        "object": "House_E0_brick",
+        "role": "solid",
+        "material": "Brick",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "E1_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.175,
+        "point": [
+          20.2,
+          12.003,
+          7.02
+        ],
+        "object": "House_E1_timber",
+        "role": "solid",
+        "material": "Timber",
+        "kind": "timber"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "E2_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.325,
+        "point": [
+          20.05,
+          0.142,
+          7.02
+        ],
+        "object": "House_E2_timber",
+        "role": "solid",
+        "material": "Timber",
+        "kind": "timber"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "E3_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          20.5,
+          -9.424,
+          6.72
+        ],
+        "object": "House_E3_brick",
+        "role": "solid",
+        "material": "Brick",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "E4_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 0,
+      "blockers": [],
+      "samples": [],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          20.35,
+          -25.411,
+          7.02
+        ],
+        "object": "House_E4_brick",
+        "role": "solid",
+        "material": "Plaster_M13_E4_Street",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [],
+      "mid_timber_hits": 0,
+      "clear": true
+    },
+    {
+      "id": "NW_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 96,
+      "blockers": [
+        {
+          "kind": "timber",
+          "object": "House_NW_timber",
+          "n": 96
+        }
+      ],
+      "samples": [
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            -22.32,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -22.32,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            -22.6,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -22.6,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            -22.88,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            -22.88,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            -22.32,
+            36.835,
+            4.36
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            -22.32,
+            36.835,
+            5.0
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          -22.6,
+          36.9,
+          6.72
+        ],
+        "object": "House_NW_plaster_d",
+        "role": "solid",
+        "material": "Plaster_d",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [
+        {
+          "z": 0.85,
+          "lat": 0.0,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            -22.6,
+            36.835,
+            5.05
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "z": 0.85,
+          "lat": -0.4,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            -22.2,
+            36.835,
+            5.05
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "z": 0.85,
+          "lat": 0.4,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            -23.0,
+            36.835,
+            5.05
+          ],
+          "object": "House_NW_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "mid_timber_hits": 3,
+      "clear": false
+    },
+    {
+      "id": "NE_door",
+      "w": 1.2,
+      "h": 2.4,
+      "unexpected": 96,
+      "blockers": [
+        {
+          "kind": "timber",
+          "object": "House_NE_timber",
+          "n": 96
+        }
+      ],
+      "samples": [
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            21.68,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            21.68,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            21.4,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.0,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            21.4,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.3,
+          "dist": 0.29529,
+          "point": [
+            21.12,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.5,
+          "lat": 0.28,
+          "z": 0.8,
+          "dist": 0.26,
+          "point": [
+            21.12,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.3,
+          "dist": 0.2126,
+          "point": [
+            21.68,
+            36.835,
+            4.36
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "side": "outside_to_inside",
+          "s": -0.4,
+          "lat": -0.28,
+          "z": 0.8,
+          "dist": 0.16,
+          "point": [
+            21.68,
+            36.835,
+            5.0
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "lintel_ok": true,
+      "lintel": {
+        "dist": 0.625,
+        "point": [
+          21.4,
+          36.9,
+          6.72
+        ],
+        "object": "House_NE_plaster_b",
+        "role": "solid",
+        "material": "Plaster_b",
+        "kind": "house_masonry"
+      },
+      "mid_timber": [
+        {
+          "z": 0.85,
+          "lat": 0.0,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            21.4,
+            36.835,
+            5.05
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "z": 0.85,
+          "lat": -0.4,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            21.8,
+            36.835,
+            5.05
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        },
+        {
+          "z": 0.85,
+          "lat": 0.4,
+          "along": -0.24,
+          "dist": 0.76,
+          "point": [
+            21.0,
+            36.835,
+            5.05
+          ],
+          "object": "House_NE_timber",
+          "role": "solid",
+          "material": "Timber",
+          "kind": "timber"
+        }
+      ],
+      "mid_timber_hits": 3,
+      "clear": false
+    }
+  ],
+  "blocked": [
+    "W0_door",
+    "NW_door",
+    "NE_door"
+  ],
+  "missing_lintel": [],
+  "swings": {
+    "NW_door": {
+      "ok": true,
+      "swing_rad": 1.501,
+      "hits": []
+    },
+    "NE_door": {
+      "ok": true,
+      "swing_rad": 1.501,
+      "hits": []
+    },
+    "W0_door": {
+      "ok": true,
+      "swing_rad": -1.501,
+      "hits": []
+    },
+    "W4_door": {
+      "ok": true,
+      "swing_rad": -1.501,
+      "hits": []
+    },
+    "E4_door": {
+      "ok": true,
+      "swing_rad": 1.501,
+      "hits": []
+    }
+  },
+  "swing_fail": [],
+  "missing_stairs": [],
+  "reported_pair": [
+    "NW_door",
+    "NE_door"
+  ],
+  "same_cause": [
+    "W0_door"
+  ],
+  "south_control": [
+    "W4_door",
+    "E4_door"
+  ],
+  "PASS": false
+}

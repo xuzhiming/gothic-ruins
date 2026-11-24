@@ -1,0 +1,17 @@
+{
+  "slots": 365,
+  "true_windows": 360,
+  "decorative_blinds": 5,
+  "transparent_glazed": 235,
+  "missing_ruin_panes": 125,
+  "glb_triangles": {
+    "Glass": 5516,
+    "Glass_blind": 440
+  },
+  "coverage": {
+    "missing_generated_face_occurrences": 0,
+    "unknown_glass_faces": 0,
+    "unmatched_window_slots": 0
+  },
+  "test_all_windows": "PASS 8/8"
+}

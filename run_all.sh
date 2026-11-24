@@ -16,6 +16,7 @@ step "1/8 textures + reference silhouettes"
 python3 src/make_textures.py > logs/textures.log
 python3 compare/ref_extract.py > logs/ref_extract.log
 python3 src/house_table.py > logs/house_table.log      # per-house table -> params.json houses.list + houses_table.md
+python3 check/test_timber_rail_segments.py
 
 step "2/8 compare loop (rounds=${COMPARE_ROUNDS:-0})"
 ROUNDS=${COMPARE_ROUNDS:-0} COMPARE_LOG=$R/$( [ "${COMPARE_ROUNDS:-0}" -gt 0 ] && echo compare_log.md || echo logs/score_check.md ) \
@@ -40,6 +41,10 @@ python3 compare/diag_side.py renders compare/diag current | tee logs/diag_side.l
 step "5/8 circulation check (+ negative tests)"
 if python3 -c 'import json,sys;sys.exit(0 if json.load(open("params.json"))["houses"].get("alleys",{}).get("enabled") else 1)'; then
   $BL "${BL_ARGS[@]}" -b building.blend -P check/test_alley_assets.py > logs/alleys.log 2>&1
+fi
+$BL "${BL_ARGS[@]}" -b building.blend -P check/test_door_clearance.py -- t27u-evidence/door_clearance.json > logs/door_clearance.log 2>&1
+if [ -f /workspace/gothic-t27u-baseline/building.blend ]; then
+  $BL "${BL_ARGS[@]}" -b building.blend -P check/test_timber_scope.py -- /workspace/gothic-t27u-baseline/building.blend t27u-evidence/timber_scope.json > logs/timber_scope.log 2>&1
 fi
 $BL "${BL_ARGS[@]}" -b building.blend -P check/circulation_check.py > logs/check.log 2>&1 || true
 python3 - <<'PY'
