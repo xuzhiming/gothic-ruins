@@ -467,7 +467,7 @@
     "transparent_glazed": 23,
     "opaque_glazed": 0,
     "missing_ruin_panes": 8,
-    "any_structural_occlusion": 0,
+    "any_structural_occlusion": 1,
     "fully_structurally_blocked": 0,
     "decorative_blinds": 0,
     "by_floor_direction": {

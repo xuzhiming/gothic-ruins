@@ -1,0 +1,83 @@
+{
+  "PASS": true,
+  "baseline": "/workspace/gothic-t27u-baseline/building.blend",
+  "current": "/workspace/gothic/building.blend",
+  "baseline_object_count": 64,
+  "current_object_count": 64,
+  "baseline_count_errors": [],
+  "allowed_changed": [
+    "House_NE_timber",
+    "House_NW_timber",
+    "House_W0_timber"
+  ],
+  "must_restore_tris": {
+    "House_W1_timber": 2647,
+    "House_W2_timber": 2522,
+    "House_W3_timber": 2514,
+    "House_E0_timber": 2906,
+    "House_E1_timber": 3184,
+    "House_E2_timber": 2159
+  },
+  "changed": [
+    {
+      "name": "House_NE_timber",
+      "baseline_tris": 3015,
+      "current_tris": 3039,
+      "baseline_sha": "a4b66531a509e8cf97270ee08a61a49756ca686435824ea0e2ed9313852a931b",
+      "current_sha": "ec9bab1fe01c76defda69e33d3b580aebd1550b00f8d230b7df7cd3bccd99607",
+      "allowed": true
+    },
+    {
+      "name": "House_NW_timber",
+      "baseline_tris": 2818,
+      "current_tris": 2842,
+      "baseline_sha": "2c0a7d833c3f48a6d7a15cab2bf556a053c0400caba21cdda7476cd8b24f93b0",
+      "current_sha": "221a90fa1456a06418813995ca3a52788a27d932106db3b480b821f133a0574c",
+      "allowed": true
+    },
+    {
+      "name": "House_W0_timber",
+      "baseline_tris": 2818,
+      "current_tris": 2842,
+      "baseline_sha": "b40dd2f26831c40f82354c35ede87861b8a1847994cbdeb94dec526f65a155c2",
+      "current_sha": "28e5527997263cccc67e03bd6f241ea6c1d2891c2661fbcbb9e0cde6d120cccc",
+      "allowed": true
+    }
+  ],
+  "unexpected_changes": [],
+  "restore_hash_mismatches": [],
+  "restore_ok": [
+    {
+      "name": "House_E0_timber",
+      "tris": 2906,
+      "sha256": "265f5ca18c102e82f807dcc43b4e026f53c60efde47fba36771ad62873272896"
+    },
+    {
+      "name": "House_E1_timber",
+      "tris": 3184,
+      "sha256": "3c647ae96bdbfe4263caffa837280006ebeaa0e96e15059446534321b43af99e"
+    },
+    {
+      "name": "House_E2_timber",
+      "tris": 2159,
+      "sha256": "23d320e74c15e2f235c41ab87cac8028b23f8203063c4b43cd07d476fa943e6b"
+    },
+    {
+      "name": "House_W1_timber",
+      "tris": 2647,
+      "sha256": "53768fd459853731e9988d2f81b5e75df9a6edbb4ce08b618d541747f23c630a"
+    },
+    {
+      "name": "House_W2_timber",
+      "tris": 2522,
+      "sha256": "53b0c442bc47918403c3bff8bf32ce5517fac6cbdd7543fef6d2219ffe36d5f1"
+    },
+    {
+      "name": "House_W3_timber",
+      "tris": 2514,
+      "sha256": "a50118165bdeae2f9b5edbf0686ce8c2323b97d19873779c86dc5705a055df4d"
+    }
+  ],
+  "missing_allowed": [],
+  "missing_door_delta": []
+}

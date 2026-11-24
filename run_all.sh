@@ -43,6 +43,9 @@ if python3 -c 'import json,sys;sys.exit(0 if json.load(open("params.json"))["hou
   $BL "${BL_ARGS[@]}" -b building.blend -P check/test_alley_assets.py > logs/alleys.log 2>&1
 fi
 $BL "${BL_ARGS[@]}" -b building.blend -P check/test_door_clearance.py -- t27u-evidence/door_clearance.json > logs/door_clearance.log 2>&1
+if [ -f /workspace/gothic-t27u-baseline/building.blend ]; then
+  $BL "${BL_ARGS[@]}" -b building.blend -P check/test_timber_scope.py -- /workspace/gothic-t27u-baseline/building.blend t27u-evidence/timber_scope.json > logs/timber_scope.log 2>&1
+fi
 $BL "${BL_ARGS[@]}" -b building.blend -P check/circulation_check.py > logs/check.log 2>&1 || true
 python3 - <<'PY'
 import json, sys

@@ -690,9 +690,9 @@ def timber_face(tim, fr, uu, W, z0, z1, pattern, rng, ops, out=-1):
     """half-timber frame on a street/rear face at depth uu: sole/sill/head rails, posts at the ends and at every window
     jamb, braces in the window-free panels: grid = none, braced = single diagonals (seeded), x = St Andrew's crosses"""
     nv = fr.dir(1, 0)*out
-    # Gap sole/mid rails at door (and any other vertically overlapping) openings so
-    # the facade frame does not bar the threshold. Head rail above the opening stays
-    # continuous. Posts and braces are unchanged (braces already skip opening bays).
+    # Gap sole/mid rails only at ops marked opening=="door". Windows keep continuous
+    # rails (existing style). Head rail above the door stays continuous. Posts and
+    # braces are unchanged (braces already skip opening bays).
     for zz in (z0 + 0.08, z0 + 0.85, z1 - 0.14):
         for a, b in timber_rail_segments(W, z0, z1, zz, ops):
             beam(tim, fr.M(uu, a, zz), fr.M(uu, b, zz), 0.07, 0.16, up=(0, 0, 1))
@@ -772,7 +772,7 @@ def house(h, fr, D, street, ext_v0=False, ext_v1=False, seed=0):
                 k = max(range(len(wins)), key=lambda i: abs(wins[i]["s"] - dv)); wins[k].update({"w": 2.1, "mull": 2, "sill": 0.8})
                 if any(abs(wins[k]["s"] - o["s"]) < 1.7 for o in wins if o is not wins[k]) or abs(wins[k]["s"] - dv) < 2.0 or wins[k]["s"] < 1.3 or wins[k]["s"] > W - 1.3:
                     wins[k].update({"w": h["win_w"], "mull": 1, "sill": 1.0})
-            ops = [{"s": dv, "w": HS["door_w"], "h": HS["door_h"] + (0.35 if h["door_kind"] == "round" else 0), "kind": h["door_kind"]}] + wins
+            ops = [{"s": dv, "w": HS["door_w"], "h": HS["door_h"] + (0.35 if h["door_kind"] == "round" else 0), "kind": h["door_kind"], "opening": "door"}] + wins
         else:
             ops = windows_row(W, h["win"][f], w=h["win_w"])
         isp = MATS[h["gf"] if f == 0 else h["upper"]] == "plaster"

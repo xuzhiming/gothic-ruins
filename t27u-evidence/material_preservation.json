@@ -36,7 +36,7 @@
     "_list_doc": true,
     "plaster_layer": true
   },
-  "note": "FAIL vs strict T24 isolation only because House_NW_timber and House_NE_timber were intentionally gapped at door openings. Material recipes, all other 27 isolated meshes, M13 south=55 street=426, and preserved house settings are unchanged. W0 timber is not in the isolated NW/NE/cathedral set.",
+  "note": "Strict isolation FAIL is expected: only House_NW_timber and House_NE_timber (of the 29 isolated meshes) change. W0 timber is not in that isolation set. Full-field timber audit (test_timber_scope) is the scope check: only W0/NW/NE among all timber meshes.",
   "expected_changed_isolated_meshes": [
     "House_NE_timber",
     "House_NW_timber"
